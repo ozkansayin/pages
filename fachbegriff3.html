@@ -37,71 +37,6 @@
             font-size: 16px;
         }
         
-        .mode-switch {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .switch-container {
-            display: inline-flex;
-            align-items: center;
-            gap: 15px;
-            background-color: #404040;
-            padding: 10px 20px;
-            border-radius: 25px;
-            border: 1px solid #555;
-        }
-        
-        .switch-label {
-            font-size: 14px;
-            color: #ccc;
-        }
-        
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 30px;
-        }
-        
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #666;
-            transition: .4s;
-            border-radius: 30px;
-        }
-        
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 22px;
-            width: 22px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-        
-        input:checked + .slider {
-            background-color: #4a9eff;
-        }
-        
-        input:checked + .slider:before {
-            transform: translateX(30px);
-        }
-        
         .question-container {
             background-color: #333333;
             border: 1px solid #404040;
@@ -208,13 +143,6 @@
             cursor: not-allowed;
         }
         
-        .keyboard-hint {
-            text-align: center;
-            color: #666;
-            font-size: 12px;
-            margin-top: 10px;
-        }
-        
         .action-buttons {
             display: flex;
             justify-content: center;
@@ -222,7 +150,7 @@
             margin: 30px 0;
         }
         
-        .finalize-btn, .refresh-btn {
+        .finalize-btn, .refresh-btn, .revert-btn {
             background-color: #ff6b6b;
             color: white;
             font-size: 18px;
@@ -241,6 +169,14 @@
             background-color: #218838;
         }
         
+        .revert-btn {
+            background-color: #27a9d4;
+        }
+        
+        .revert-btn:hover {
+            background-color: #2188aa;
+        }
+
         .result {
             margin-top: 15px;
             padding: 12px 15px;
@@ -397,11 +333,6 @@
                 flex-direction: column;
                 align-items: center;
             }
-            
-            .switch-container {
-                flex-direction: column;
-                gap: 10px;
-            }
         }
     </style>
 </head>
@@ -409,36 +340,22 @@
     <div class="quiz-container">
         <h1>Begriffe Quiz</h1>
         <div class="progress-info" id="progress-info"></div>
-        
-        <div class="mode-switch">
-            <div class="switch-container">
-                <span class="switch-label">Begriff → Definition</span>
-                <label class="switch">
-                    <input type="checkbox" id="mode-switch" onchange="toggleQuizMode()">
-                    <span class="slider"></span>
-                </label>
-                <span class="switch-label">Definition → Begriff</span>
-            </div>
-        </div>
-        
         <div id="quiz-content"></div>
         <div class="navigation">
             <button class="nav-btn" id="prev-btn" onclick="previousQuestion()" disabled>← Vorherige</button>
             <button class="nav-btn" id="next-btn" onclick="nextQuestion()">Nächste →</button>
         </div>
-        <div class="keyboard-hint">
-            Tastatur: Enter = Prüfen/Weiter | ← → = Navigation (wenn nicht im Eingabefeld)
-        </div>
         <div class="action-buttons">
             <button class="finalize-btn" onclick="finalizeQuiz()">Quiz Abschließen</button>
             <button class="refresh-btn" onclick="refreshQuiz()">Neue Fragen</button>
+            <button class="revert-btn" onclick="reverseQuestions()">Umkehren</button>
         </div>
         <div id="summary" style="display: none;"></div>
     </div>
 
     <script>
         // Sample JSON data - replace this with your actual data
-        const termsData = [
+        let termsData = [
   {
     "term": "Abduktion",
     "definition": "wegführen/ Abspreizen einer Extremität nach außen"
@@ -2328,15 +2245,21 @@
     "definition": "wegführend"
   }
 ];
-
+        const paramsString = window.location.search;
+        const searchParams = new URLSearchParams(paramsString);
+        if (searchParams.get("revert") === "1"){
+            termsData.map(x => {
+                let originalTerm = x.term;
+                x.term = x.definition;
+                x.definition = originalTerm;
+            })
+            console.log(termsData);
+        }
         let quizQuestions = [];
         let userAnswers = {};
         let submittedAnswers = new Set();
         let overriddenAnswers = new Set();
         let currentQuestionIndex = 0;
-        let reverseMode = false; // false = term->definition, true = definition->term
-        let lastEnterTime = 0;
-        let isInputFocused = false;
 
         function normalizeText(text) {
             return text.toLowerCase()
@@ -2352,18 +2275,6 @@
         function getRandomQuestions(data, count) {
             const shuffled = [...data].sort(() => 0.5 - Math.random());
             return shuffled.slice(0, Math.min(count, shuffled.length));
-        }
-
-        function toggleQuizMode() {
-            reverseMode = document.getElementById('mode-switch').checked;
-            
-            // Clear all answers when switching modes
-            userAnswers = {};
-            submittedAnswers = new Set();
-            overriddenAnswers = new Set();
-            
-            // Refresh current question display
-            displayCurrentQuestion();
         }
 
         // Character-based diff algorithm using LCS
@@ -2448,8 +2359,7 @@
             const progressInfo = document.getElementById('progress-info');
             const answered = Object.keys(userAnswers).length;
             const total = quizQuestions.length;
-            const modeText = reverseMode ? 'Definition → Begriff' : 'Begriff → Definition';
-            progressInfo.textContent = `${modeText} | Frage ${currentQuestionIndex + 1} von ${total} | ${answered} beantwortet`;
+            progressInfo.textContent = `Frage ${currentQuestionIndex + 1} von ${total} | ${answered} beantwortet`;
         }
 
         function updateNavigationButtons() {
@@ -2460,40 +2370,23 @@
             nextBtn.disabled = currentQuestionIndex === quizQuestions.length - 1;
         }
 
-        function focusInput() {
-            setTimeout(() => {
-                const input = document.getElementById('current-answer');
-                if (input && !input.disabled) {
-                    input.focus();
-                }
-            }, 100);
-        }
-
         function displayCurrentQuestion() {
             const question = quizQuestions[currentQuestionIndex];
             const quizContent = document.getElementById('quiz-content');
             
-            const questionKey = `${currentQuestionIndex}-${reverseMode}`;
-            const isAnswered = submittedAnswers.has(questionKey);
-            const userAnswer = userAnswers[questionKey];
-            
-            const questionText = reverseMode ? question.definition : question.term;
-            const questionPrompt = reverseMode ? 'Wie lautet der Begriff?' : 'Was bedeutet';
-            const placeholder = reverseMode ? 'Begriff eingeben...' : 'Definition eingeben...';
+            const isAnswered = submittedAnswers.has(currentQuestionIndex);
+            const userAnswer = userAnswers[currentQuestionIndex];
             
             quizContent.innerHTML = `
                 <div class="question-container">
                     <div class="question">
-                        <h2>${questionPrompt} "${questionText}"?</h2>
+                        <h2>Was bedeutet "${question.term}"?</h2>
                         <div class="input-group">
                             <input type="text" 
                                    id="current-answer" 
-                                   placeholder="${placeholder}"
+                                   placeholder="Definition eingeben..."
                                    value="${userAnswer ? userAnswer.userAnswer : ''}"
                                    ${isAnswered ? 'disabled' : ''}
-                                   autocomplete="off"
-                                   onfocus="isInputFocused = true"
-                                   onblur="isInputFocused = false"
                                    onkeypress="handleKeyPress(event)">
                             <button class="submit-btn" 
                                     onclick="submitCurrentAnswer()" 
@@ -2502,7 +2395,7 @@
                             </button>
                         </div>
                         <div id="current-result">
-                            ${isAnswered ? generateResultHTML(questionKey) : ''}
+                            ${isAnswered ? generateResultHTML(currentQuestionIndex) : ''}
                         </div>
                     </div>
                 </div>
@@ -2510,11 +2403,10 @@
             
             updateProgressInfo();
             updateNavigationButtons();
-            focusInput();
         }
 
-        function generateResultHTML(questionKey) {
-            const answer = userAnswers[questionKey];
+        function generateResultHTML(questionIndex) {
+            const answer = userAnswers[questionIndex];
             if (!answer) return '';
             
             if (answer.isCorrect && answer.originallyCorrect) {
@@ -2543,60 +2435,43 @@
 
         function handleKeyPress(event) {
             if (event.key === 'Enter') {
-                const currentTime = Date.now();
-                const questionKey = `${currentQuestionIndex}-${reverseMode}`;
-                
-                if (submittedAnswers.has(questionKey)) {
-                    // Answer already submitted, check for double enter
-                    if (currentTime - lastEnterTime < 1000) { // Within 1 second
-                        nextQuestion();
-                        return;
-                    }
-                } else {
-                    // Submit answer
-                    submitCurrentAnswer();
-                }
-                
-                lastEnterTime = currentTime;
+                submitCurrentAnswer();
             }
         }
 
         function submitCurrentAnswer() {
-            const questionKey = `${currentQuestionIndex}-${reverseMode}`;
-            if (submittedAnswers.has(questionKey)) {
+            if (submittedAnswers.has(currentQuestionIndex)) {
                 return;
             }
 
             const userInput = document.getElementById('current-answer').value;
-            const question = quizQuestions[currentQuestionIndex];
-            const correctAnswer = reverseMode ? question.term : question.definition;
+            const correctAnswer = quizQuestions[currentQuestionIndex].definition;
             
             const normalizedUserInput = normalizeText(userInput);
             const normalizedCorrectAnswer = normalizeText(correctAnswer);
             
             const isCorrect = normalizedUserInput === normalizedCorrectAnswer;
             
-            userAnswers[questionKey] = {
+            userAnswers[currentQuestionIndex] = {
                 userAnswer: userInput,
                 correctAnswer: correctAnswer,
                 isCorrect: isCorrect,
                 originallyCorrect: isCorrect
             };
             
-            submittedAnswers.add(questionKey);
+            submittedAnswers.add(currentQuestionIndex);
             
             // Refresh the current question display
             displayCurrentQuestion();
         }
 
         function overrideCurrentAnswer() {
-            const questionKey = `${currentQuestionIndex}-${reverseMode}`;
-            if (!userAnswers[questionKey] || userAnswers[questionKey].originallyCorrect) {
+            if (!userAnswers[currentQuestionIndex] || userAnswers[currentQuestionIndex].originallyCorrect) {
                 return;
             }
             
-            userAnswers[questionKey].isCorrect = true;
-            overriddenAnswers.add(questionKey);
+            userAnswers[currentQuestionIndex].isCorrect = true;
+            overriddenAnswers.add(currentQuestionIndex);
             
             // Refresh the current question display
             displayCurrentQuestion();
@@ -2623,7 +2498,7 @@
         }
 
         function finalizeQuiz() {
-            const totalQuestions = quizQuestions.length * 2; // Both modes
+            const totalQuestions = quizQuestions.length;
             const answeredQuestions = Object.keys(userAnswers).length;
             const correctAnswers = Object.values(userAnswers).filter(answer => answer.isCorrect).length;
             const originallyCorrect = Object.values(userAnswers).filter(answer => answer.originallyCorrect).length;
@@ -2662,7 +2537,6 @@
                         </div>
                     </div>
                     <p><strong>Ergebnis:</strong> ${correctAnswers} von ${totalQuestions} Fragen richtig</p>
-                    <p><small>Beide Modi: Begriff→Definition und Definition→Begriff</small></p>
                     ${overriddenCount > 0 ? `<p><small>${overriddenCount} Antwort(en) wurden manuell als richtig markiert</small></p>` : ''}
                 </div>
             `;
@@ -2676,8 +2550,6 @@
             submittedAnswers = new Set();
             overriddenAnswers = new Set();
             currentQuestionIndex = 0;
-            reverseMode = false;
-            document.getElementById('mode-switch').checked = false;
             
             // Hide summary
             document.getElementById('summary').style.display = 'none';
@@ -2688,20 +2560,19 @@
             // Scroll to top
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+        
+        function reverseQuestions() {
+              const url = new URL(window.location.href);
+            const currentValue = url.searchParams.get("revert");
 
-        // Global keyboard event handler
-        document.addEventListener('keydown', function(event) {
-            // Only handle arrow keys when input is not focused or answer is submitted
-            if (!isInputFocused || submittedAnswers.has(`${currentQuestionIndex}-${reverseMode}`)) {
-                if (event.key === 'ArrowLeft') {
-                    event.preventDefault();
-                    previousQuestion();
-                } else if (event.key === 'ArrowRight') {
-                    event.preventDefault();
-                    nextQuestion();
-                }
+            if (currentValue === "1") {
+                url.searchParams.set("revert", "0");
+            } else {
+                url.searchParams.set("revert", "1");
             }
-        });
+
+            window.location.href = url.toString();
+        }
 
         // Initialize quiz when page loads
         document.addEventListener('DOMContentLoaded', function() {
