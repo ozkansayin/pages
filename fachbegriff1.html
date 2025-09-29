@@ -116,18 +116,6 @@
             background-color: #ff6b6b;
         }
         
-        .override-btn {
-            background-color: #ff9800;
-            color: white;
-            font-size: 11px;
-            padding: 4px 8px;
-            margin-left: 8px;
-        }
-        
-        .override-btn:hover {
-            background-color: #f57c00;
-        }
-        
         .action-buttons {
             display: flex;
             justify-content: center;
@@ -172,95 +160,6 @@
             background-color: #4d1e1e;
             color: #f44336;
             border: 1px solid #d32f2f;
-        }
-        
-        .overridden {
-            background-color: #3d2914;
-            color: #ff9800;
-            border: 1px solid #ff9800;
-        }
-        
-        .diff-container {
-            margin-top: 8px;
-            padding: 8px;
-            background-color: #2a2a2a;
-            border-radius: 4px;
-            border: 1px solid #444;
-            font-family: 'Courier New', monospace;
-            font-size: 11px;
-        }
-        
-        .diff-header {
-            color: #888;
-            margin-bottom: 4px;
-            font-size: 10px;
-        }
-        
-        .diff-line {
-            margin: 2px 0;
-            padding: 2px 4px;
-            border-radius: 2px;
-            word-wrap: break-word;
-        }
-        
-        .diff-removed {
-            background-color: #4d1e1e;
-            color: #ff6b6b;
-        }
-        
-        .diff-added {
-            background-color: #1e4d2b;
-            color: #4caf50;
-        }
-        
-        .diff-removed::before {
-            content: "- ";
-            font-weight: bold;
-        }
-        
-        .diff-added::before {
-            content: "+ ";
-            font-weight: bold;
-        }
-        
-        .diff-word-removed {
-            background-color: #8b2635;
-            color: #ffcdd2;
-            padding: 1px 3px;
-            border-radius: 2px;
-            text-decoration: line-through;
-        }
-        
-        .diff-word-added {
-            background-color: #2e7d32;
-            color: #c8e6c9;
-            padding: 1px 3px;
-            border-radius: 2px;
-            font-weight: bold;
-        }
-        
-        .diff-word-missing {
-            background-color: #6d4c41;
-            color: #d7ccc8;
-            padding: 1px 3px;
-            border-radius: 2px;
-            font-style: italic;
-        }
-        
-        .diff-word-extra {
-            background-color: #5d4037;
-            color: #efebe9;
-            padding: 1px 3px;
-            border-radius: 2px;
-            text-decoration: underline;
-        }
-        
-        .diff-word-case-diff {
-            background-color: #4a5568;
-            color: #e2e8f0;
-            padding: 1px 3px;
-            border-radius: 2px;
-            border: 1px dashed #718096;
         }
         
         .tooltip {
@@ -370,6 +269,7 @@
     </div>
 
     <script>
+        // Sample JSON data - replace this with your actual data
         const termsData = [
   {
     "term": "Abduktion",
@@ -2265,7 +2165,6 @@
         let userAnswers = {};
         let submittedAnswers = new Set();
         let activeTooltips = new Set();
-        let overriddenAnswers = new Set();
 
         function normalizeText(text) {
             return text.toLowerCase()
@@ -2281,137 +2180,6 @@
         function getRandomQuestions(data, count) {
             const shuffled = [...data].sort(() => 0.5 - Math.random());
             return shuffled.slice(0, Math.min(count, shuffled.length));
-        }
-
-        // Improved diff algorithm using LCS (Longest Common Subsequence) with case-insensitive comparison
-        function computeLCS(arr1, arr2) {
-            const m = arr1.length;
-            const n = arr2.length;
-            const dp = Array(m + 1).fill(null).map(() => Array(n + 1).fill(0));
-            
-            for (let i = 1; i <= m; i++) {
-                for (let j = 1; j <= n; j++) {
-                    // Case-insensitive comparison for LCS computation
-                    if (arr1[i - 1].toLowerCase() === arr2[j - 1].toLowerCase()) {
-                        dp[i][j] = dp[i - 1][j - 1] + 1;
-                    } else {
-                        dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
-                    }
-                }
-            }
-            
-            return dp;
-        }
-
-        function createAdvancedWordDiff(userText, correctText) {
-            const userWords = userText.split(/\s+/).filter(w => w.length > 0);
-            const correctWords = correctText.split(/\s+/).filter(w => w.length > 0);
-            
-            if (userWords.length === 0 && correctWords.length === 0) {
-                return { userLine: '', correctLine: '' };
-            }
-            
-            const lcs = computeLCS(userWords, correctWords);
-            
-            // Backtrack to find the actual diff
-            let i = userWords.length;
-            let j = correctWords.length;
-            const userResult = [];
-            const correctResult = [];
-            
-            while (i > 0 || j > 0) {
-                if (i > 0 && j > 0 && userWords[i - 1].toLowerCase() === correctWords[j - 1].toLowerCase()) {
-                    // Words match (case-insensitive)
-                    if (userWords[i - 1] === correctWords[j - 1]) {
-                        // Exact match including case
-                        userResult.unshift(userWords[i - 1]);
-                        correctResult.unshift(correctWords[j - 1]);
-                    } else {
-                        // Case difference only
-                        userResult.unshift(`<span class="diff-word-case-diff" title="Groß-/Kleinschreibung unterschiedlich">${userWords[i - 1]}</span>`);
-                        correctResult.unshift(`<span class="diff-word-case-diff" title="Groß-/Kleinschreibung unterschiedlich">${correctWords[j - 1]}</span>`);
-                    }
-                    i--;
-                    j--;
-                } else if (i > 0 && (j === 0 || lcs[i - 1][j] >= lcs[i][j - 1])) {
-                    // Word was removed (extra in user input)
-                    userResult.unshift(`<span class="diff-word-extra">${userWords[i - 1]}</span>`);
-                    i--;
-                } else {
-                    // Word was added (missing in user input)
-                    correctResult.unshift(`<span class="diff-word-missing">${correctWords[j - 1]}</span>`);
-                    j--;
-                }
-            }
-            
-            // Fill in missing words in user result where words were missing
-            let userIndex = 0;
-            let correctIndex = 0;
-            const alignedUserResult = [];
-            const alignedCorrectResult = [];
-            
-            while (userIndex < userResult.length || correctIndex < correctResult.length) {
-                const userWord = userResult[userIndex] || '';
-                const correctWord = correctResult[correctIndex] || '';
-                
-                // Check if both are plain words (no HTML tags)
-                const userIsPlain = !userWord.includes('<span');
-                const correctIsPlain = !correctWord.includes('<span');
-                
-                if (userIsPlain && correctIsPlain && userWord.toLowerCase() === correctWord.toLowerCase()) {
-                    // Perfect match (case-insensitive)
-                    if (userWord === correctWord) {
-                        alignedUserResult.push(userWord);
-                        alignedCorrectResult.push(correctWord);
-                    } else {
-                        // Case difference
-                        alignedUserResult.push(`<span class="diff-word-case-diff" title="Groß-/Kleinschreibung unterschiedlich">${userWord}</span>`);
-                        alignedCorrectResult.push(`<span class="diff-word-case-diff" title="Groß-/Kleinschreibung unterschiedlich">${correctWord}</span>`);
-                    }
-                    userIndex++;
-                    correctIndex++;
-                } else if (correctWord.includes('diff-word-missing')) {
-                    // Word missing in user input
-                    const extractedWord = correctWords[correctIndex] || correctWord.replace(/<[^>]*>/g, '');
-                    alignedUserResult.push(`<span class="diff-word-missing" title="Fehlendes Wort">[fehlt: ${extractedWord}]</span>`);
-                    alignedCorrectResult.push(correctWord);
-                    correctIndex++;
-                } else if (userWord.includes('diff-word-extra')) {
-                    // Extra word in user input
-                    alignedUserResult.push(userWord);
-                    alignedCorrectResult.push('');
-                    userIndex++;
-                } else if (userWord.includes('diff-word-case-diff') && correctWord.includes('diff-word-case-diff')) {
-                    // Both have case differences
-                    alignedUserResult.push(userWord);
-                    alignedCorrectResult.push(correctWord);
-                    userIndex++;
-                    correctIndex++;
-                } else {
-                    // Default case
-                    alignedUserResult.push(userWord);
-                    alignedCorrectResult.push(correctWord);
-                    if (userIndex < userResult.length) userIndex++;
-                    if (correctIndex < correctResult.length) correctIndex++;
-                }
-            }
-            
-            return {
-                userLine: alignedUserResult.join(' '),
-                correctLine: alignedCorrectResult.join(' ')
-            };
-        }
-
-        function createTextDiff(userAnswer, correctAnswer) {
-            const diff = createAdvancedWordDiff(userAnswer, correctAnswer);
-            
-            return `
-                <div class="diff-container">
-                    <div class="diff-header">Detaillierter Textvergleich (Groß-/Kleinschreibung wird ignoriert):</div>
-                    <div class="diff-line diff-removed">${diff.userLine || '(leer)'}</div>
-                    <div class="diff-line diff-added">${diff.correctLine || '(leer)'}</div>
-                </div>
-            `;
         }
 
         function generateQuiz() {
@@ -2465,8 +2233,7 @@
             userAnswers[questionIndex] = {
                 userAnswer: userInput,
                 correctAnswer: correctAnswer,
-                isCorrect: isCorrect,
-                originallyCorrect: isCorrect
+                isCorrect: isCorrect
             };
             
             submittedAnswers.add(questionIndex);
@@ -2474,43 +2241,16 @@
             if (isCorrect) {
                 resultDiv.innerHTML = '<div class="result correct">✓ Richtig!</div>';
             } else {
-                const diffHtml = createTextDiff(userInput, correctAnswer);
                 resultDiv.innerHTML = `
                     <div class="result incorrect">
                         ✗ Falsch. Richtig: "${correctAnswer}"
-                        <button class="override-btn" onclick="overrideAnswer(${questionIndex})">
-                            Als richtig markieren
-                        </button>
                     </div>
-                    ${diffHtml}
                 `;
             }
             
             submitButton.disabled = true;
             submitButton.textContent = 'Beantwortet';
             document.getElementById(`answer-${questionIndex}`).disabled = true;
-        }
-
-        function overrideAnswer(questionIndex) {
-            if (!userAnswers[questionIndex] || userAnswers[questionIndex].originallyCorrect) {
-                return;
-            }
-            
-            // Mark as overridden
-            userAnswers[questionIndex].isCorrect = true;
-            overriddenAnswers.add(questionIndex);
-            
-            const resultDiv = document.getElementById(`result-${questionIndex}`);
-            const userInput = userAnswers[questionIndex].userAnswer;
-            const correctAnswer = userAnswers[questionIndex].correctAnswer;
-            const diffHtml = createTextDiff(userInput, correctAnswer);
-            
-            resultDiv.innerHTML = `
-                <div class="result overridden">
-                    ✓ Als richtig markiert (überschrieben)
-                </div>
-                ${diffHtml}
-            `;
         }
 
         function toggleTooltip(questionIndex, answer) {
@@ -2535,8 +2275,6 @@
             const totalQuestions = quizQuestions.length;
             const answeredQuestions = Object.keys(userAnswers).length;
             const correctAnswers = Object.values(userAnswers).filter(answer => answer.isCorrect).length;
-            const originallyCorrect = Object.values(userAnswers).filter(answer => answer.originallyCorrect).length;
-            const overriddenCount = overriddenAnswers.size;
             const incorrectAnswers = answeredQuestions - correctAnswers;
             const unansweredQuestions = totalQuestions - answeredQuestions;
             const percentage = totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0;
@@ -2558,10 +2296,6 @@
                             <div>Falsch</div>
                         </div>
                         <div class="stat-item">
-                            <div class="stat-number">${overriddenCount}</div>
-                            <div>Überschrieben</div>
-                        </div>
-                        <div class="stat-item">
                             <div class="stat-number">${unansweredQuestions}</div>
                             <div>Offen</div>
                         </div>
@@ -2571,7 +2305,6 @@
                         </div>
                     </div>
                     <p><strong>Ergebnis:</strong> ${correctAnswers} von ${totalQuestions} Fragen richtig</p>
-                    ${overriddenCount > 0 ? `<p><small>${overriddenCount} Antwort(en) wurden manuell als richtig markiert</small></p>` : ''}
                 </div>
             `;
             summaryDiv.style.display = 'block';
@@ -2583,7 +2316,6 @@
             userAnswers = {};
             submittedAnswers = new Set();
             activeTooltips = new Set();
-            overriddenAnswers = new Set();
             
             // Hide summary
             document.getElementById('summary').style.display = 'none';
