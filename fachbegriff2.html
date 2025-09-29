@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            max-width: 800px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 15px;
             background-color: #1a1a1a;
@@ -18,55 +18,52 @@
         .quiz-container {
             background: #2d2d2d;
             border-radius: 8px;
-            padding: 30px;
+            padding: 20px;
             box-shadow: 0 2px 15px rgba(0,0,0,0.5);
-            min-height: 500px;
         }
         
         h1 {
             text-align: center;
             color: #ffffff;
-            margin-bottom: 30px;
-            font-size: 28px;
+            margin-bottom: 20px;
+            font-size: 24px;
         }
         
-        .progress-info {
-            text-align: center;
-            color: #888;
-            margin-bottom: 30px;
-            font-size: 16px;
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
         }
         
-        .question-container {
-            background-color: #333333;
+        .question {
+            padding: 12px;
             border: 1px solid #404040;
-            border-radius: 8px;
-            padding: 30px;
-            margin-bottom: 30px;
+            border-radius: 6px;
+            background-color: #333333;
         }
         
-        .question h2 {
-            margin: 0 0 20px 0;
+        .question h3 {
+            margin: 0 0 8px 0;
             color: #4a9eff;
-            font-size: 20px;
+            font-size: 14px;
             font-weight: bold;
         }
         
         .input-group {
             display: flex;
-            gap: 15px;
+            gap: 6px;
             align-items: center;
             flex-wrap: wrap;
-            margin-bottom: 20px;
         }
         
         input[type="text"] {
             flex: 1;
-            padding: 12px 15px;
-            border: 2px solid #555;
-            border-radius: 6px;
-            font-size: 16px;
-            min-width: 300px;
+            padding: 6px 8px;
+            border: 1px solid #555;
+            border-radius: 4px;
+            font-size: 13px;
+            min-width: 150px;
             background-color: #404040;
             color: #e0e0e0;
         }
@@ -82,11 +79,11 @@
         }
         
         button {
-            padding: 10px 20px;
+            padding: 6px 12px;
             border: none;
-            border-radius: 6px;
+            border-radius: 4px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: bold;
             transition: background-color 0.3s;
         }
@@ -94,8 +91,6 @@
         .submit-btn {
             background-color: #4a9eff;
             color: white;
-            font-size: 16px;
-            padding: 12px 24px;
         }
         
         .submit-btn:hover {
@@ -107,54 +102,44 @@
             cursor: not-allowed;
         }
         
+        .show-answer-btn {
+            background-color: #666;
+            color: white;
+            position: relative;
+        }
+        
+        .show-answer-btn:hover {
+            background-color: #777;
+        }
+        
+        .show-answer-btn.active {
+            background-color: #ff6b6b;
+        }
+        
         .override-btn {
             background-color: #ff9800;
             color: white;
-            font-size: 14px;
-            padding: 8px 16px;
-            margin-top: 10px;
+            font-size: 11px;
+            padding: 4px 8px;
+            margin-left: 8px;
         }
         
         .override-btn:hover {
             background-color: #f57c00;
         }
         
-        .navigation {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 30px 0;
-        }
-        
-        .nav-btn {
-            background-color: #666;
-            color: white;
-            font-size: 16px;
-            padding: 12px 24px;
-        }
-        
-        .nav-btn:hover {
-            background-color: #777;
-        }
-        
-        .nav-btn:disabled {
-            background-color: #444;
-            color: #888;
-            cursor: not-allowed;
-        }
-        
         .action-buttons {
             display: flex;
             justify-content: center;
             gap: 20px;
-            margin: 30px 0;
+            margin: 25px 0;
         }
         
-        .finalize-btn, .refresh-btn, .revert-btn {
+        .finalize-btn, .refresh-btn {
             background-color: #ff6b6b;
             color: white;
-            font-size: 18px;
-            padding: 15px 30px;
+            font-size: 16px;
+            padding: 12px 24px;
         }
         
         .finalize-btn:hover, .refresh-btn:hover {
@@ -169,19 +154,11 @@
             background-color: #218838;
         }
         
-        .revert-btn {
-            background-color: #27a9d4;
-        }
-        
-        .revert-btn:hover {
-            background-color: #2188aa;
-        }
-
         .result {
-            margin-top: 15px;
-            padding: 12px 15px;
-            border-radius: 6px;
-            font-size: 14px;
+            margin-top: 6px;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 11px;
             font-weight: bold;
         }
         
@@ -204,27 +181,26 @@
         }
         
         .diff-container {
-            margin-top: 15px;
-            padding: 15px;
+            margin-top: 8px;
+            padding: 8px;
             background-color: #2a2a2a;
-            border-radius: 6px;
+            border-radius: 4px;
             border: 1px solid #444;
             font-family: 'Courier New', monospace;
-            font-size: 14px;
+            font-size: 11px;
         }
         
         .diff-header {
             color: #888;
-            margin-bottom: 10px;
-            font-size: 12px;
+            margin-bottom: 4px;
+            font-size: 10px;
         }
         
         .diff-line {
-            margin: 8px 0;
-            padding: 8px 12px;
-            border-radius: 4px;
+            margin: 2px 0;
+            padding: 2px 4px;
+            border-radius: 2px;
             word-wrap: break-word;
-            line-height: 1.6;
         }
         
         .diff-removed {
@@ -247,64 +223,112 @@
             font-weight: bold;
         }
         
-        .diff-char-removed {
+        .diff-word-removed {
             background-color: #8b2635;
             color: #ffcdd2;
+            padding: 1px 3px;
+            border-radius: 2px;
             text-decoration: line-through;
         }
         
-        .diff-char-added {
+        .diff-word-added {
             background-color: #2e7d32;
             color: #c8e6c9;
+            padding: 1px 3px;
+            border-radius: 2px;
             font-weight: bold;
         }
         
-        .diff-char-case-diff {
+        .diff-word-missing {
+            background-color: #6d4c41;
+            color: #d7ccc8;
+            padding: 1px 3px;
+            border-radius: 2px;
+            font-style: italic;
+        }
+        
+        .diff-word-extra {
+            background-color: #5d4037;
+            color: #efebe9;
+            padding: 1px 3px;
+            border-radius: 2px;
+            text-decoration: underline;
+        }
+        
+        .diff-word-case-diff {
             background-color: #4a5568;
             color: #e2e8f0;
-            border-bottom: 1px dashed #718096;
+            padding: 1px 3px;
+            border-radius: 2px;
+            border: 1px dashed #718096;
+        }
+        
+        .tooltip {
+            position: absolute;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            z-index: 1000;
+            max-width: 250px;
+            word-wrap: break-word;
+            display: none;
+            top: -45px;
+            left: 0;
+            border: 1px solid #555;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.8);
+        }
+        
+        .tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 20px;
+            border: 5px solid transparent;
+            border-top-color: #1a1a1a;
         }
         
         .summary {
             background-color: #2a3f5f;
             border: 2px solid #4a9eff;
             border-radius: 8px;
-            padding: 25px;
-            margin-top: 30px;
+            padding: 20px;
+            margin-top: 20px;
             text-align: center;
         }
         
         .summary h2 {
             color: #ffffff;
-            margin-bottom: 20px;
-            font-size: 24px;
+            margin-bottom: 15px;
+            font-size: 20px;
         }
         
         .stats {
             display: flex;
             justify-content: space-around;
-            margin: 20px 0;
+            margin: 15px 0;
             flex-wrap: wrap;
         }
         
         .stat-item {
             text-align: center;
-            margin: 10px;
+            margin: 5px;
         }
         
         .stat-number {
-            font-size: 2em;
+            font-size: 1.8em;
             font-weight: bold;
             color: #4a9eff;
         }
         
         .progress-bar {
             width: 100%;
-            height: 20px;
+            height: 15px;
             background-color: #404040;
-            border-radius: 10px;
+            border-radius: 8px;
             overflow: hidden;
-            margin: 20px 0;
+            margin: 15px 0;
         }
         
         .progress-fill {
@@ -314,19 +338,17 @@
         }
 
         @media (max-width: 768px) {
+            .questions-grid {
+                grid-template-columns: 1fr;
+            }
+            
             .input-group {
                 flex-direction: column;
                 align-items: stretch;
             }
             
             input[type="text"] {
-                margin-bottom: 10px;
-                min-width: auto;
-            }
-            
-            .navigation {
-                flex-direction: column;
-                gap: 15px;
+                margin-bottom: 6px;
             }
             
             .action-buttons {
@@ -338,24 +360,17 @@
 </head>
 <body>
     <div class="quiz-container">
-        <h1>Begriffe Quiz</h1>
-        <div class="progress-info" id="progress-info"></div>
-        <div id="quiz-content"></div>
-        <div class="navigation">
-            <button class="nav-btn" id="prev-btn" onclick="previousQuestion()" disabled>← Vorherige</button>
-            <button class="nav-btn" id="next-btn" onclick="nextQuestion()">Nächste →</button>
-        </div>
+        <h1>Begriffe Quiz - 15 Fragen</h1>
+        <div id="quiz" class="questions-grid"></div>
         <div class="action-buttons">
             <button class="finalize-btn" onclick="finalizeQuiz()">Quiz Abschließen</button>
             <button class="refresh-btn" onclick="refreshQuiz()">Neue Fragen</button>
-            <button class="revert-btn" onclick="reverseQuestions()">Umkehren</button>
         </div>
         <div id="summary" style="display: none;"></div>
     </div>
 
     <script>
-        // Sample JSON data - replace this with your actual data
-        let termsData = [
+        const termsData = [
   {
     "term": "Abduktion",
     "definition": "wegführen/ Abspreizen einer Extremität nach außen"
@@ -2245,21 +2260,12 @@
     "definition": "wegführend"
   }
 ];
-        const paramsString = window.location.search;
-        const searchParams = new URLSearchParams(paramsString);
-        if (searchParams.get("revert") === "1"){
-            termsData.map(x => {
-                let originalTerm = x.term;
-                x.term = x.definition;
-                x.definition = originalTerm;
-            })
-            console.log(termsData);
-        }
+
         let quizQuestions = [];
         let userAnswers = {};
         let submittedAnswers = new Set();
+        let activeTooltips = new Set();
         let overriddenAnswers = new Set();
-        let currentQuestionIndex = 0;
 
         function normalizeText(text) {
             return text.toLowerCase()
@@ -2277,15 +2283,16 @@
             return shuffled.slice(0, Math.min(count, shuffled.length));
         }
 
-        // Character-based diff algorithm using LCS
-        function computeCharLCS(str1, str2) {
-            const m = str1.length;
-            const n = str2.length;
+        // Improved diff algorithm using LCS (Longest Common Subsequence) with case-insensitive comparison
+        function computeLCS(arr1, arr2) {
+            const m = arr1.length;
+            const n = arr2.length;
             const dp = Array(m + 1).fill(null).map(() => Array(n + 1).fill(0));
             
             for (let i = 1; i <= m; i++) {
                 for (let j = 1; j <= n; j++) {
-                    if (str1[i - 1].toLowerCase() === str2[j - 1].toLowerCase()) {
+                    // Case-insensitive comparison for LCS computation
+                    if (arr1[i - 1].toLowerCase() === arr2[j - 1].toLowerCase()) {
                         dp[i][j] = dp[i - 1][j - 1] + 1;
                     } else {
                         dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
@@ -2296,205 +2303,232 @@
             return dp;
         }
 
-        function createCharacterDiff(userText, correctText) {
-            if (!userText && !correctText) {
+        function createAdvancedWordDiff(userText, correctText) {
+            const userWords = userText.split(/\s+/).filter(w => w.length > 0);
+            const correctWords = correctText.split(/\s+/).filter(w => w.length > 0);
+            
+            if (userWords.length === 0 && correctWords.length === 0) {
                 return { userLine: '', correctLine: '' };
             }
             
-            userText = userText || '';
-            correctText = correctText || '';
-            
-            const lcs = computeCharLCS(userText, correctText);
+            const lcs = computeLCS(userWords, correctWords);
             
             // Backtrack to find the actual diff
-            let i = userText.length;
-            let j = correctText.length;
+            let i = userWords.length;
+            let j = correctWords.length;
             const userResult = [];
             const correctResult = [];
             
             while (i > 0 || j > 0) {
-                if (i > 0 && j > 0 && userText[i - 1].toLowerCase() === correctText[j - 1].toLowerCase()) {
-                    // Characters match (case-insensitive)
-                    if (userText[i - 1] === correctText[j - 1]) {
+                if (i > 0 && j > 0 && userWords[i - 1].toLowerCase() === correctWords[j - 1].toLowerCase()) {
+                    // Words match (case-insensitive)
+                    if (userWords[i - 1] === correctWords[j - 1]) {
                         // Exact match including case
-                        userResult.unshift(userText[i - 1]);
-                        correctResult.unshift(correctText[j - 1]);
+                        userResult.unshift(userWords[i - 1]);
+                        correctResult.unshift(correctWords[j - 1]);
                     } else {
                         // Case difference only
-                        userResult.unshift(`<span class="diff-char-case-diff">${userText[i - 1]}</span>`);
-                        correctResult.unshift(`<span class="diff-char-case-diff">${correctText[j - 1]}</span>`);
+                        userResult.unshift(`<span class="diff-word-case-diff" title="Groß-/Kleinschreibung unterschiedlich">${userWords[i - 1]}</span>`);
+                        correctResult.unshift(`<span class="diff-word-case-diff" title="Groß-/Kleinschreibung unterschiedlich">${correctWords[j - 1]}</span>`);
                     }
                     i--;
                     j--;
                 } else if (i > 0 && (j === 0 || lcs[i - 1][j] >= lcs[i][j - 1])) {
-                    // Character was removed (extra in user input)
-                    userResult.unshift(`<span class="diff-char-removed">${userText[i - 1]}</span>`);
+                    // Word was removed (extra in user input)
+                    userResult.unshift(`<span class="diff-word-extra">${userWords[i - 1]}</span>`);
                     i--;
                 } else {
-                    // Character was added (missing in user input)
-                    correctResult.unshift(`<span class="diff-char-added">${correctText[j - 1]}</span>`);
+                    // Word was added (missing in user input)
+                    correctResult.unshift(`<span class="diff-word-missing">${correctWords[j - 1]}</span>`);
                     j--;
                 }
             }
             
+            // Fill in missing words in user result where words were missing
+            let userIndex = 0;
+            let correctIndex = 0;
+            const alignedUserResult = [];
+            const alignedCorrectResult = [];
+            
+            while (userIndex < userResult.length || correctIndex < correctResult.length) {
+                const userWord = userResult[userIndex] || '';
+                const correctWord = correctResult[correctIndex] || '';
+                
+                // Check if both are plain words (no HTML tags)
+                const userIsPlain = !userWord.includes('<span');
+                const correctIsPlain = !correctWord.includes('<span');
+                
+                if (userIsPlain && correctIsPlain && userWord.toLowerCase() === correctWord.toLowerCase()) {
+                    // Perfect match (case-insensitive)
+                    if (userWord === correctWord) {
+                        alignedUserResult.push(userWord);
+                        alignedCorrectResult.push(correctWord);
+                    } else {
+                        // Case difference
+                        alignedUserResult.push(`<span class="diff-word-case-diff" title="Groß-/Kleinschreibung unterschiedlich">${userWord}</span>`);
+                        alignedCorrectResult.push(`<span class="diff-word-case-diff" title="Groß-/Kleinschreibung unterschiedlich">${correctWord}</span>`);
+                    }
+                    userIndex++;
+                    correctIndex++;
+                } else if (correctWord.includes('diff-word-missing')) {
+                    // Word missing in user input
+                    const extractedWord = correctWords[correctIndex] || correctWord.replace(/<[^>]*>/g, '');
+                    alignedUserResult.push(`<span class="diff-word-missing" title="Fehlendes Wort">[fehlt: ${extractedWord}]</span>`);
+                    alignedCorrectResult.push(correctWord);
+                    correctIndex++;
+                } else if (userWord.includes('diff-word-extra')) {
+                    // Extra word in user input
+                    alignedUserResult.push(userWord);
+                    alignedCorrectResult.push('');
+                    userIndex++;
+                } else if (userWord.includes('diff-word-case-diff') && correctWord.includes('diff-word-case-diff')) {
+                    // Both have case differences
+                    alignedUserResult.push(userWord);
+                    alignedCorrectResult.push(correctWord);
+                    userIndex++;
+                    correctIndex++;
+                } else {
+                    // Default case
+                    alignedUserResult.push(userWord);
+                    alignedCorrectResult.push(correctWord);
+                    if (userIndex < userResult.length) userIndex++;
+                    if (correctIndex < correctResult.length) correctIndex++;
+                }
+            }
+            
             return {
-                userLine: userResult.join(''),
-                correctLine: correctResult.join('')
+                userLine: alignedUserResult.join(' '),
+                correctLine: alignedCorrectResult.join(' ')
             };
         }
 
         function createTextDiff(userAnswer, correctAnswer) {
-            const diff = createCharacterDiff(userAnswer, correctAnswer);
+            const diff = createAdvancedWordDiff(userAnswer, correctAnswer);
             
             return `
                 <div class="diff-container">
-                    <div class="diff-header">Zeichenbasierter Textvergleich (Groß-/Kleinschreibung wird ignoriert):</div>
+                    <div class="diff-header">Detaillierter Textvergleich (Groß-/Kleinschreibung wird ignoriert):</div>
                     <div class="diff-line diff-removed">${diff.userLine || '(leer)'}</div>
                     <div class="diff-line diff-added">${diff.correctLine || '(leer)'}</div>
                 </div>
             `;
         }
 
-        function updateProgressInfo() {
-            const progressInfo = document.getElementById('progress-info');
-            const answered = Object.keys(userAnswers).length;
-            const total = quizQuestions.length;
-            progressInfo.textContent = `Frage ${currentQuestionIndex + 1} von ${total} | ${answered} beantwortet`;
-        }
-
-        function updateNavigationButtons() {
-            const prevBtn = document.getElementById('prev-btn');
-            const nextBtn = document.getElementById('next-btn');
+        function generateQuiz() {
+            quizQuestions = getRandomQuestions(termsData, 15);
+            const quizContainer = document.getElementById('quiz');
             
-            prevBtn.disabled = currentQuestionIndex === 0;
-            nextBtn.disabled = currentQuestionIndex === quizQuestions.length - 1;
-        }
-
-        function displayCurrentQuestion() {
-            const question = quizQuestions[currentQuestionIndex];
-            const quizContent = document.getElementById('quiz-content');
-            
-            const isAnswered = submittedAnswers.has(currentQuestionIndex);
-            const userAnswer = userAnswers[currentQuestionIndex];
-            
-            quizContent.innerHTML = `
-                <div class="question-container">
-                    <div class="question">
-                        <h2>Was bedeutet "${question.term}"?</h2>
-                        <div class="input-group">
-                            <input type="text" 
-                                   id="current-answer" 
-                                   placeholder="Definition eingeben..."
-                                   value="${userAnswer ? userAnswer.userAnswer : ''}"
-                                   ${isAnswered ? 'disabled' : ''}
-                                   onkeypress="handleKeyPress(event)">
-                            <button class="submit-btn" 
-                                    onclick="submitCurrentAnswer()" 
-                                    ${isAnswered ? 'disabled' : ''}>
-                                ${isAnswered ? 'Beantwortet' : 'Prüfen'}
-                            </button>
-                        </div>
-                        <div id="current-result">
-                            ${isAnswered ? generateResultHTML(currentQuestionIndex) : ''}
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            updateProgressInfo();
-            updateNavigationButtons();
-        }
-
-        function generateResultHTML(questionIndex) {
-            const answer = userAnswers[questionIndex];
-            if (!answer) return '';
-            
-            if (answer.isCorrect && answer.originallyCorrect) {
-                return '<div class="result correct">✓ Richtig!</div>';
-            } else if (answer.isCorrect && !answer.originallyCorrect) {
-                const diffHtml = createTextDiff(answer.userAnswer, answer.correctAnswer);
-                return `
-                    <div class="result overridden">
-                        ✓ Als richtig markiert (überschrieben)
-                    </div>
-                    ${diffHtml}
-                `;
-            } else {
-                const diffHtml = createTextDiff(answer.userAnswer, answer.correctAnswer);
-                return `
-                    <div class="result incorrect">
-                        ✗ Falsch. Richtig: "${answer.correctAnswer}"
-                        <button class="override-btn" onclick="overrideCurrentAnswer()">
-                            Als richtig markieren
+            quizContainer.innerHTML = quizQuestions.map((question, index) => `
+                <div class="question">
+                    <h3>Frage ${index + 1}: Was bedeutet "${question.term}"?</h3>
+                    <div class="input-group">
+                        <input type="text" 
+                               id="answer-${index}" 
+                               placeholder="Definition eingeben..."
+                               onkeypress="handleKeyPress(event, ${index})">
+                        <button class="submit-btn" onclick="submitAnswer(${index})">
+                            Prüfen
+                        </button>
+                        <button class="show-answer-btn" 
+                                id="tooltip-btn-${index}"
+                                onclick="toggleTooltip(${index}, '${question.definition.replace(/'/g, "\\\'").replace(/"/g, "&quot;")}')">
+                            Antwort
+                            <div class="tooltip" id="tooltip-${index}"></div>
                         </button>
                     </div>
-                    ${diffHtml}
-                `;
-            }
+                    <div id="result-${index}"></div>
+                </div>
+            `).join('');
         }
 
-        function handleKeyPress(event) {
+        function handleKeyPress(event, questionIndex) {
             if (event.key === 'Enter') {
-                submitCurrentAnswer();
+                submitAnswer(questionIndex);
             }
         }
 
-        function submitCurrentAnswer() {
-            if (submittedAnswers.has(currentQuestionIndex)) {
+        function submitAnswer(questionIndex) {
+            if (submittedAnswers.has(questionIndex)) {
                 return;
             }
 
-            const userInput = document.getElementById('current-answer').value;
-            const correctAnswer = quizQuestions[currentQuestionIndex].definition;
+            const userInput = document.getElementById(`answer-${questionIndex}`).value;
+            const correctAnswer = quizQuestions[questionIndex].definition;
+            const resultDiv = document.getElementById(`result-${questionIndex}`);
+            const submitButton = document.querySelector(`#quiz .question:nth-child(${questionIndex + 1}) .submit-btn`);
             
             const normalizedUserInput = normalizeText(userInput);
             const normalizedCorrectAnswer = normalizeText(correctAnswer);
             
             const isCorrect = normalizedUserInput === normalizedCorrectAnswer;
             
-            userAnswers[currentQuestionIndex] = {
+            userAnswers[questionIndex] = {
                 userAnswer: userInput,
                 correctAnswer: correctAnswer,
                 isCorrect: isCorrect,
                 originallyCorrect: isCorrect
             };
             
-            submittedAnswers.add(currentQuestionIndex);
+            submittedAnswers.add(questionIndex);
             
-            // Refresh the current question display
-            displayCurrentQuestion();
+            if (isCorrect) {
+                resultDiv.innerHTML = '<div class="result correct">✓ Richtig!</div>';
+            } else {
+                const diffHtml = createTextDiff(userInput, correctAnswer);
+                resultDiv.innerHTML = `
+                    <div class="result incorrect">
+                        ✗ Falsch. Richtig: "${correctAnswer}"
+                        <button class="override-btn" onclick="overrideAnswer(${questionIndex})">
+                            Als richtig markieren
+                        </button>
+                    </div>
+                    ${diffHtml}
+                `;
+            }
+            
+            submitButton.disabled = true;
+            submitButton.textContent = 'Beantwortet';
+            document.getElementById(`answer-${questionIndex}`).disabled = true;
         }
 
-        function overrideCurrentAnswer() {
-            if (!userAnswers[currentQuestionIndex] || userAnswers[currentQuestionIndex].originallyCorrect) {
+        function overrideAnswer(questionIndex) {
+            if (!userAnswers[questionIndex] || userAnswers[questionIndex].originallyCorrect) {
                 return;
             }
             
-            userAnswers[currentQuestionIndex].isCorrect = true;
-            overriddenAnswers.add(currentQuestionIndex);
+            // Mark as overridden
+            userAnswers[questionIndex].isCorrect = true;
+            overriddenAnswers.add(questionIndex);
             
-            // Refresh the current question display
-            displayCurrentQuestion();
+            const resultDiv = document.getElementById(`result-${questionIndex}`);
+            const userInput = userAnswers[questionIndex].userAnswer;
+            const correctAnswer = userAnswers[questionIndex].correctAnswer;
+            const diffHtml = createTextDiff(userInput, correctAnswer);
+            
+            resultDiv.innerHTML = `
+                <div class="result overridden">
+                    ✓ Als richtig markiert (überschrieben)
+                </div>
+                ${diffHtml}
+            `;
         }
 
-        function previousQuestion() {
-            if (currentQuestionIndex > 0) {
-                currentQuestionIndex--;
-                displayCurrentQuestion();
+        function toggleTooltip(questionIndex, answer) {
+            const tooltip = document.getElementById(`tooltip-${questionIndex}`);
+            const button = document.getElementById(`tooltip-btn-${questionIndex}`);
+            
+            if (activeTooltips.has(questionIndex)) {
+                // Hide tooltip
+                tooltip.style.display = 'none';
+                button.classList.remove('active');
+                activeTooltips.delete(questionIndex);
+            } else {
+                // Show tooltip
+                tooltip.textContent = answer;
+                tooltip.style.display = 'block';
+                button.classList.add('active');
+                activeTooltips.add(questionIndex);
             }
-        }
-
-        function nextQuestion() {
-            if (currentQuestionIndex < quizQuestions.length - 1) {
-                currentQuestionIndex++;
-                displayCurrentQuestion();
-            }
-        }
-
-        function generateQuiz() {
-            quizQuestions = getRandomQuestions(termsData, 15);
-            currentQuestionIndex = 0;
-            displayCurrentQuestion();
         }
 
         function finalizeQuiz() {
@@ -2548,8 +2582,8 @@
             // Reset all variables
             userAnswers = {};
             submittedAnswers = new Set();
+            activeTooltips = new Set();
             overriddenAnswers = new Set();
-            currentQuestionIndex = 0;
             
             // Hide summary
             document.getElementById('summary').style.display = 'none';
@@ -2559,19 +2593,6 @@
             
             // Scroll to top
             window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-        
-        function reverseQuestions() {
-              const url = new URL(window.location.href);
-            const currentValue = url.searchParams.get("revert");
-
-            if (currentValue === "1") {
-                url.searchParams.set("revert", "0");
-            } else {
-                url.searchParams.set("revert", "1");
-            }
-
-            window.location.href = url.toString();
         }
 
         // Initialize quiz when page loads
