@@ -2344,7 +2344,6 @@
         let lastEnterTime = 0;
         let isInputFocused = false;
 
-        console.log(reverseMode);
         document.getElementById('mode-switch').checked = reverseMode;
         function normalizeText(text) {
             return text.toLowerCase()
@@ -2707,8 +2706,10 @@
 
         // Global keyboard event handler
         document.addEventListener('keydown', function(event) {
+            
             // Only handle arrow keys when input is not focused or answer is submitted
             if (!isInputFocused || submittedAnswers.has(`${currentQuestionIndex}-${reverseMode}`)) {
+                
                 if (event.key === 'ArrowLeft') {
                     event.preventDefault();
                     previousQuestion();
@@ -2716,6 +2717,19 @@
                     event.preventDefault();
                     nextQuestion();
                 }
+                else if (event.key === 'Enter') {
+                    const currentTime = Date.now();
+                        // Answer already submitted, check for double enter
+                        if (currentTime - lastEnterTime > 500) { // Within 1 second
+                            nextQuestion();
+                            return;
+                        }
+                    
+                    lastEnterTime = currentTime;
+                }
+            }
+            else  if (event.key === 'Enter') {
+                    lastEnterTime = Date.now();
             }
         });
 
