@@ -2329,15 +2329,23 @@
   }
 ];
 
+        function getReverseMode() {
+            const url = new URL(window.location.href);
+            const currentValue = url.searchParams.get("revert");
+            return url.searchParams.get("revert") === "1";
+        }
+
         let quizQuestions = [];
         let userAnswers = {};
         let submittedAnswers = new Set();
         let overriddenAnswers = new Set();
         let currentQuestionIndex = 0;
-        let reverseMode = false; // false = term->definition, true = definition->term
+        let reverseMode = getReverseMode(); // false = term->definition, true = definition->term
         let lastEnterTime = 0;
         let isInputFocused = false;
 
+        console.log(reverseMode);
+        document.getElementById('mode-switch').checked = reverseMode;
         function normalizeText(text) {
             return text.toLowerCase()
                       .replace(/[äöüß]/g, (match) => {
@@ -2356,7 +2364,15 @@
 
         function toggleQuizMode() {
             reverseMode = document.getElementById('mode-switch').checked;
-            
+            const url = new URL(window.location.href);
+            if (reverseMode) {
+                url.searchParams.set("revert", "1");
+            } else {
+                url.searchParams.set("revert", "0");
+            }
+
+            window.location.href = url.toString();
+            return;
             // Clear all answers when switching modes
             userAnswers = {};
             submittedAnswers = new Set();
