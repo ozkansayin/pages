@@ -1,0 +1,2336 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Begriffe Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            line-height: 1.4;
+        }
+        
+        .quiz-container {
+            background: #2d2d2d;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.5);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #ffffff;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .question {
+            padding: 12px;
+            border: 1px solid #404040;
+            border-radius: 6px;
+            background-color: #333333;
+        }
+        
+        .question h3 {
+            margin: 0 0 8px 0;
+            color: #4a9eff;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        input[type="text"] {
+            flex: 1;
+            padding: 6px 8px;
+            border: 1px solid #555;
+            border-radius: 4px;
+            font-size: 13px;
+            min-width: 150px;
+            background-color: #404040;
+            color: #e0e0e0;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #4a9eff;
+        }
+        
+        input[type="text"]:disabled {
+            background-color: #2a2a2a;
+            color: #888;
+        }
+        
+        button {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .submit-btn {
+            background-color: #4a9eff;
+            color: white;
+        }
+        
+        .submit-btn:hover {
+            background-color: #357abd;
+        }
+        
+        .submit-btn:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+        }
+        
+        .show-answer-btn {
+            background-color: #666;
+            color: white;
+            position: relative;
+        }
+        
+        .show-answer-btn:hover {
+            background-color: #777;
+        }
+        
+        .show-answer-btn.active {
+            background-color: #ff6b6b;
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 25px 0;
+        }
+        
+        .finalize-btn, .refresh-btn {
+            background-color: #ff6b6b;
+            color: white;
+            font-size: 16px;
+            padding: 12px 24px;
+        }
+        
+        .finalize-btn:hover, .refresh-btn:hover {
+            background-color: #e55555;
+        }
+        
+        .refresh-btn {
+            background-color: #28a745;
+        }
+        
+        .refresh-btn:hover {
+            background-color: #218838;
+        }
+        
+        .result {
+            margin-top: 6px;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        
+        .correct {
+            background-color: #1e4d2b;
+            color: #4caf50;
+            border: 1px solid #2e7d32;
+        }
+        
+        .incorrect {
+            background-color: #4d1e1e;
+            color: #f44336;
+            border: 1px solid #d32f2f;
+        }
+        
+        .tooltip {
+            position: absolute;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            z-index: 1000;
+            max-width: 250px;
+            word-wrap: break-word;
+            display: none;
+            top: -45px;
+            left: 0;
+            border: 1px solid #555;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.8);
+        }
+        
+        .tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 20px;
+            border: 5px solid transparent;
+            border-top-color: #1a1a1a;
+        }
+        
+        .summary {
+            background-color: #2a3f5f;
+            border: 2px solid #4a9eff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .summary h2 {
+            color: #ffffff;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            text-align: center;
+            margin: 5px;
+        }
+        
+        .stat-number {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #4a9eff;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 15px;
+            background-color: #404040;
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: #4caf50;
+            transition: width 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .questions-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .input-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            input[type="text"] {
+                margin-bottom: 6px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Begriffe Quiz - 15 Fragen</h1>
+        <div id="quiz" class="questions-grid"></div>
+        <div class="action-buttons">
+            <button class="finalize-btn" onclick="finalizeQuiz()">Quiz Abschließen</button>
+            <button class="refresh-btn" onclick="refreshQuiz()">Neue Fragen</button>
+        </div>
+        <div id="summary" style="display: none;"></div>
+    </div>
+
+    <script>
+        // Sample JSON data - replace this with your actual data
+        const termsData = [
+  {
+    "term": "Abduktion",
+    "definition": "wegführen/ Abspreizen einer Extremität nach außen"
+  },
+  {
+    "term": "Abort",
+    "definition": "Fehlgeburt"
+  },
+  {
+    "term": "Abszess",
+    "definition": "Eiteransammlung im Gewebe"
+  },
+  {
+    "term": "Abusus",
+    "definition": "Missbrauch"
+  },
+  {
+    "term": "Achalasie",
+    "definition": "Funktionsstörung der glatten Muskulatur von Hohlorganen (Erschlaffung)"
+  },
+  {
+    "term": "Adenom",
+    "definition": "Drüsengeschwulst"
+  },
+  {
+    "term": "Adipositas",
+    "definition": "Fettsucht, Fettleibigkeit"
+  },
+  {
+    "term": "adjuvant",
+    "definition": "unterstützend"
+  },
+  {
+    "term": "Adnexitis",
+    "definition": "kombinierte Entzündung von Eileiter, Eierstock und umgebendem Gewebe"
+  },
+  {
+    "term": "Akutes Abdomen",
+    "definition": "akuter Bauch"
+  },
+  {
+    "term": "Algurie",
+    "definition": "schmerzhaftes Wasserlassen"
+  },
+  {
+    "term": "Alopezie",
+    "definition": "Haarlosigkeit"
+  },
+  {
+    "term": "Amnesie",
+    "definition": "Gedächtnisverlust, Gedächtnisstörung"
+  },
+  {
+    "term": "Anakusis",
+    "definition": "Gehörlosigkeit, Taubheit"
+  },
+  {
+    "term": "Analgetikum",
+    "definition": "Schmerzmittel"
+  },
+  {
+    "term": "Anämie",
+    "definition": "Blutarmut"
+  },
+  {
+    "term": "Anamnese",
+    "definition": "Krankengeschichte"
+  },
+  {
+    "term": "anaphylaktischer Schock",
+    "definition": "schweres allergisches Kreislaufversagen"
+  },
+  {
+    "term": "Angiographie",
+    "definition": "Radiologische Darstellung von Gefäßen"
+  },
+  {
+    "term": "angiologisch",
+    "definition": "Die Gefäßerkrankungen betreffend"
+  },
+  {
+    "term": "Anomalie",
+    "definition": "Ungleichheit; geringgradige Entwicklungsstörung; Entwicklungsunregelmäßigkeiten"
+  },
+  {
+    "term": "Anorexia nervosa",
+    "definition": "Magersucht"
+  },
+  {
+    "term": "Antazida",
+    "definition": "Arzneimittel zur Neutralisierung der Magensäure"
+  },
+  {
+    "term": "anterior",
+    "definition": "vorne gelegen"
+  },
+  {
+    "term": "Antibiotikum",
+    "definition": "Arzneimittel gegen Krankheitserreger"
+  },
+  {
+    "term": "Antiemetikum",
+    "definition": "Medikament gegen Übelkeit und Erbrechen"
+  },
+  {
+    "term": "Antikoagulans",
+    "definition": "gerinnungshemmende Medikamente; Antithrombotikum; \"Blutverdünner\""
+  },
+  {
+    "term": "Antiphlogistikum",
+    "definition": "Entzündungshemmer"
+  },
+  {
+    "term": "Antipyretika",
+    "definition": "fiebersenkendes Mittel"
+  },
+  {
+    "term": "Antitoxin",
+    "definition": "Gegengift"
+  },
+  {
+    "term": "Anus praeter, Enterostoma (Ileostoma)",
+    "definition": "künstlicher Darmausgang"
+  },
+  {
+    "term": "Aorta",
+    "definition": "Hauptschlagader"
+  },
+  {
+    "term": "Aortenaneurysma",
+    "definition": "Aussackung der Hauptschlagader; Ausbuchtung"
+  },
+  {
+    "term": "Aphasie",
+    "definition": "Sprachverlust, Sprachversagen"
+  },
+  {
+    "term": "Apnoe, Apnö",
+    "definition": "Atemstillstand"
+  },
+  {
+    "term": "Appendektomie",
+    "definition": "operative Entfernung des Wurmfortsatzes"
+  },
+  {
+    "term": "Appendizitis",
+    "definition": "Blinddarmentzündung; Wurmfortsatzentzündung"
+  },
+  {
+    "term": "Arbeitsunfall",
+    "definition": "ein Unfall eines Arbeitnehmers, den dieser während der Arbeitszeit oder auf dem Arbeitsweg erleidet."
+  },
+  {
+    "term": "Arrhythmie",
+    "definition": "Herzrhythmusstörung"
+  },
+  {
+    "term": "Arteria carotis communis",
+    "definition": "Halsschlagader"
+  },
+  {
+    "term": "Arteria femoralis",
+    "definition": "Oberschenkelschlagader"
+  },
+  {
+    "term": "Arteria pulmonalis",
+    "definition": "Lungenschlagader"
+  },
+  {
+    "term": "Arteriosklerose, Atherosklerose",
+    "definition": "Gefäßverkalkung"
+  },
+  {
+    "term": "Arthralgie",
+    "definition": "Gelenkschmerz"
+  },
+  {
+    "term": "Arthritis urica",
+    "definition": "Gicht"
+  },
+  {
+    "term": "Arthroskopie",
+    "definition": "Gelenkspiegelung"
+  },
+  {
+    "term": "Articulatio manus, Articulatio carpi",
+    "definition": "Handgelenk"
+  },
+  {
+    "term": "Asystolie",
+    "definition": "Herz-Kreislauf-Stillstand"
+  },
+  {
+    "term": "aszendierend",
+    "definition": "aufsteigend"
+  },
+  {
+    "term": "Aszites",
+    "definition": "Wasserbauch, Flüssigkeitsansammlung im Bauch"
+  },
+  {
+    "term": "axillär",
+    "definition": "die Achselhöhle betreffend, in der Achselhöhle"
+  },
+  {
+    "term": "biliär",
+    "definition": "gallig, die Galle betreffend"
+  },
+  {
+    "term": "Bluttransfusion",
+    "definition": "Blutübertragung"
+  },
+  {
+    "term": "Borborygmus",
+    "definition": "Bauchknurren"
+  },
+  {
+    "term": "brachial",
+    "definition": "Den Oberarm bezogen"
+  },
+  {
+    "term": "Brachialgie",
+    "definition": "Armschmerz"
+  },
+  {
+    "term": "Brachium",
+    "definition": "Oberarm"
+  },
+  {
+    "term": "Bradykardie",
+    "definition": "Langsamer (verlangsamter) Herzschlag, Weniger als 60 Schläge pro Minute"
+  },
+  {
+    "term": "Bronchialkarzinom",
+    "definition": "Lungenkrebs"
+  },
+  {
+    "term": "Bronchokonstriktion",
+    "definition": "Die Verengung der Bronchien"
+  },
+  {
+    "term": "Bronchoskopie",
+    "definition": "Atemwegsspiegelung"
+  },
+  {
+    "term": "Bukkal",
+    "definition": "zur Backe gehörend"
+  },
+  {
+    "term": "Caecum, Zäkum",
+    "definition": "Blinddarm"
+  },
+  {
+    "term": "Calcaneus, Kalkaneus",
+    "definition": "Fersenbein"
+  },
+  {
+    "term": "Calor",
+    "definition": "Überwärmung"
+  },
+  {
+    "term": "Caput",
+    "definition": "Kopf"
+  },
+  {
+    "term": "Cephalgie",
+    "definition": "Kopfschmerzen"
+  },
+  {
+    "term": "Cerebellum",
+    "definition": "Kleinhirn"
+  },
+  {
+    "term": "cerebral",
+    "definition": "Das Gehirn betreffend"
+  },
+  {
+    "term": "Cervix uteri",
+    "definition": "Gebärmutterhals"
+  },
+  {
+    "term": "Cholelithiasis",
+    "definition": "Gallensteinleiden"
+  },
+  {
+    "term": "Cholezystolithiasis",
+    "definition": "Konkrementen in der Galenblase, Steingallenblase"
+  },
+  {
+    "term": "Clavicula",
+    "definition": "Schlüsselbein"
+  },
+  {
+    "term": "Collum femoris",
+    "definition": "Oberschenkelhals"
+  },
+  {
+    "term": "Commotio cerebri",
+    "definition": "Gehirnerschütterung"
+  },
+  {
+    "term": "Cortex",
+    "definition": "Rinde"
+  },
+  {
+    "term": "Coxitis",
+    "definition": "Hüftgelenkentzündung"
+  },
+  {
+    "term": "Cranium",
+    "definition": "Schädel"
+  },
+  {
+    "term": "Defäkation",
+    "definition": "Stuhlentleerung, Stuhlgang"
+  },
+  {
+    "term": "Deformation",
+    "definition": "Fehlbildung, Missbildung"
+  },
+  {
+    "term": "dehydriert",
+    "definition": "ausgetrocknet"
+  },
+  {
+    "term": "Dekubitus",
+    "definition": "Druckgeschwür, Wundliegegeschwür"
+  },
+  {
+    "term": "Delirant delirös",
+    "definition": "Verwirrt, Wahnsinnig, Bewusstseinstörung, Bewusstseinstrübung"
+  },
+  {
+    "term": "Demenz",
+    "definition": "Schwachsinn, Wahnsinn, Vergesslichkeit"
+  },
+  {
+    "term": "Derma",
+    "definition": "Haut"
+  },
+  {
+    "term": "Dermatologe",
+    "definition": "Hautarzt"
+  },
+  {
+    "term": "deszendierend",
+    "definition": "absteigend"
+  },
+  {
+    "term": "Diarrhö, Diarrhöe, Diarrhoe, Diarrhoea",
+    "definition": "Durchfall"
+  },
+  {
+    "term": "Digital-rektale Untersuchung",
+    "definition": "mit dem Finger vorgenommene Untersuchung des Mastdarms"
+  },
+  {
+    "term": "Diskusprolaps",
+    "definition": "Bandscheibenvorfall"
+  },
+  {
+    "term": "Disloziert",
+    "definition": "verschoben, verlagert"
+  },
+  {
+    "term": "disseminiert",
+    "definition": "verteilt, verstreut"
+  },
+  {
+    "term": "distal",
+    "definition": "körperfern, von der Körpermitte weg"
+  },
+  {
+    "term": "Distorsion",
+    "definition": "Verdrehung, Zerrung, Verstauchung"
+  },
+  {
+    "term": "Divertikulitis",
+    "definition": "Entzündete Schleimhautausstülpung"
+  },
+  {
+    "term": "Dolor",
+    "definition": "Schmerz"
+  },
+  {
+    "term": "dorsal",
+    "definition": "den Rücken betreffend, zur Rückseite"
+  },
+  {
+    "term": "Drainage",
+    "definition": "Abfluss der Flüssigkeit von Körperhöhlen"
+  },
+  {
+    "term": "Ductus choledochus",
+    "definition": "Hauptgallengang"
+  },
+  {
+    "term": "Duodenum",
+    "definition": "Zwölffingerdarm"
+  },
+  {
+    "term": "Dysästhesie",
+    "definition": "schmerzhafte Missempfindung"
+  },
+  {
+    "term": "Dysplasie",
+    "definition": "Fehlbildung"
+  },
+  {
+    "term": "Echokardiographie",
+    "definition": "Ultraschall Untersuchung des Herzens"
+  },
+  {
+    "term": "Effloreszenz",
+    "definition": "Grundelement krankhafter Hautveränderungen"
+  },
+  {
+    "term": "Embolie",
+    "definition": "Verschluss eines Blutgefäßes durch eingeschwemmtes Material"
+  },
+  {
+    "term": "Embolus",
+    "definition": "Gefäßpfropf"
+  },
+  {
+    "term": "Emesis",
+    "definition": "Erbrechen"
+  },
+  {
+    "term": "emphysem",
+    "definition": "Lungenaufblähung"
+  },
+  {
+    "term": "Empyem",
+    "definition": "Eiteransammlung in natürlichen Körperhöhlen"
+  },
+  {
+    "term": "Endokarditis",
+    "definition": "Herzinnenhautentzündung"
+  },
+  {
+    "term": "Endometriose",
+    "definition": "Gebärmutterschleimhaut, die außerhalb der Gebärmutterhöhle vorkommt"
+  },
+  {
+    "term": "Endometritis",
+    "definition": "Gebärmutterschleimhautentzündung"
+  },
+  {
+    "term": "Endometriumkarzinom",
+    "definition": "Krebserkrankung der Gebärmutterschleimhaut, Korpuskarzinom"
+  },
+  {
+    "term": "Enteral",
+    "definition": "Den Darm betreffend, über den Darm"
+  },
+  {
+    "term": "Epididymitis",
+    "definition": "Nebenhodenentzündung"
+  },
+  {
+    "term": "Epidural",
+    "definition": "Zum Epiduralraum gehörig (zwischen der Knochenhaut und der harten Hirnhaut)"
+  },
+  {
+    "term": "epidurales Hämatom",
+    "definition": "eine Blutung zwischen Knochen und harter Hirnhaut"
+  },
+  {
+    "term": "epigastrisch",
+    "definition": "Im Oberbauch liegend"
+  },
+  {
+    "term": "Epiglottis",
+    "definition": "Kehldeckel"
+  },
+  {
+    "term": "Epilepsie",
+    "definition": "Fallsucht, Krampfleiden, Anfallsleiden"
+  },
+  {
+    "term": "Erythrozyt",
+    "definition": "Rotes Blutkörperchen"
+  },
+  {
+    "term": "Eupnoe",
+    "definition": "physiologische, regelmäßige und ruhige Atmung"
+  },
+  {
+    "term": "Exacerbatio, Exacerbation",
+    "definition": "Verschlimmerung der Symptome einer chronischen Erkrankung"
+  },
+  {
+    "term": "Exanthem",
+    "definition": "Hautausschlag"
+  },
+  {
+    "term": "Exkoriation",
+    "definition": "Hautabschürfung"
+  },
+  {
+    "term": "Expiration",
+    "definition": "Ausatmung"
+  },
+  {
+    "term": "Extension",
+    "definition": "Streckung"
+  },
+  {
+    "term": "Extraktion",
+    "definition": "Entfernung, Herausziehen"
+  },
+  {
+    "term": "extrauterine Gravidität",
+    "definition": "Eileiterschwangerschaft, ektopische Schwangerschaft"
+  },
+  {
+    "term": "exzidieren",
+    "definition": "entfernen, herausziehen"
+  },
+  {
+    "term": "Faeces",
+    "definition": "Stuhl, Ausscheidungsprodukt"
+  },
+  {
+    "term": "femoral",
+    "definition": "Oberschenkel betreffend"
+  },
+  {
+    "term": "Femur",
+    "definition": "Oberschenkelknochen, Oberschenkelbein"
+  },
+  {
+    "term": "Fibula",
+    "definition": "Wadenbein"
+  },
+  {
+    "term": "fissur",
+    "definition": "Riss, Spalte"
+  },
+  {
+    "term": "Flexion",
+    "definition": "Beugung"
+  },
+  {
+    "term": "Foetor ex ore",
+    "definition": "Mundgeruch"
+  },
+  {
+    "term": "fokal",
+    "definition": "herdförmig, einen Krankheitsherd betreffend"
+  },
+  {
+    "term": "Fraktur",
+    "definition": "Bruch, Knochenbruch"
+  },
+  {
+    "term": "frontal",
+    "definition": "Zur Stirn gehörig"
+  },
+  {
+    "term": "Fruktose",
+    "definition": "Fruchtzucker"
+  },
+  {
+    "term": "Gastrektomie",
+    "definition": "totale Magenresektion, Magenexstirpation"
+  },
+  {
+    "term": "Gastritis",
+    "definition": "Magenschleimhautentzündung"
+  },
+  {
+    "term": "Gastroenteritis",
+    "definition": "Magen-Darm-Entzündung"
+  },
+  {
+    "term": "Genu valgum",
+    "definition": "X Bein, X förmige Beinachsenentwicklung"
+  },
+  {
+    "term": "Gingivitis",
+    "definition": "Zahnfleischentzündung"
+  },
+  {
+    "term": "Glandula",
+    "definition": "Drüse"
+  },
+  {
+    "term": "Glandula parathyreoidea",
+    "definition": "Nebenschildrüse, Epithelkörperchen"
+  },
+  {
+    "term": "Glutäal",
+    "definition": "auf das Gesäß bezogen"
+  },
+  {
+    "term": "Gravidität",
+    "definition": "Schwangerschaft"
+  },
+  {
+    "term": "Hämatemesis",
+    "definition": "Bluterbrechen"
+  },
+  {
+    "term": "Hämatom",
+    "definition": "Bluterguss"
+  },
+  {
+    "term": "Hämaturie",
+    "definition": "Blut im Urin"
+  },
+  {
+    "term": "Hämoglobin",
+    "definition": "Blutfarbstoff"
+  },
+  {
+    "term": "Hämorrhoiden",
+    "definition": "die Krampfader-ähnliche oder auch knotenförmige Schwellung, das zwischen dem Enddarm und dem Schließmuskel des Afters liegt, Goldader"
+  },
+  {
+    "term": "Hemikolektomie",
+    "definition": "Teilentfernung des Dickdarms"
+  },
+  {
+    "term": "Hemiparese",
+    "definition": "unvollständigen Halbseitenlähmung"
+  },
+  {
+    "term": "Hemiplegie",
+    "definition": "vollständigen Halbseitenlähmung"
+  },
+  {
+    "term": "Hepatomegalie",
+    "definition": "Lebervergrößerung"
+  },
+  {
+    "term": "hereditär",
+    "definition": "erblich"
+  },
+  {
+    "term": "Hernia inguinalis",
+    "definition": "Leistenbruch"
+  },
+  {
+    "term": "Hernie",
+    "definition": "Weichteilbruch"
+  },
+  {
+    "term": "Herpes zoster",
+    "definition": "Gürtelrose"
+  },
+  {
+    "term": "Herzinsuffizienz",
+    "definition": "Herzschwäche"
+  },
+  {
+    "term": "Hiatushernie",
+    "definition": "Zwerchfellbruch"
+  },
+  {
+    "term": "Histologiebefund",
+    "definition": "Die Untersuchung des Gewebes"
+  },
+  {
+    "term": "Hodentorsion",
+    "definition": "Hodenverdrehung"
+  },
+  {
+    "term": "Hydrozele",
+    "definition": "Hodenwasserbruch, Wasserbruch"
+  },
+  {
+    "term": "Hypakusis",
+    "definition": "Schwerhörigkeit"
+  },
+  {
+    "term": "Hyperämie",
+    "definition": "Mehrdurchblutung"
+  },
+  {
+    "term": "Hypercholesterinämie",
+    "definition": "hoher Cholesterinspiegel im Blut"
+  },
+  {
+    "term": "Hyperglykämie",
+    "definition": "erhöhter Blutzuckerspiegel"
+  },
+  {
+    "term": "Hyperkapnie",
+    "definition": "erhöhter Kohlendioxidgehalt im Blut"
+  },
+  {
+    "term": "Hyperthyreose",
+    "definition": "Schilddrüsenüberfunktion"
+  },
+  {
+    "term": "Hypertonie",
+    "definition": "Bluthochdruck"
+  },
+  {
+    "term": "Hyperurikämie",
+    "definition": "erhöhter Harnsäuregehalt im Blut"
+  },
+  {
+    "term": "Hypoparathyreoidismus",
+    "definition": "Nebenschilddrüseninsuffizienz"
+  },
+  {
+    "term": "Hypothermie",
+    "definition": "Unterkühlung"
+  },
+  {
+    "term": "Hypothyreose",
+    "definition": "Schilddrüsenunterfunktion"
+  },
+  {
+    "term": "Hypotonie",
+    "definition": "niedriger Blutdruck"
+  },
+  {
+    "term": "Hypoxämie",
+    "definition": "Sauerstoffmangel im arteriellen Blut"
+  },
+  {
+    "term": "Hysterektomie",
+    "definition": "Gebärmutterentfernung"
+  },
+  {
+    "term": "iatrogen",
+    "definition": "durch ärztliche Maßnahmen verursacht"
+  },
+  {
+    "term": "Ikterus",
+    "definition": "Gelbsucht, Gallsucht"
+  },
+  {
+    "term": "Ileum",
+    "definition": "Krummdarm"
+  },
+  {
+    "term": "Ileus",
+    "definition": "Darmverschluss"
+  },
+  {
+    "term": "indolent/Indolenz",
+    "definition": "Nicht schmerzhaft, schmerzlos / Schmerzlosigkeit"
+  },
+  {
+    "term": "Infusion",
+    "definition": "Einführung Flüssigkeitsmengen in den Organismus"
+  },
+  {
+    "term": "inguinal",
+    "definition": "Den Leistenbereich betreffend"
+  },
+  {
+    "term": "Inhalation",
+    "definition": "die Einatmung von Gasen oder Aerosolen."
+  },
+  {
+    "term": "inhaliert",
+    "definition": "eingeatmet"
+  },
+  {
+    "term": "Inkarzeration",
+    "definition": "Einklemmung"
+  },
+  {
+    "term": "inkarzeriert",
+    "definition": "eingeklemmt"
+  },
+  {
+    "term": "Inkontinenz",
+    "definition": "ungewollten Abgang von Ausscheidungen (Stuhl, Urin)"
+  },
+  {
+    "term": "Insult, Apoplex",
+    "definition": "Schlaganfall"
+  },
+  {
+    "term": "interkostal",
+    "definition": "zwischen zwei Rippen gelegen"
+  },
+  {
+    "term": "Intoxikation",
+    "definition": "Vergiftung"
+  },
+  {
+    "term": "intrakranial",
+    "definition": "innerhalb des Schädels"
+  },
+  {
+    "term": "intraokular",
+    "definition": "innerhalb des Auges"
+  },
+  {
+    "term": "intubation",
+    "definition": "Einführung eines Schlauches in die Luftröhre"
+  },
+  {
+    "term": "In-vitro-Fertilisation",
+    "definition": "Künstliche Befruchtung"
+  },
+  {
+    "term": "Inzision",
+    "definition": "Einschnitt"
+  },
+  {
+    "term": "juvenil",
+    "definition": "jugendlich"
+  },
+  {
+    "term": "Kachexie / kachektisch",
+    "definition": "pathologischer Gewichtsverlust, Auszehrung, Abmagerung / abgemagert, ausgezehrt"
+  },
+  {
+    "term": "Kardial",
+    "definition": "das Herz betreffend"
+  },
+  {
+    "term": "Karzinogen",
+    "definition": "Krebserzeugendstoffe, krebserregend"
+  },
+  {
+    "term": "Karzinom",
+    "definition": "Krebs"
+  },
+  {
+    "term": "Kaudal",
+    "definition": "schwanzwärts, zum Steißbein (Os coccygis) hin"
+  },
+  {
+    "term": "Klimakterium",
+    "definition": "Wechseljahr"
+  },
+  {
+    "term": "Koagulum",
+    "definition": "Blutpfropf, Blutkuchen"
+  },
+  {
+    "term": "Koagulation",
+    "definition": "Blutgerinnung"
+  },
+  {
+    "term": "Koagulopathie",
+    "definition": "Störungen der Blutgerinnung"
+  },
+  {
+    "term": "Kolorektal Karzinom",
+    "definition": "Darmkrebs"
+  },
+  {
+    "term": "Koloskopie",
+    "definition": "Darmspiegelung"
+  },
+  {
+    "term": "Konjuktivitis",
+    "definition": "Bindehautentzündung"
+  },
+  {
+    "term": "Kontraktur",
+    "definition": "Verkürzung, Zusammenziehung (für einen Muskel)"
+  },
+  {
+    "term": "kontralateral",
+    "definition": "gegenseitig, entgegengesetzt"
+  },
+  {
+    "term": "Kontrazeptivum",
+    "definition": "Verhütungsmittel"
+  },
+  {
+    "term": "Kontusion",
+    "definition": "Prellung, Quetschung"
+  },
+  {
+    "term": "Kornea",
+    "definition": "Hornhaut"
+  },
+  {
+    "term": "koronar",
+    "definition": "zu den Herzkranzgefäßen gehörend"
+  },
+  {
+    "term": "Koronarangiografie",
+    "definition": "Angiographie der Herzkranzgefäße"
+  },
+  {
+    "term": "Koronaratherosklerose, Koronarsklerose",
+    "definition": "Herzkranzgefäßeverkalkung, koronare Herzkrankheit"
+  },
+  {
+    "term": "kranial",
+    "definition": "Zum Kopf hin"
+  },
+  {
+    "term": "kurativ",
+    "definition": "heilend"
+  },
+  {
+    "term": "Laparoskopie",
+    "definition": "Bauchspiegelung, endoskopische Betrachtung der Bauchhöhle"
+  },
+  {
+    "term": "Laparotomie",
+    "definition": "Bauchschnitt"
+  },
+  {
+    "term": "Laryngitis",
+    "definition": "Kehlkopfentzündung"
+  },
+  {
+    "term": "Laryngoskopie",
+    "definition": "Kehlkopfspiegelung"
+  },
+  {
+    "term": "Larynx",
+    "definition": "Kehlkopf"
+  },
+  {
+    "term": "Läsion",
+    "definition": "Schädigung, Verletzung, Störung"
+  },
+  {
+    "term": "lateral",
+    "definition": "seitlich"
+  },
+  {
+    "term": "Laxans, Laxantien",
+    "definition": "Abführmittel"
+  },
+  {
+    "term": "letal",
+    "definition": "tödlich"
+  },
+  {
+    "term": "Leukämie",
+    "definition": "Blutkrebs, weißer Blutkrebs"
+  },
+  {
+    "term": "Leukopenie",
+    "definition": "verminderte Anzahl von weißen Blutkörperchen im Blut"
+  },
+  {
+    "term": "Leukozyt",
+    "definition": "Weißes Blutkörperchen"
+  },
+  {
+    "term": "Ligamentum",
+    "definition": "Band"
+  },
+  {
+    "term": "Liquor",
+    "definition": "Gehirnwasser, Gehirn-Rückenmark-Flüssigkeit"
+  },
+  {
+    "term": "Lobektomie",
+    "definition": "chirurgische Entfernung eines Organlappens"
+  },
+  {
+    "term": "Lumbalpunktion",
+    "definition": "eine Punktion des Duralsacks, die im Bereich der Lendenwirbelsäule"
+  },
+  {
+    "term": "Lungenembolie",
+    "definition": "Verschluss einer Lungenarterien durch einen Blutgerinnsel"
+  },
+  {
+    "term": "Luxation",
+    "definition": "Ausrenkung, Auskugelung"
+  },
+  {
+    "term": "Lymphödem",
+    "definition": "Stauung der Lymphflüssigkeit"
+  },
+  {
+    "term": "maligne",
+    "definition": "bösartig"
+  },
+  {
+    "term": "Malignität",
+    "definition": "Bösartigkeit"
+  },
+  {
+    "term": "Malignom",
+    "definition": "bösartige Geschwulst"
+  },
+  {
+    "term": "Malnutrition",
+    "definition": "Mangelernährung"
+  },
+  {
+    "term": "Mandibula",
+    "definition": "Unterkiefer"
+  },
+  {
+    "term": "Mastektomie",
+    "definition": "chirurgische Entfernung von Brustgewebe (Brustdrüse)"
+  },
+  {
+    "term": "Maxilla",
+    "definition": "Oberkiefer"
+  },
+  {
+    "term": "medial",
+    "definition": "in der Mitte liegend, zur Körpermitte hin"
+  },
+  {
+    "term": "Meiose",
+    "definition": "Reifeteilung"
+  },
+  {
+    "term": "Menarche",
+    "definition": "Die erste Regelblutung"
+  },
+  {
+    "term": "Meningitis",
+    "definition": "Hirnhautentzündung"
+  },
+  {
+    "term": "Menstruation",
+    "definition": "Regelblutung"
+  },
+  {
+    "term": "metabolisch",
+    "definition": "stoffwechselbedingt"
+  },
+  {
+    "term": "Miosis",
+    "definition": "Pupillenverengung"
+  },
+  {
+    "term": "Mitralstenose",
+    "definition": "Einengung der Herzklappe"
+  },
+  {
+    "term": "Monotherapie",
+    "definition": "einzel Medikament"
+  },
+  {
+    "term": "Mukolytikum",
+    "definition": "Schleimlösende Medikament"
+  },
+  {
+    "term": "Muskelatrophie",
+    "definition": "Musckelschwund"
+  },
+  {
+    "term": "Myalgie",
+    "definition": "Muskelschmerz"
+  },
+  {
+    "term": "Mydriasis",
+    "definition": "Weitstellung der Pupille"
+  },
+  {
+    "term": "Myelitis",
+    "definition": "Rückenmarksentzündung, Entzündung des Rücken- oder Knochenmarks"
+  },
+  {
+    "term": "Mykose",
+    "definition": "Pilzkrankheit"
+  },
+  {
+    "term": "Myokard",
+    "definition": "Herzmuskel"
+  },
+  {
+    "term": "Myokardinfarkt",
+    "definition": "Herzinfarkt"
+  },
+  {
+    "term": "Myokarditis",
+    "definition": "Herzmuskelentzündung"
+  },
+  {
+    "term": "Narkolepsie",
+    "definition": "Schlafkrankheit, Schlummersucht"
+  },
+  {
+    "term": "nasal",
+    "definition": "Die Nase betreffend"
+  },
+  {
+    "term": "Nausea",
+    "definition": "Übelkeit"
+  },
+  {
+    "term": "Nekrose",
+    "definition": "Zell- oder Gewebstod, Absterben von Zellen, Gewebs- oder Organbezirken, Zelltod durch Schädigung der Zellstruktur"
+  },
+  {
+    "term": "Neoplasma",
+    "definition": "Neubildung, Raumforderung, Geschwulst"
+  },
+  {
+    "term": "Nephrolithiasis",
+    "definition": "Nierensteinleiden"
+  },
+  {
+    "term": "Noxen",
+    "definition": "Schadstoffe"
+  },
+  {
+    "term": "Nullipara",
+    "definition": "eine Frau, die noch kein Kind geboren hat"
+  },
+  {
+    "term": "Nykturie",
+    "definition": "nächtliches Wasserlassen"
+  },
+  {
+    "term": "Obstipation",
+    "definition": "Verstopfung"
+  },
+  {
+    "term": "Ödem",
+    "definition": "Wassersucht"
+  },
+  {
+    "term": "Okkult",
+    "definition": "verborgen, nicht sichtbar"
+  },
+  {
+    "term": "Okzipital",
+    "definition": "in Richtung Hinterhaupt, am Hinterhaupt gelegen"
+  },
+  {
+    "term": "Ophthalmologe",
+    "definition": "Augenarzt"
+  },
+  {
+    "term": "Ophthalmologie",
+    "definition": "Augenheilkunde"
+  },
+  {
+    "term": "Orbital",
+    "definition": "zur Augenhöhle gehörig"
+  },
+  {
+    "term": "Orchiektomie",
+    "definition": "die chirurgische Entfernung des Hodens."
+  },
+  {
+    "term": "Orchitis",
+    "definition": "Hodenentzündung"
+  },
+  {
+    "term": "Os scaphoideum",
+    "definition": "Kahnbein"
+  },
+  {
+    "term": "Ösophagitis",
+    "definition": "Speiseröhrenentzündung"
+  },
+  {
+    "term": "Ösophagoskopie",
+    "definition": "Speiseröhrenspiegelung"
+  },
+  {
+    "term": "Ösophagus",
+    "definition": "Speiseröhre"
+  },
+  {
+    "term": "Ossär",
+    "definition": "den Knochen betreffend"
+  },
+  {
+    "term": "Osteitis pubis",
+    "definition": "Schambeinentzündung"
+  },
+  {
+    "term": "Osteomyelitis",
+    "definition": "Knochenmarkentzündung"
+  },
+  {
+    "term": "Otitis Media",
+    "definition": "Mittelohrentzündung"
+  },
+  {
+    "term": "Ovar",
+    "definition": "Eierstock"
+  },
+  {
+    "term": "Ovulation",
+    "definition": "Eisprung"
+  },
+  {
+    "term": "Pädiater",
+    "definition": "Kinderarzt"
+  },
+  {
+    "term": "Pädiatrie",
+    "definition": "Kinderheilkunde"
+  },
+  {
+    "term": "palliativ",
+    "definition": "die Beschwerden einer Krankheit lindernd"
+  },
+  {
+    "term": "Palma manus",
+    "definition": "Handfläche"
+  },
+  {
+    "term": "palpabel",
+    "definition": "tastbar"
+  },
+  {
+    "term": "Panaritium",
+    "definition": "Nagelgeschwür"
+  },
+  {
+    "term": "Pankreas",
+    "definition": "Bauchspeicheldrüse"
+  },
+  {
+    "term": "Pankreaskarzinom",
+    "definition": "Bauchspeicheldrüsenkrebs"
+  },
+  {
+    "term": "Pankreatitis",
+    "definition": "Bauchspeicheldrüsenentzündung"
+  },
+  {
+    "term": "Panzytopenie",
+    "definition": "Vermnderte Zellzahl aller Typen"
+  },
+  {
+    "term": "Parästhesie",
+    "definition": "Kribbeln, \"Ameisenlaufen\""
+  },
+  {
+    "term": "parenteral",
+    "definition": "am Darm vorbei, Gabe von Nährstoffen oder Substanzen durch direkte Infusion in den Blutkreislauf"
+  },
+  {
+    "term": "parietal",
+    "definition": "Zur Wand eines Organes gehörig"
+  },
+  {
+    "term": "paroxysmal",
+    "definition": "anfallsartig"
+  },
+  {
+    "term": "Patella",
+    "definition": "Kniescheibe"
+  },
+  {
+    "term": "pathologisch",
+    "definition": "krankhaft"
+  },
+  {
+    "term": "Perikarditis",
+    "definition": "Herzbeutelentzündung"
+  },
+  {
+    "term": "peripher",
+    "definition": "abseits des Zentrums"
+  },
+  {
+    "term": "Peritoneum",
+    "definition": "Bauchfell"
+  },
+  {
+    "term": "Peritonitis",
+    "definition": "Bauchfellentzündung"
+  },
+  {
+    "term": "Perkutan",
+    "definition": "durch die Haut"
+  },
+  {
+    "term": "persistierend",
+    "definition": "Andauernd, fortbestehend"
+  },
+  {
+    "term": "Pertussis",
+    "definition": "Keuchhusten"
+  },
+  {
+    "term": "Pharmakokinetik",
+    "definition": "die Gesamtheit aller Prozesse, denen ein Arzneistoff im Körper unterliegt"
+  },
+  {
+    "term": "Phimose",
+    "definition": "Vorhautverengung"
+  },
+  {
+    "term": "Phlebothrombose",
+    "definition": "Tiefe Venenthrombose"
+  },
+  {
+    "term": "Photosensitivität",
+    "definition": "Lichtempfindlichkeit"
+  },
+  {
+    "term": "Phototherapie",
+    "definition": "Lichttherapie"
+  },
+  {
+    "term": "Phytopharmakon / Phytotherapie",
+    "definition": "pflanzliche Arzneimittel / Pflanzenheilkunde"
+  },
+  {
+    "term": "Placebo",
+    "definition": "Scheinmedikament"
+  },
+  {
+    "term": "Plantar",
+    "definition": "Die Fußsohle betreffend"
+  },
+  {
+    "term": "Pleura",
+    "definition": "Brustfell"
+  },
+  {
+    "term": "Pleuritis",
+    "definition": "Brustfellentzündung"
+  },
+  {
+    "term": "Pneumologe",
+    "definition": "Facharzt für Lungenerkrankungen"
+  },
+  {
+    "term": "Pneumonie",
+    "definition": "Lungenentzündung"
+  },
+  {
+    "term": "Pneumothorax",
+    "definition": "Eintritt von Luft in den Pleuraspalt"
+  },
+  {
+    "term": "Poliomyelitis",
+    "definition": "Kinderlähmung"
+  },
+  {
+    "term": "Pollinose, Rhinitis allergica",
+    "definition": "Heuschnupfen"
+  },
+  {
+    "term": "Polyneuropathie",
+    "definition": "Die entzündliche Schädigung mehrerer Nerven"
+  },
+  {
+    "term": "Portio",
+    "definition": "Muttermund, Übergang vom Gebärmutterhals in die Vagina"
+  },
+  {
+    "term": "posterior",
+    "definition": "hinten gelegen"
+  },
+  {
+    "term": "postpartal",
+    "definition": "nach der Geburt eines Kindes"
+  },
+  {
+    "term": "postprandial",
+    "definition": "nach dem Essen"
+  },
+  {
+    "term": "Prädilektionsstelle",
+    "definition": "bevorzugte Stelle für das Auftreten einer Krankheit"
+  },
+  {
+    "term": "prätibial",
+    "definition": "vor dem Schienbein gelegen"
+  },
+  {
+    "term": "Prävention",
+    "definition": "Vorbeugung"
+  },
+  {
+    "term": "Präventiv",
+    "definition": "vorbeugend"
+  },
+  {
+    "term": "progredient",
+    "definition": "fortschreitend, zunehmend"
+  },
+  {
+    "term": "Proktoskopie",
+    "definition": "Enddarmspiegelung"
+  },
+  {
+    "term": "Prolaps",
+    "definition": "Vorfall"
+  },
+  {
+    "term": "Prostata",
+    "definition": "Vorsteherdrüse"
+  },
+  {
+    "term": "Prostatahyperplasie",
+    "definition": "gutartige Vergrößerung der Vorsteherdrüse"
+  },
+  {
+    "term": "Protein",
+    "definition": "Eiweiß"
+  },
+  {
+    "term": "Proteinurie",
+    "definition": "Ausscheidung von Eiweiß im Harn"
+  },
+  {
+    "term": "proximal",
+    "definition": "körpernah"
+  },
+  {
+    "term": "Pruritus",
+    "definition": "Juckreiz"
+  },
+  {
+    "term": "Psoriasis",
+    "definition": "Schuppenflechte"
+  },
+  {
+    "term": "Pulmo",
+    "definition": "Lunge"
+  },
+  {
+    "term": "putrid",
+    "definition": "faulig, jauchig"
+  },
+  {
+    "term": "Pylorus",
+    "definition": "Magenpförtner"
+  },
+  {
+    "term": "Radiologie",
+    "definition": "Strahlenheilkunde"
+  },
+  {
+    "term": "Radius",
+    "definition": "Speiche"
+  },
+  {
+    "term": "Reanimation",
+    "definition": "Wiederbelebung, Lungen Herz erste Hilfe"
+  },
+  {
+    "term": "Reflux",
+    "definition": "Rückfluss von Magensäure"
+  },
+  {
+    "term": "Regression",
+    "definition": "Rückbildung, Rückentwicklung"
+  },
+  {
+    "term": "Remission",
+    "definition": "vorübergehende oder dauernde Abschwächung (Nachlassen) der Symptome bei chronischen Erkrankungen"
+  },
+  {
+    "term": "renal",
+    "definition": "die Nieren betreffend"
+  },
+  {
+    "term": "Resorption",
+    "definition": "Stoffaufnahme"
+  },
+  {
+    "term": "Retinopathie",
+    "definition": "Netzhauterkrankung"
+  },
+  {
+    "term": "retrobulbär",
+    "definition": "hinter dem Augapfel"
+  },
+  {
+    "term": "Rezidiv",
+    "definition": "Rückfall"
+  },
+  {
+    "term": "Rhinitis",
+    "definition": "Nasenschleimhautentzündung"
+  },
+  {
+    "term": "Rigor",
+    "definition": "Muskelsteifheit"
+  },
+  {
+    "term": "Rubor",
+    "definition": "Entzündliche Rötung"
+  },
+  {
+    "term": "Sakrum",
+    "definition": "Kreuzbein"
+  },
+  {
+    "term": "Salpingitis",
+    "definition": "Eileiterentzündung"
+  },
+  {
+    "term": "saurer Ruktation",
+    "definition": "Aufstoßen"
+  },
+  {
+    "term": "Scapula",
+    "definition": "Schulterblatt"
+  },
+  {
+    "term": "Sedativa",
+    "definition": "Beruhigungsmittel"
+  },
+  {
+    "term": "Sepsis",
+    "definition": "Blutvergiftung, generalisierte Entzündung"
+  },
+  {
+    "term": "Singultus",
+    "definition": "Schluckauf"
+  },
+  {
+    "term": "Sinus frontalis",
+    "definition": "Stirnhöhle"
+  },
+  {
+    "term": "Sinus maxillaris",
+    "definition": "Kieferhöhle"
+  },
+  {
+    "term": "Sinusitis",
+    "definition": "Nasennebenhöhlenentzündung"
+  },
+  {
+    "term": "Skabies",
+    "definition": "Krätze"
+  },
+  {
+    "term": "Skapula",
+    "definition": "Schulterblatt"
+  },
+  {
+    "term": "Skotom",
+    "definition": "Gesichtsfeldausfall"
+  },
+  {
+    "term": "Skrotum",
+    "definition": "Hodensack"
+  },
+  {
+    "term": "Somnolenz",
+    "definition": "Schläfrigkeit"
+  },
+  {
+    "term": "Spasmolytikum",
+    "definition": "krampflösendes Mittel"
+  },
+  {
+    "term": "Spasmus",
+    "definition": "Krampf, Verkrampfung"
+  },
+  {
+    "term": "Sphinkter",
+    "definition": "Schließmuskel"
+  },
+  {
+    "term": "Spinalanästhesie",
+    "definition": "Lumbalanästhesie"
+  },
+  {
+    "term": "Spinalkanal",
+    "definition": "Wirbelkanal, Rückenmarkskanal"
+  },
+  {
+    "term": "Splenektomie",
+    "definition": "Milzentfernung"
+  },
+  {
+    "term": "Splenomegalie",
+    "definition": "Milzvergrößerung"
+  },
+  {
+    "term": "Sputum",
+    "definition": "Auswurf"
+  },
+  {
+    "term": "Stenose",
+    "definition": "Verengung"
+  },
+  {
+    "term": "Sternum",
+    "definition": "Brustbein"
+  },
+  {
+    "term": "Strabismus",
+    "definition": "Schielen"
+  },
+  {
+    "term": "Struma",
+    "definition": "Kropf, Satthals"
+  },
+  {
+    "term": "Subarachnoidalblutung",
+    "definition": "Hirnblutung in den Subarachnoidalraum"
+  },
+  {
+    "term": "subdural",
+    "definition": "im Subduralraum gelegen"
+  },
+  {
+    "term": "Subduralhämatom",
+    "definition": "eine Blutung zwischen harter Hirnhaut und Gehirn"
+  },
+  {
+    "term": "subkutan",
+    "definition": "unter der Haut"
+  },
+  {
+    "term": "sublingual",
+    "definition": "unter der Zunge gelegen"
+  },
+  {
+    "term": "submukös",
+    "definition": "unterhalb der Schleimhaut"
+  },
+  {
+    "term": "substituieren",
+    "definition": "ersetzen"
+  },
+  {
+    "term": "superficialis, superficial, superfizial, superfiziell",
+    "definition": "oberflächlich gelegene Strukturen"
+  },
+  {
+    "term": "Suppositorium",
+    "definition": "das Zäpfchen"
+  },
+  {
+    "term": "suprapubischer Katheter",
+    "definition": "Bauchdeckenkatheter"
+  },
+  {
+    "term": "Synkope",
+    "definition": "Bewusstseinsverlust, Kreislaufkollaps"
+  },
+  {
+    "term": "temporal",
+    "definition": "im Bereich der Schläfe"
+  },
+  {
+    "term": "Tendovaginitis",
+    "definition": "Sehnenscheidenentzündung"
+  },
+  {
+    "term": "Tenesmus",
+    "definition": "Schmerzhafter Stuhlgang"
+  },
+  {
+    "term": "Testis",
+    "definition": "Der Hoden"
+  },
+  {
+    "term": "Therapie",
+    "definition": "Behandlung"
+  },
+  {
+    "term": "Thrombophlebitis",
+    "definition": "Entzündung oberflächlich gelegener Venen mit sekundärer Ausbildung von Thrombosen."
+  },
+  {
+    "term": "Thrombose",
+    "definition": "lokalisierte, intravasale Blutgerinnung"
+  },
+  {
+    "term": "Thrombozyten",
+    "definition": "Die Blutplättchen"
+  },
+  {
+    "term": "Thrombozytopenie",
+    "definition": "eine verminderte Anzahl (<150.000/μl) von Blutplättchen"
+  },
+  {
+    "term": "Thrombus",
+    "definition": "Blutgerinnsel"
+  },
+  {
+    "term": "Thyroidea, Thyreoidea",
+    "definition": "Schilddrüse"
+  },
+  {
+    "term": "Tibia",
+    "definition": "Schienbein"
+  },
+  {
+    "term": "Tonsillitis, Angina tonsillaris",
+    "definition": "Mandelentzündung"
+  },
+  {
+    "term": "Trachea",
+    "definition": "Luftröhre"
+  },
+  {
+    "term": "Tracheostoma",
+    "definition": "eine operativ geschaffene Verbindung zwischen äußerem Luftraum und Luftröhre"
+  },
+  {
+    "term": "Tracheotomie",
+    "definition": "Luftröhrenschnitt"
+  },
+  {
+    "term": "transitorisch",
+    "definition": "vorbeigehend, nur vorübergehend auftretend"
+  },
+  {
+    "term": "Tremor",
+    "definition": "Zittern"
+  },
+  {
+    "term": "Tuba Uterina, Salpinx",
+    "definition": "Eileiter"
+  },
+  {
+    "term": "Tumor",
+    "definition": "Schwellung, Geschwulst"
+  },
+  {
+    "term": "Ulcus ventriculi",
+    "definition": "Magengeschwür"
+  },
+  {
+    "term": "Ulna",
+    "definition": "Elle"
+  },
+  {
+    "term": "Umbilicus",
+    "definition": "Bauchnabel, Nabel"
+  },
+  {
+    "term": "Unguis incarnatus",
+    "definition": "eingewachsener Nagel"
+  },
+  {
+    "term": "Untersuchung",
+    "definition": "Die Durchführung einer diagnostischen Maßnahme"
+  },
+  {
+    "term": "Urämie",
+    "definition": "Harnvergiftung"
+  },
+  {
+    "term": "Ureter",
+    "definition": "Harnleiter"
+  },
+  {
+    "term": "Urethra",
+    "definition": "Harnröhre"
+  },
+  {
+    "term": "Urolithiasis",
+    "definition": "Harnsteinleiden"
+  },
+  {
+    "term": "Uterus",
+    "definition": "Gebärmutter"
+  },
+  {
+    "term": "Uteruskarzinom",
+    "definition": "Gebärmutterkrebs"
+  },
+  {
+    "term": "Vakzine",
+    "definition": "Impfstoff"
+  },
+  {
+    "term": "Varizen",
+    "definition": "Krampfadern"
+  },
+  {
+    "term": "Vaskulär",
+    "definition": "die Blutgefäße betreffend"
+  },
+  {
+    "term": "Vasodilatation",
+    "definition": "Gefäßerweiterung"
+  },
+  {
+    "term": "Vasokonstriktion",
+    "definition": "Gefäßverengung"
+  },
+  {
+    "term": "Vena Cava",
+    "definition": "Hohlvene"
+  },
+  {
+    "term": "ventral",
+    "definition": "bauchseitig"
+  },
+  {
+    "term": "Ventriculus",
+    "definition": "Kleiner Bauch, Herzkammer"
+  },
+  {
+    "term": "Ventrikel (rechter)",
+    "definition": "Rechte Herzkammer"
+  },
+  {
+    "term": "vertebral",
+    "definition": "die Wirbelsäule betreffend"
+  },
+  {
+    "term": "Vertigo",
+    "definition": "Schwindel"
+  },
+  {
+    "term": "Visus",
+    "definition": "Sehschärfe"
+  },
+  {
+    "term": "zervikal",
+    "definition": "Hals betreffend"
+  },
+  {
+    "term": "Zervixkarzinom",
+    "definition": "Gebärmutterhalskrebs"
+  },
+  {
+    "term": "Zyanose",
+    "definition": "Blausucht"
+  },
+  {
+    "term": "Zystitis",
+    "definition": "Blasenentzündung"
+  },
+  {
+    "term": "Zystoskopie",
+    "definition": "Blasenspiegelung"
+  },
+  {
+    "term": "CEA",
+    "definition": "Carcinoembryonales Antigen"
+  },
+  {
+    "term": "CVI",
+    "definition": "Chronische venöse Insuffizienz"
+  },
+  {
+    "term": "ERCP",
+    "definition": "Endoskopisch retrograde Cholangio-Pankreatikografie"
+  },
+  {
+    "term": "FOBT",
+    "definition": "Fäkaler okkulter Bluttest"
+  },
+  {
+    "term": "GERD",
+    "definition": "Gastroösophageale Refluxkrankheit, Entzündung der Speiseröhre aufgrund von Rückfluss der Magensäure"
+  },
+  {
+    "term": "HbA1c",
+    "definition": "glykosylierten (verzuckerten\") roten Blutfarbstoff (Hämoglobin), glykiertes Hämoglobin"
+  },
+  {
+    "term": "HMV",
+    "definition": "Herzminutenvolumen"
+  },
+  {
+    "term": "i.v.",
+    "definition": "intravenös"
+  },
+  {
+    "term": "ÖGD",
+    "definition": "Ösophago-Gastro-Duodenoskopie, Magenspiegelung"
+  },
+  {
+    "term": "PAVK",
+    "definition": "periphere arterielle Verschlusskrankheit"
+  },
+  {
+    "term": "PTA",
+    "definition": "Perkutane transluminale Angioplastie (z.B Carotis-PTA)"
+  },
+  {
+    "term": "PTCA",
+    "definition": "perkutane transluminale Coronar-Angioplastie"
+  },
+  {
+    "term": "SHT",
+    "definition": "Schädel-Hirn-Trauma"
+  },
+  {
+    "term": "ZVK",
+    "definition": "Ein zentraler Venenkatheter"
+  },
+  {
+    "term": "abducent",
+    "definition": "wegführend"
+  }
+];
+
+        let quizQuestions = [];
+        let userAnswers = {};
+        let submittedAnswers = new Set();
+        let activeTooltips = new Set();
+
+        function normalizeText(text) {
+            return text.toLowerCase()
+                      .replace(/[äöüß]/g, (match) => {
+                          const replacements = {'ä': 'ae', 'ö': 'oe', 'ü': 'ue', 'ß': 'ss'};
+                          return replacements[match] || match;
+                      })
+                      .replace(/[^\w\s]/g, '')
+                      .replace(/\s+/g, ' ')
+                      .trim();
+        }
+
+        function getRandomQuestions(data, count) {
+            const shuffled = [...data].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, Math.min(count, shuffled.length));
+        }
+
+        function generateQuiz() {
+            quizQuestions = getRandomQuestions(termsData, 15);
+            const quizContainer = document.getElementById('quiz');
+            
+            quizContainer.innerHTML = quizQuestions.map((question, index) => `
+                <div class="question">
+                    <h3>Frage ${index + 1}: Was bedeutet "${question.term}"?</h3>
+                    <div class="input-group">
+                        <input type="text" 
+                               id="answer-${index}" 
+                               placeholder="Definition eingeben..."
+                               onkeypress="handleKeyPress(event, ${index})">
+                        <button class="submit-btn" onclick="submitAnswer(${index})">
+                            Prüfen
+                        </button>
+                        <button class="show-answer-btn" 
+                                id="tooltip-btn-${index}"
+                                onclick="toggleTooltip(${index}, '${question.definition.replace(/'/g, "\\\'").replace(/"/g, "&quot;")}')">
+                            Antwort
+                            <div class="tooltip" id="tooltip-${index}"></div>
+                        </button>
+                    </div>
+                    <div id="result-${index}"></div>
+                </div>
+            `).join('');
+        }
+
+        function handleKeyPress(event, questionIndex) {
+            if (event.key === 'Enter') {
+                submitAnswer(questionIndex);
+            }
+        }
+
+        function submitAnswer(questionIndex) {
+            if (submittedAnswers.has(questionIndex)) {
+                return;
+            }
+
+            const userInput = document.getElementById(`answer-${questionIndex}`).value;
+            const correctAnswer = quizQuestions[questionIndex].definition;
+            const resultDiv = document.getElementById(`result-${questionIndex}`);
+            const submitButton = document.querySelector(`#quiz .question:nth-child(${questionIndex + 1}) .submit-btn`);
+            
+            const normalizedUserInput = normalizeText(userInput);
+            const normalizedCorrectAnswer = normalizeText(correctAnswer);
+            
+            const isCorrect = normalizedUserInput === normalizedCorrectAnswer;
+            
+            userAnswers[questionIndex] = {
+                userAnswer: userInput,
+                correctAnswer: correctAnswer,
+                isCorrect: isCorrect
+            };
+            
+            submittedAnswers.add(questionIndex);
+            
+            if (isCorrect) {
+                resultDiv.innerHTML = '<div class="result correct">✓ Richtig!</div>';
+            } else {
+                resultDiv.innerHTML = `
+                    <div class="result incorrect">
+                        ✗ Falsch. Richtig: "${correctAnswer}"
+                    </div>
+                `;
+            }
+            
+            submitButton.disabled = true;
+            submitButton.textContent = 'Beantwortet';
+            document.getElementById(`answer-${questionIndex}`).disabled = true;
+        }
+
+        function toggleTooltip(questionIndex, answer) {
+            const tooltip = document.getElementById(`tooltip-${questionIndex}`);
+            const button = document.getElementById(`tooltip-btn-${questionIndex}`);
+            
+            if (activeTooltips.has(questionIndex)) {
+                // Hide tooltip
+                tooltip.style.display = 'none';
+                button.classList.remove('active');
+                activeTooltips.delete(questionIndex);
+            } else {
+                // Show tooltip
+                tooltip.textContent = answer;
+                tooltip.style.display = 'block';
+                button.classList.add('active');
+                activeTooltips.add(questionIndex);
+            }
+        }
+
+        function finalizeQuiz() {
+            const totalQuestions = quizQuestions.length;
+            const answeredQuestions = Object.keys(userAnswers).length;
+            const correctAnswers = Object.values(userAnswers).filter(answer => answer.isCorrect).length;
+            const incorrectAnswers = answeredQuestions - correctAnswers;
+            const unansweredQuestions = totalQuestions - answeredQuestions;
+            const percentage = totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0;
+            
+            const summaryDiv = document.getElementById('summary');
+            summaryDiv.innerHTML = `
+                <div class="summary">
+                    <h2>Quiz Zusammenfassung</h2>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${percentage}%"></div>
+                    </div>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <div class="stat-number">${correctAnswers}</div>
+                            <div>Richtig</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">${incorrectAnswers}</div>
+                            <div>Falsch</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">${unansweredQuestions}</div>
+                            <div>Offen</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">${percentage}%</div>
+                            <div>Erfolg</div>
+                        </div>
+                    </div>
+                    <p><strong>Ergebnis:</strong> ${correctAnswers} von ${totalQuestions} Fragen richtig</p>
+                </div>
+            `;
+            summaryDiv.style.display = 'block';
+            summaryDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function refreshQuiz() {
+            // Reset all variables
+            userAnswers = {};
+            submittedAnswers = new Set();
+            activeTooltips = new Set();
+            
+            // Hide summary
+            document.getElementById('summary').style.display = 'none';
+            
+            // Generate new quiz
+            generateQuiz();
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Initialize quiz when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            generateQuiz();
+        });
+    </script>
+</body>
+</html>
