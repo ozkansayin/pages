@@ -2347,13 +2347,13 @@
         document.getElementById('mode-switch').checked = reverseMode;
         function normalizeText(text) {
             return text.toLowerCase()
-                      .replace(/[äöüß]/g, (match) => {
-                          const replacements = {'ä': 'ae', 'ö': 'oe', 'ü': 'ue', 'ß': 'ss'};
-                          return replacements[match] || match;
-                      })
-                      .replace(/[^\w\s]/g, '')
-                      .replace(/\s+/g, ' ')
-                      .trim();
+        .replace(/[äöüß]/g, (match) => {
+            const replacements = { 'ä': 'ae', 'ö': 'oe', 'ü': 'ue', 'ß': 'ss' };
+            return replacements[match] || match;
+        })
+        .replace(/[^a-z0-9\s]/gi, '') // Ignore non alpha-numeric characters
+        .replace(/\s+/g, ' ')
+        .trim();
         }
 
         function getRandomQuestions(data, count) {
