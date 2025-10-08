@@ -69,7 +69,7 @@
             border: none;
             cursor: pointer;
         }
- 
+
         .print-button:hover {
             background-color: #005A9E;
         }
@@ -79,7 +79,14 @@
 </head>
 
 <body style="width: 1024px; margin: 0 auto;">
+    <div class="row">
+        <div class="col text-end">
+            <button class="btn btn-primary me-2" id="saveBtn">Speichern</button>
+            <input type="file" id="loadInput" accept="application/json" style="display:none">
+            <button class="btn btn-secondary" id="loadBtn">Laden</button>
+        </div>
 
+    </div>
     <h1>Berichtsbogen - Fachsprachprüfung</h1>
 
     <div class="section">
@@ -107,10 +114,10 @@
                 </div>
             </div>
             <div class="col-md-6">
-                    <div class="field">
-                        <label for="datum">Datum</label>
-                        <input type="text" id="datum" name="datum" placeholder="">
-                    </div>
+                <div class="field">
+                    <label for="datum">Datum</label>
+                    <input type="text" id="datum" name="datum" placeholder="">
+                </div>
             </div>
 
         </div>
@@ -148,78 +155,85 @@
     </div>
 
     <button class="print-button" onclick="window.print()">Formular drucken</button>
-    <button class="btn btn-primary me-2" id="saveBtn">Speichern</button>
-    <input type="file" id="loadInput" accept="application/json" style="display:none">
-    <button class="btn btn-secondary" id="loadBtn">Laden</button>
     <script>
-    // Collect all form data into a JSON object
-    function collectFormData() {
-        return {
-            patient: document.getElementById('patient').value,
-            alter: document.getElementById('alter').value,
-            groesse: document.getElementById('groesse').value,
-            gewicht: document.getElementById('gewicht').value,
-            datum: document.getElementById('datum').value,
-            allergien: document.getElementsByName('allergien')[0].value,
-            genussmittel: document.getElementsByName('genussmittel')[0].value,
-            sozialanamnese: document.getElementsByName('sozialanamnese')[0].value,
-            familienanamnese: document.getElementsByName('familienanamnese')[0].value,
-            bericht: document.getElementById('bericht').value
+        // Collect all form data into a JSON object
+        function collectFormData() {
+            return {
+                patient: document.getElementById('patient').value,
+                alter: document.getElementById('alter').value,
+                groesse: document.getElementById('groesse').value,
+                gewicht: document.getElementById('gewicht').value,
+                datum: document.getElementById('datum').value,
+                allergien: document.getElementsByName('allergien')[0].value,
+                genussmittel: document.getElementsByName('genussmittel')[0].value,
+                sozialanamnese: document.getElementsByName('sozialanamnese')[0].value,
+                familienanamnese: document.getElementsByName('familienanamnese')[0].value,
+                bericht: document.getElementById('bericht').value
+            };
+        }
+        // Save responses as JSON file
+        document.getElementById('saveBtn').onclick = async function () {
+            const data = collectFormData();
+            // Format date as yyyyMMdd hh:mm
+            const pad = n => n.toString().padStart(2, '0');
+            const patient = (data.patient || '').replace(/[^a-zA-Z0-9_-]/g, '_').substring(0, 20);
+            const defaultName = `${patient}.json`;
+            // let fileName = prompt('Dateiname für die Speicherung:', defaultName);
+            // if (!fileName) return;
+            // if (!fileName.endsWith('.json')) fileName += '.json';
+            // const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+            // const url = URL.createObjectURL(blob);
+            // const a = document.createElement('a');
+            // a.href = url;
+            // a.download = fileName;
+            // document.body.appendChild(a);
+            // a.click();
+            // document.body.removeChild(a);
+            // URL.revokeObjectURL(url);
+            const opts = {
+                suggestedName: defaultName,
+                startIn: 'desktop',
+                types: [
+                    {
+                        description: "JSON file",
+                        accept: { "application/json": [".json"] },
+                    },
+                ],
+            };
+            var fileHandle = await window.showSaveFilePicker(opts);
+            const writable = await fileHandle.createWritable();
+            var jsonData = JSON.stringify(data, null, 2);
+            console.log(jsonData);
+            await writable.write(jsonData);
+            await writable.close();
         };
-    }
-    // Save responses as JSON file
-    document.getElementById('saveBtn').onclick = function() {
-        const data = collectFormData();
-        // Format date as yyyyMMdd hh:mm
-        const now = new Date();
-        const pad = n => n.toString().padStart(2, '0');
-        const yyyy = now.getFullYear();
-        const MM = pad(now.getMonth() + 1);
-        const dd = pad(now.getDate());
-        const hh = pad(now.getHours());
-        const mm = pad(now.getMinutes());
-        const patient = (data.patient || '').replace(/[^a-zA-Z0-9_-]/g, '_').substring(0, 20);
-        const defaultName = `${patient}-${yyyy}${MM}${dd} ${hh}_${mm}.json`;
-        let fileName = prompt('Dateiname für die Speicherung:', defaultName);
-        if (!fileName) return;
-        if (!fileName.endsWith('.json')) fileName += '.json';
-        const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = fileName;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-    };
-    // Load responses from JSON file
-    document.getElementById('loadBtn').onclick = function() {
-        document.getElementById('loadInput').click();
-    };
-    document.getElementById('loadInput').onchange = function(e) {
-        const file = e.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = function(evt) {
-            try {
-                const data = JSON.parse(evt.target.result);
-                document.getElementById('patient').value = data.patient || '';
-                document.getElementById('alter').value = data.alter || '';
-                document.getElementById('groesse').value = data.groesse || '';
-                document.getElementById('gewicht').value = data.gewicht || '';
-                document.getElementById('datum').value = data.datum || '';
-                document.getElementsByName('allergien')[0].value = data.allergien || '';
-                document.getElementsByName('genussmittel')[0].value = data.genussmittel || '';
-                document.getElementsByName('sozialanamnese')[0].value = data.sozialanamnese || '';
-                document.getElementsByName('familienanamnese')[0].value = data.familienanamnese || '';
-                document.getElementById('bericht').value = data.bericht || '';
-            } catch (err) {
-                alert('Ungültige JSON-Datei!');
-            }
+        // Load responses from JSON file
+        document.getElementById('loadBtn').onclick = function () {
+            document.getElementById('loadInput').click();
         };
-        reader.readAsText(file);
-    };
+        document.getElementById('loadInput').onchange = function (e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function (evt) {
+                try {
+                    const data = JSON.parse(evt.target.result);
+                    document.getElementById('patient').value = data.patient || '';
+                    document.getElementById('alter').value = data.alter || '';
+                    document.getElementById('groesse').value = data.groesse || '';
+                    document.getElementById('gewicht').value = data.gewicht || '';
+                    document.getElementById('datum').value = data.datum || '';
+                    document.getElementsByName('allergien')[0].value = data.allergien || '';
+                    document.getElementsByName('genussmittel')[0].value = data.genussmittel || '';
+                    document.getElementsByName('sozialanamnese')[0].value = data.sozialanamnese || '';
+                    document.getElementsByName('familienanamnese')[0].value = data.familienanamnese || '';
+                    document.getElementById('bericht').value = data.bericht || '';
+                } catch (err) {
+                    alert('Ungültige JSON-Datei!');
+                }
+            };
+            reader.readAsText(file);
+        };
     </script>
 
 </body>
