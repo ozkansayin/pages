@@ -1,0 +1,2896 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Münster Fälle Übersicht</title>
+    <style>
+        :root {
+            --primary-color: #165A5A;
+            --secondary-color: #f0f4f8;
+            --text-color: #333;
+            --border-radius: 8px;
+            --accent-red: #d32f2f;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+            color: var(--text-color);
+            padding-bottom: 100px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Accordion Style */
+        details {
+            background-color: white;
+            margin-bottom: 12px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            border: 1px solid #e1e4e8;
+        }
+
+        /* Specialty summary */
+        details.specialty-group>summary {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.15em;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Case item within specialty */
+        details.case-item {
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            box-shadow: none;
+        }
+
+        details.case-item>summary {
+            background-color: #f8f9fa;
+            color: var(--primary-color);
+            padding: 12px 15px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.05em;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid transparent;
+        }
+
+        details.case-item[open]>summary {
+            border-bottom: 1px solid #ddd;
+            background-color: #eef2f2;
+        }
+
+        /* Custom arrow for all accordions */
+        summary::after {
+            content: '+';
+            font-size: 1.2em;
+            transition: transform 0.2s;
+        }
+
+        details[open]>summary::after {
+            transform: rotate(45deg);
+        }
+
+        .specialty-content {
+            padding: 10px 20px;
+            background-color: #ffffff;
+        }
+
+        .case-content {
+            padding: 20px;
+            background-color: #fff;
+        }
+
+        /* Case Details Style */
+        .case-diagnosis {
+            font-size: 1.1em;
+            color: var(--accent-red);
+            margin-bottom: 15px;
+            font-weight: bold;
+            padding: 12px;
+            background-color: #fff8f8;
+            border-left: 5px solid var(--accent-red);
+            border-radius: 4px;
+        }
+
+        .case-description {
+            line-height: 1.7;
+            white-space: pre-wrap;
+            background-color: #fafafa;
+            padding: 20px;
+            border-radius: 4px;
+            font-size: 1em;
+            color: #333;
+            border: 1px solid #eee;
+        }
+
+        .case-description strong {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        /* Utility */
+        .badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: normal;
+        }
+
+        details.case-item .badge {
+            background: rgba(22, 90, 90, 0.1);
+            color: var(--primary-color);
+        }
+
+        /* Floating buttons */
+        .fab-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .fab {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .fab:hover {
+            transform: scale(1.1);
+            background-color: #1a6d6d;
+        }
+
+        .fab-label {
+            position: absolute;
+            right: 60px;
+            background: #333;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+        }
+
+        .fab-wrapper:hover .fab-label {
+            opacity: 1;
+        }
+
+        .fab-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Münster Fälle</h1>
+        <p>Klicken Sie auf ein Fachgebiet und dann auf einen Fall, um die Details zu sehen.</p>
+    </header>
+
+    <div class="container" id="cases-container">
+        <!-- Accordion items will be injected here -->
+        <p style="text-align: center;">Lade Fälle...</p>
+    </div>
+
+    <!-- Floating Action Buttons -->
+    <div class="fab-container">
+        <div class="fab-wrapper">
+            <span class="fab-label">Alle ausklappen</span>
+            <button class="fab" id="expand-all">＋</button>
+        </div>
+        <div class="fab-wrapper">
+            <span class="fab-label">Alle einklappen</span>
+            <button class="fab" id="collapse-all" style="font-size: 26px; line-height: 0;">−</button>
+        </div>
+    </div>
+
+    <script type="module">
+        const container = document.getElementById('cases-container');
+        const muensterCases = {
+            neurologie: [
+                {
+                    id: 'ms_neuro1',
+                    title: 'Apoplex',
+                    case_description: `**Patient:** Herr Paul Hübner, 67 Jahre (geb. 11.10.1954), 87 kg, 168 cm.
+
+**Aufnahmegrund:**
+Plötzlich aufgetretene, seit 1 Stunde bestehende, progrediente linksseitige Hemiparese.
+
+**Aktuelle Anamnese:**
+Der Patient habe die Beschwerden beim Aufstehen bemerkt und umgehend ein Taxi gerufen, um sich in der Notaufnahme vorstellen zu können. Begleitend seien dem Patienten folgende Symptome aufgefallen: linksseitige Hypästhesie sowie Adynamie, beidseitiger Strabismus, Ataxie, Dysarthrie und Vertigo.
+
+**Vegetative Anamnese:**
+Es hätten sich Nausea, seit 3-4 Jahren rezidivierende Diarrhöen (Colon irritabile, dagegen nehme er Imodium) sowie stressbedingte Insomnie ergeben.
+
+**Vorerkrankungen und Voroperationen:**
+- Arterielle Hypertonie, seit 13 Jahren bekannt.
+- Diabetes mellitus Typ II, seit 9 Jahren bekannt.
+- Hyperlipidämie, seit 8 Jahren bekannt.
+- Zustand nach PTA der rechten Carotis (Carotisstenose) vor 6 Jahren.
+- Zustand nach Nasenkorrektur (nicht Septumkorrektur) vor 17 Jahren.
+
+**Medikamente:**
+- ASS 100 mg (1-0-0)
+- Atacand 8 mg (1-0-0) gegen arterielle Hypertonie.
+- Euglucon 3,5 mg (1-0-0) gegen Diabetes mellitus Typ II.
+- Sortis 20 mg (0-0-1) gegen Hyperlipidämie.
+
+**Allergien:**
+- Birkenpollen mit Rhinokonjunktivitis.
+- Apfel-Unverträglichkeit (Ursache: Pektin).
+
+**Noxen:**
+- Nikotinkonsum: 42 Packungsjahre (PY).
+- Alkoholkonsum: 1-2 Gläser Bier täglich.
+- Drogenkonsum: Kokain (kann zu Vasospasmen und ischämischem Apoplex führen).
+
+**Familienanamnese:**
+- Vater: Wundheilungsstörung „wenn er sich stürze“, aktuell keine Wunden.
+- Mutter: Anus praeter bei Zustand nach partieller Kolektomie im Rahmen einer chronisch-entzündlichen Darmerkrankung (wahrscheinlich Colitis Ulcerosa – Patient habe erwähnt, dass der Arzt von Krebsrisiko gesprochen habe). Diesbezüglich sei die Mutter schwermütig (deprimiert/melancholisch).
+- Keine Geschwister.
+
+**Sozialanamnese:**
+- Beamter im Ordnungsamt (berichte von Stress).
+- Aktuell in Scheidung lebend.
+- 2 Kinder (1 Tochter, 27 Jahre; 1 Adoptivsohn, 25 Jahre).
+- Lebe alleine.`,
+                    diagnosis: 'Apoplex'
+                },
+                {
+                    id: 'ms_neuro2',
+                    title: 'Migräne',
+                    case_description: `**Patientin:** Frau Josephine Goldmann, 57 Jahre (geb. 10.09.1964), 50 kg, 163 cm.
+
+**Aufnahmegrund:**
+Seit vorgestern plötzlich aufgetretene, pulsierende, linksbetonte Kopfschmerzen (Hemikranie/Cephalgie).
+
+**Aktuelle Anamnese:**
+Die Patientin gebe an, dass die Schmerzen während körperlicher Anstrengung aufträten und sich im Laufe der Zeit verschlimmert hätten. Eine Einnahme von Paracetamol habe zu keiner Schmerzlinderung geführt. Die Cephalgie werde von Photopsien, Phono- und Photophobie begleitet. Nach Angaben der Patientin habe sie dreimal erbrochen (Nausea). Zusätzlich berichte sie über seit zwei Tagen bestehende Zehenschmerzen (Digitus Pedis) mit Dolor und Calor, welche sie auf enge Schuhe zurückführe. Fragen nach Pyrexie, febriler Temperatur, Vertigo und Vomitus seien verneint worden. Seit letzter Nacht leide sie schmerzbedingt unter Dyssomnie. Miktion und Defäkation seien unauffällig (nicht explizit erfragt) gewesen.
+
+**Vegetative Anamnese:**
+Dyssomnie seit letzter Nacht aufgrund der Schmerzen. Ansonsten sei die Anamnese unauffällig gewesen.
+
+**Vorerkrankungen und Voroperationen:**
+- Unguis incarnatus (eingewachsener Zehennagel rechts).
+- Zustand nach Ovarialzysten-OP vor 5 Jahren.
+- Arterielle Hypotonie.
+- Zustand nach Operation eines perforierten Appendix mit Komplikation: Peritonitis.
+
+**Medikamente:**
+- Paracetamol 500 mg bei Bedarf (b.B.).
+
+**Allergien:**
+- Nickel.
+- Laktoseintoleranz.
+
+**Noxen:**
+- Alkoholkonsum: Gelegentlich.
+- Nikotinkonsum: Angefangen mit 16 Jahren (1 Schachtel/Tag); seit 5 Jahren auf 5 Stück pro Tag reduziert.
+
+**Familienanamnese:**
+- Vater: Bisher kerngesund; seit 14 Tagen im Krankenhaus wegen eines Sturzes, bei dem ein Tumor festgestellt worden sei.
+- Mutter: Leide unter Gangstörungen und habe sich ängstlich bezüglich Krebs gezeigt.
+
+**Sozialanamnese:**
+- Arbeite in einem Immobilienhaus.
+- Geschieden, wohne zusammen mit ihrem Sohn.`,
+                    diagnosis: 'Migräne'
+                },
+                {
+                    id: 'ms_neuro3',
+                    title: 'Epileptischer Anfall',
+                    case_description: `**Patient:** Herr Fridolin Sauer, 37 Jahre  (geb. 14.05.1988), 182 cm, 87 kg.
+
+**Aufnahmegrund:**
+Vor 3 Stunden plötzlich aufgetretene, generalisierte Myoklonien (Muskelzuckungen).
+
+**Aktuelle Anamnese:**
+Der Patient stelle sich in Begleitung seiner Ehefrau (mit Rettungsdienst) vor. Er berichte, dass er heute Morgen nach dem Frühstück plötzlich ein "komisches Gefühl" im ganzen Körper verspürt habe und nicht mehr ansprechbar gewesen sei. Anschließend seien generalisierte Zuckungen aufgetreten, die etwa 1-2 Minuten angedauert hätten. Vor dem Frühstück, als er auf der Toilette gewesen sei, habe er innere Unruhe, Photopsien (Flimmern/Lichtblitze vor den Augen) und Cephalgie (Kopfschmerzen) bemerkt. Laut seiner Ehefrau sei er vor dem Anfall erstarrt, und die Myoklonien hätten ebenfalls 1-2 Minuten gedauert. Herr Sauer füge hinzu, dass er in den 4 Tagen vor dem Anfall besonders nervös und unruhig gewesen sei. Als möglichen Auslöser nenne er den übermäßigen Alkoholkonsum auf der 10. Jubiläumsfeier seiner Firma am Vorabend. Nach dem Anfall seien ihm Fatigue (Abgeschlagenheit) und starke Myalgien (Muskelschmerzen) aufgefallen. Fragen nach Kopfplatzwunde, Zungenbiss, Stuhl- und Urinabgang seien verneint worden. Er sei nicht hingefallen, da seine Frau ihn festgehalten habe. Solche Beschwerden habe er bisher noch nie gehabt.
+
+**Vegetative Anamnese:**
+Unauffällig bis auf stressbedingte Insomnie (Schlafstörung in Form von Durchschlafstörungen) sowie wechselnde Obstipation (Verstopfung) und Diarrhö (Durchfall) aufgrund eines Colon irritabile.
+
+**Vorerkrankungen und Voroperationen:**
+- Colon irritabile (Reizdarmsyndrom) seit 5 Jahren.
+- Retroaurikuläre Dermatitis (trockene und schuppige Haut hinter den Ohren, vor allem im Winter) seit Kindheit.
+- Dysphonie (Heiserkeit) seit 2 Jahren.
+- Zustand nach Acetabulumfraktur (Hüftgelenkspfannenbruch) vor 5 Jahren bei einem Kletterunfall, konservativ mit Ruhigstellung und Stützverband behandelt.
+- Zustand nach fieberbedingtem Krampfanfall im 5. Lebensjahr, medikamentös mit Paracetamol-Suppositorien (Zäpfchen) behandelt.
+- Alkoholintoxikation (Alkoholvergiftung) mit 17 Jahren, stationär behandelt.
+Bisher keine Operationen.
+
+**Medikamente:**
+- Imodium 75 mg b.B.
+- Cortison-Salbe b.B. (vor allem im Winter)
+- Neoangin-Plus - Lutschtabletten b.B.
+- Ibuprofen-Gel b.B.
+
+**Allergien und Unverträglichkeiten:**
+- Hausstaubmilben mit Rhinokonjunktivitis.
+- Meeresfrüchte mit Lidödem (geschwollene Augen).
+
+**Genussmittel:**
+- Nikotinkonsum: Seit 5 Jahren 10 Zigaretten pro Tag. Zuvor 20 Packungsjahre (PY).
+- Alkoholkonsum: Gelegentlich Bier und Schnaps (manchmal übermäßiger Konsum bei Partys).
+- Drogenkonsum: Ein Joint pro Monat.
+
+**Sozialanamnese:**
+- Selbstständiger Inhaber eines Copyshops (gelegentlich Unterstützung durch Aushilfen). Geschäft in Universitätsnähe, daher überlastet und unter großem Stress.
+- Verheiratet, wohne mit seiner Familie.
+- Habe einen Sohn (8 Jahre) mit Herzvitium (Loch in der Herzscheidewand). Dies bereite ihm Sorgen, der Sohn sei kardiologisch untersucht und konservativ behandelt worden. Eine zukünftige chirurgische Therapie sei jedoch möglicherweise erforderlich.
+
+**Familienanamnese:**
+- Vater: Keratitis (Hornhautentzündung), Zustand nach Korneatransplantation/Keratoplastik (Hornhautverpflanzung) vor 4 Monaten.
+- Mutter: Morbus Sudeck/CRPS bei Zustand nach distaler Radiusfraktur (Handgelenksbruch). Sie habe nach wie vor mit starken Schmerzen nach ihrem Handgelenksbruch zu kämpfen.`,
+                    diagnosis: 'Epileptischer Anfall'
+                },
+                {
+                    id: 'ms_neuro4',
+                    title: 'Polyneuropathie bei Borreliose',
+                    case_description: `**Patientin:** Frau Mildred Färber, 41 Jahre (geb. 04.05.1978), 164 cm, 69 kg.
+
+**Aufnahmegrund:**
+Seit 10 Tagen plötzlich aufgetretene Sehstörungen (verschwommenes Sehen, Farbsehstörung) nur im rechten Auge, begleitet von Kribbeln und Taubheitsgefühl in beiden Händen, sowie leichten retrobulbären Kopfschmerzen.
+
+**Aktuelle Anamnese:**
+Die Patientin klage über seit 10 Tagen bestehende Sehstörungen, die sich als verschwommenes Sehen und Farbsehstörung äußerten und ausschließlich das rechte Auge beträfen. Gleichzeitig verspüre sie Kribbeln und Taubheitsgefühle in beiden Händen. Sie berichte über leichte, drückende Kopfschmerzen (3/10) hinter den Augen (retrobulbär) ohne Ausstrahlung. Begleitend träten leichte Übelkeit und Nervosität auf. Eine Woche vor Beginn der aktuellen Beschwerden habe sie eine Grippe (Erkältung) gehabt, die ohne Behandlung schnell wieder abgeklungen sei.
+Folgende Symptome seien verneint worden: Vertigo, Lähmungen, Sprach-, Hör- oder Gangstörungen, Synkopen und Erbrechen.
+
+**Vegetative Anamnese:**
+- Leichte Luftnot seit mehreren Monaten.
+- Obstipation seit 6 Monaten.
+- Durchschlafstörung seit 10 Tagen, bedingt durch die Beschwerden. Ansonsten sei die Anamnese unauffällig gewesen.
+
+**Vorerkrankungen und Voroperationen:**
+- Zustand nach Zeckenbiss vor 3 Jahren, welcher mit Doxycyclin behandelt wurde (Borreliose-Anamnese). Die Patientin berichte über keine regelmäßigen Hausarztbesuche.
+- Asthma bronchiale seit 5 Jahren.
+- Hypothyreose seit 7 Jahren.
+- Herzrhythmusstörungen seit 2 Jahren, vom Hausarzt festgestellt, ohne spezifische Behandlung.
+- Zustand nach Blinddarmentfernung vor 20 Jahren.
+- Zustand nach Arthroskopie wegen Meniskusruptur vor 3 Jahren.
+
+**Medikamente:**
+(Keine Dauermedikation sei angegeben worden, nur die Doxycyclin-Behandlung nach Zeckenbiss in der Anamnese).
+
+**Allergien:**
+- Sonnenallergie (Hautrötung) seit 3 Jahren.
+
+**Noxen:**
+- Nikotinkonsum: 5 Zigaretten täglich, begonnen mit 17 Jahren.
+- Alkoholkonsum: 1 Glas Wein zum Abendessen.
+
+**Familienanamnese:**
+- Vater: Apoplex vor 3 Jahren, gut behandelt.
+- Mutter: Mammakarzinom vor 5 Jahren, operiert.
+
+**Sozialanamnese:**
+- Verwaltungsangestellte mit viel Arbeitsstress.
+- Verheiratet, habe 2 Kinder und 1 Hund.`,
+                    diagnosis: 'Polyneuropathie bei Borreliose'
+                }
+            ],
+            kardiologie: [
+                {
+                    id: "ms_kardio_2",
+                    title: "Akutes Koronarsyndrom (ACS)",
+                    case_description: `**Patient:** Herr Joachim Göbel, 58 Jahre (geb. 25.02.1966), 95 kg, 186 cm.
+
+**Aufnahmegrund:** Notfallmäßige Einlieferung mit dem RTW bei akut aufgetretener Thorakalgie.
+
+**Aktuelle Anamnese:**
+Der Patient berichte über seit heute Morgen (seit 1,5 Stunden) bestehende, drückende, retrosternale Thoraxschmerzen mit Ausstrahlung in die linke Schulter. Die Schmerzsymptomatik sei plötzlich nach einer Phase starker emotionaler Belastung (Streit mit dem Vermieter) erstmals aufgetreten. Begleitend seien Nausea, leichte Vertigo, kalter Schweiß (Hyperhidrose) und Dyspnoe vorhanden gewesen. Die Fragen nach Beinödemen und Orthopnoe seien verneint worden.
+
+**Unterbrechung des Gesprächs:** An dieser Stelle wurde die Anamnese zur Messung der Vitalparameter und zur Durchführung eines EKGs unterbrochen.
+
+**Vegetative Anamnese:**
+Bis auf die genannten Symptome sei die Anamnese unauffällig gewesen. Es bestehe eine chronische Obstipation, die der Patient eigenmächtig mit Weizenkleie behandle.
+
+**Vorerkrankungen:**
+- Arterielle Hypertonie, seit 5 Jahren bekannt, medikamentös mit Ramipril 5 mg (1-0-0) und HCT 12,5 mg (1-0-0) behandelt. Der Blutdruck sei laut Hausarzt nicht optimal eingestellt.
+- Diabetes mellitus Typ 2, seit 3,5 Jahren bekannt, medikamentös mit Icandra behandelt und laut Patient gut eingestellt.
+- Bursitis an der rechten Schulter, vor ca. 9 Monaten diagnostiziert, nicht behandelt, mit Schmerzprogredienz in den letzten Wochen.
+- Zustand nach Verbrennung am linken Unterarm im Rahmen einer Grillfeier vor einiger Zeit, damals nur mit Wasser gekühlt. Persistierende Schmerzen im betroffenen Areal.
+
+**Allergien:**
+- Bekannte Birkenpollenallergie mit Symptomen einer Rhinokonjunktivitis.
+- Hühnereiweißallergie mit generalisiertem Exanthem, Pruritus und vereinzelter Urtikaria.
+
+**Noxen:**
+- Nikotinabusus (ca. 5-6 Zigaretten/Tag seit 5 Jahren, davor 1 Päckchen/Tag seit der Jugend).
+- Regelmäßiger Alkoholkonsum (eine Flasche Bier/Abend).
+
+**Sozialanamnese:**
+Der Patient sei verheiratet und als kaufmännischer Angestellter bei den Stadtwerken tätig. Seine Tochter leide seit einer Meningitis im Kindesalter an einer nicht näher spezifizierten "Gehirnfunktionsstörung" mit Verlangsamung.
+**Familienanamnese:**
+Die Mutter des Patienten habe vor 2,5 Jahren eine Hirnblutung mit resultierender Hemiparese links erlitten. Beim Vater sei ein Basaliom an der rechten Schläfe operativ entfernt worden.`,
+                    diagnosis: "Akutes Koronarsyndrom (ACS)"
+                },
+                {
+                    id: 'ms_kardio3',
+                    title: 'Herzinsuffizienz',
+                    case_description: `**Patient:** Frau Bettina Wenzen, 62 Jahre (geb. 14.01.1960), 78 kg, 187 cm.
+
+**Aufnahmegrund:**
+Selbstvorstellung bei seit mehreren Wochen progredienter Dyspnoe und thorakalem Engegefühl.
+
+**Aktuelle Anamnese:**
+Die Patientin berichte über eine seit 5-7 Wochen bestehende, langsam progrediente Symptomatik. Im Vordergrund stünden eine Belastungsdyspnoe, die mittlerweile auch in Ruhe aufträte, sowie ein thorakales Engegefühl. Die Patientin schildere, dass sie beim Treppensteigen bereits nach einem Stockwerk eine Pause benötige. Begleitend seien ihr eine Orthopnoe (Schlafen auf 2-3 Kissen), beidseitige Beinödeme und eine zunehmende Nykturie (3-4x pro Nacht) aufgefallen. Zudem klage sie über ausgeprägte Fatigue und Konzentrationsstörungen.
+
+**Vegetative Anamnese:**
+Bis auf eine symptombedingte Insomnie sowie Inappetenz sei die Anamnese unauffällig gewesen.
+
+**Vorerkrankungen:**
+- Arterielle Hypertonie, seit 10 Jahren bekannt.
+- Dyslipidämie, seit 10 Jahren bekannt.
+- Vorhofflimmern, seit 5 Jahren bekannt.
+- Zustand nach Skaphoidfraktur links im Alter von 45 Jahren (konservativ behandelt).
+- Verdacht auf Pankreatitis 1998, bildgebend ausgeschlossen.
+
+**Medikamente:**
+- Bisoprolol 5 mg (1-0-0)
+- Marcumar n. INR-Pass
+- Hydrochlorothiazid (HCT) 12,5 mg (1-0-0)
+- Valsartan 20 mg (0-0-1)
+
+**Allergien:**
+- Amoxicillin (Exanthem, Pruritus)
+- Hausstaubmilben (Rhinokonjunktivitis)
+
+**Noxen:**
+- Nikotin: Ex-Raucherin (30 Packungsjahre), Rauchstopp vor 7 Wochen.
+- Alkohol: Regelmäßiger Konsum von 2-3 Flaschen Bier am Samstag.
+
+**Sozialanamnese:**
+Die Patientin sei verwitwet und als ehemalige Schulhausmeisterin frühberentet, um ihren pflegebedürftigen Sohn (Paraplegie n. Motorradunfall) zu betreuen.
+
+**Familienanamnese:**
+Die Mutter sei an einem Uteruskarzinom verstorben, der Vater lebe (habe vor 4 Jahren eine iatrogene Milzruptur bei einer Koloskopie erlitten, was bei der Patientin zu einer ausgeprägten Angst vor Koloskopien führe). Keine Geschwister.`,
+                    diagnosis: 'Herzinsuffizienz'
+                }
+            ],
+            gastroenterologie: [
+                {
+                    id: 'ms_gastro1',
+                    title: 'Ulcus ventriculi mit OGI-Blutung',
+                    case_description: `**Patient:** Herr Joachim Brückner, 56 Jahre (wird in 4 Wochen 57), 186 cm, 78,6 kg.
+
+**Aufnahmegrund:**
+Seit 2-3 Wochen bestehende, kolikartige Oberbauchschmerzen, die seit gestern konstant sind und zuvor postprandial (nach 5 Minuten Gehen) auftraten. Die Schmerzintensität wird auf einer Skala von 15 von 10 angegeben.
+
+**Aktuelle Anamnese:**
+Der Patient berichte über seit 2-3 Wochen bestehende kolikartige Oberbauchschmerzen. Seit gestern seien diese Schmerzen konstant, während sie davor fünf Minuten nach dem Essen und Gehen aufgetreten seien. Die Schmerzintensität beschreibe der Patient als 15 von 10. Als Begleitsymptome seien ihm Nausea, zweimalige Hämatemesis mit kaffeefarbenem Aussehen (einmal gestern und einmal heute Morgen), Meläna, Inappetenz, Pyrosis, Aufstoßen und Blässe (Pallor) aufgefallen. Fragen nach Synkope und Tachykardie seien verneint worden.
+
+**Vegetative Anamnese:**
+- Gewichtsabnahme von 1-2 kg in den letzten 2 Wochen.
+- Insomnie seit 3 Monaten aufgrund von Arbeitsstress durch ständiges Pendeln zwischen Köln und Münster.
+
+**Vorerkrankungen und Voroperationen:**
+- Arterielle Hypertonie seit 20 Jahren.
+- Konjunktivitis (Bindehautentzündung) seit längerem.
+- Lumbalgie seit einem Jahr.
+- Zustand nach operierter Kniekreuzbandruptur (Ligamentum cruciatum Ruptur) nach einem Handballspiel.
+- Zustand nach einem weiteren Unfall (genaue Details unbekannt).
+
+**Medikamente:**
+- Maaloxan bei Bedarf (auf Empfehlung des älteren Sohnes).
+- Beloc Zok 95 mg (1-0-0).
+- Baldrian Dragees bei Bedarf.
+- Visine Yxin 0,5 mg/ml Augentropfen.
+- Ibuprofen 400 mg (2-3 mal täglich).
+- Diclofenac bei Bedarf.
+
+**Allergien:**
+- Braunes Pflaster (Erythem, Pruritus, Wundreaktion an der Klebestelle).
+- Meeresfrüchte (äußere sich mit Diarrhö).
+
+**Noxen:**
+- Nikotinkonsum: Seit 10 Jahren 5 Zigaretten pro Tag. Zuvor 25 Jahre lang 20 Zigaretten pro Tag.
+- Alkoholkonsum: Fast täglich 2 Flaschen Bier.
+
+**Familienanamnese:**
+- Vater: Gesund.
+- Mutter: Habe einen Hirnschlag erlitten.
+- Bruder: Habe einen Lungenriss (Pneumothorax) nach einem Tauchgang (Taucherkrankheit / Morbus Caisson) gehabt.
+
+**Sozialanamnese:**
+- Produktionsleiter.
+- Verheiratet, habe 2 gesunde Söhne.`,
+                    diagnosis: 'Oberbauchschmerzen / GI-Blutung'
+                },
+                {
+                    id: 'ms_gastro2',
+                    title: 'Ösophaguskarzinom',
+                    case_description: `**Patient:** Herr Klaus Schäfer, 56 Jahre alt, 187 cm, 82 kg.
+
+**Aufnahmegrund:**
+Seit 2-3 Wochen bestehende, progrediente Dysphagie (keine Odynophagie) und Kloßgefühl im Halsbereich.
+
+**Aktuelle Anamnese:**
+Der Patient berichte über seit 2-3 Wochen bestehende, sich verschlimmernde Schluckbeschwerden. Anfangs träten diese bei fester Nahrung auf, mittlerweile auch bei Flüssigkeiten. Er klage zudem über Meläna (schwarzer, dunkler Stuhl), Dysphonie (Heiserkeit) und einen trockenen Husten, der sich beim Wassertrinken bessere. Des Weiteren bestehe eine belastungsabhängige Dyspnoe (nach zwei Etagen). Fragen nach Lymphadenopathie, Gewichtsverlust, Emesis (Erbrechen) und Abdominalgien (Bauchschmerzen) seien verneint worden. Er habe gegen diese Beschwerden keine Medikamente eingenommen. Eine Magenspiegelung sei bisher nicht durchgeführt worden.
+
+**Vegetative Anamnese:**
+Bis auf Inappetenz (Appetitlosigkeit), Insomnie (Schlafstörungen) und intermittierende Obstipation (Verstopfung) sei die Anamnese unauffällig gewesen.
+
+**Vorerkrankungen und Voroperationen:**
+- Diabetes mellitus Typ 2 seit 6 Jahren.
+- Arrhythmie (Herzrhythmusstörungen) seit ¾ Jahr.
+- Angeborene Mittelohrfehlbildung (kongenitale Mittelohrdeformation) rechts seit der Kindheit, seither trage er Hörgeräte.
+- Verruca (Warze) am rechten Zeigefinger, Termin beim Hausarzt in der nächsten Woche.
+- Zustand nach konservativ behandelter Rippenkontusion (Prellung) infolge eines Handballunfalls.
+- Zustand nach operativ behandelter Articulatio Cubiti Bursitis (Schleimbeutelentzündung am Ellenbogen) vor 5 Jahren.
+
+**Medikamente:**
+- Icandra 50/1000 mg (1-0-1).
+- Marcumar 1-0-0.
+- Baldrian bei Bedarf (b.B.).
+- Laxoberal bei Bedarf (b.B.).
+
+**Allergien:**
+- Kreuzallergie zwischen Pollen und Mehl (führe zu Exanthem und Tussis).
+- Voltaren (führe zu Abdominalgien / Magenschmerzen). Der Patient sei bei allen Schmerzmitteln vorsichtig.
+
+**Noxen:**
+- Nikotinkonsum: Raucher seit 35 Jahren (13 bis 15 Zigaretten pro Tag). Äußere den Wunsch, mit dem Rauchen aufzuhören.
+- Alkoholkonsum: 1 bis 2 Flaschen Bier abends.
+
+**Familienanamnese:**
+- Vater: Zustand nach Magenplastik-OP (Sleeve-Gastrektomie) wegen Adipositas vor 2 Jahren, wiege jetzt 87 kg.
+- Mutter: An Rektumkarzinom vor 6 Jahren verstorben.
+- Ehefrau: Vor 2,5 Jahren an Mammakarzinom verstorben.
+
+**Sozialanamnese:**
+- Verwitwet.
+- 2 Kinder (eigenes Kind und Pflegekind).
+- Lebe allein.
+- Arbeite als Pförtner an der Universität.`,
+                    diagnosis: 'Ösophaguskarzinom'
+                },
+                {
+                    id: 'ms_gastro3',
+                    title: 'Achalasie',
+                    case_description: `**Patient:** Herr Günther Wenckler, 56 Jahre alt, 182 cm, 92 kg.
+
+**Aufnahmegrund:**
+Seit 2-3 Wochen bestehende, drückende Schmerzen im Halsbereich (Odynophagie) sowie Dysphagie.
+
+**Aktuelle Anamnese:**
+Herr Wenckler berichte, dass die Schmerzen langsam begonnen und sich im Verlauf der Zeit verstärkt hätten. Darüber hinaus erwähne er, dass die Schluckbeschwerden (Dysphagie) in den letzten 3 Tagen nicht nur bei fester, sondern auch bei flüssiger Nahrung aufträten. Des Weiteren klage der Patient über Husten nach dem Essen aufgrund von Aspiration. Fragen nach Fieber, Gewichtsverlust, Hyperhidrosis sowie früheren ähnlichen Beschwerden seien vom Patienten verneint worden.
+
+**Vegetative Anamnese:**
+Unauffällig bis auf Schlafstörungen aufgrund nächtlichen Hustens und Obstipation seit 5 Jahren.
+
+**Vorerkrankungen:**
+- Diabetes mellitus seit 15 Jahren.
+- Vorhofflimmern seit 3,5 Jahren.
+- Unguis incarnatus (eingewachsener Zehennagel) am linken großen Zeh vor 2 Jahren, konservativ behandelt.
+- Zustand nach operativer Entfernung eines Aneurysmas der linken Arteria poplitea vor 5 Jahren.
+
+**Medikamente:**
+- Metformin 1000 mg (1-0-1).
+- Marcumar 3,5 mg (1-0-0).
+- Laxanzien bei Bedarf (b.B.).
+
+**Allergien:**
+- Pollenallergie (Rhinokonjunktivitis).
+- Voltaren (Exanthem).
+
+**Noxen:**
+- Nikotinkonsum: Raucher seit 35 Jahren (15 Zigaretten pro Tag).
+- Alkoholkonsum: Gelegentlich.
+
+**Familienanamnese:**
+- Mutter: Sei an Rektumkarzinom verstorben.
+- Vater: Gesund; Zustand nach Gastric Sleeve.
+
+**Sozialanamnese:**
+- Seit 2,5 Jahren verwitwet.
+- Habe 2 gesunde Kinder und wohne mit ihnen zusammen.`,
+                    diagnosis: 'Achalasie'
+                },
+                {
+                    id: 'ms_gastro4',
+                    title: 'Appendizitis',
+                    case_description: `**Patientin:** Frau Melanie Voß, 46 Jahre (geb. 25.02.1977), 167 cm, 72 kg.
+
+**Aufnahmegrund:**
+Seit gestern Morgen plötzlich aufgetretene, progrediente, stechende Abdominalgie, die im Nabelbereich (Regio umbilicalis) begann und im Laufe der Zeit in den rechten Unterbauch (Regio iliaca dextra) wanderte.
+
+**Aktuelle Anamnese:**
+Frau Voß berichte über seit gestern Morgen bestehende, sich verschlimmernde, stechende Bauchschmerzen. Diese hätten zunächst um den Nabel herum begonnen und seien dann in den rechten Unterbauch gewandert. Die Schmerzen würden von Inappetenz, einem warmen Gefühl (Fieber sei nicht gemessen worden) und nächtlicher Transpiration begleitet. Fragen nach Diarrhö, Nausea und Emesis seien verneint worden.
+
+**Vegetative Anamnese:**
+Bis auf die oben genannten Symptome, Meteorismus (als Reaktion auf rohes Obst und Gemüse) und Insomnie (Einschlafstörung) sei die Anamnese unauffällig gewesen.
+
+**Gynäkologische Anamnese:**
+Die letzte Menstruation sei vor 2 Monaten gewesen. Die Patientin gehe regelmäßig zu ihrer Gynäkologin.
+
+**Vorerkrankungen und Voroperationen:**
+- Hypothyreose seit 4,5 Jahren.
+- Eisenmangel (Längsrillen in den Fingernägeln, Mundwinkelrhagaden/Cheilitis angularis), wofür Eisentabletten vom Hausarzt verschrieben worden seien.
+- Zustand nach Venenstripping (Krampfadernentfernung) rechts vor einem Jahr.
+- Zustand nach Bruxismus (Zähneknirschen), mit Schienentherapie behandelt.
+- Zustand nach Lipom-Exzision (Fettknotenentfernung) im Nackenbereich vor einem Vierteljahr.
+- Zustand nach Rippenkontusion (Prellung) links aufgrund eines Skiunfalls im Alter von 34 Jahren.
+
+**Medikamente:**
+- L-Thyroxin 100 mcg (1-0-0).
+- Lefax Kautabletten (1-0-1).
+- Eisentabletten (2 Kapseln 3 mal täglich).
+- Baldrian Dragees (keine Besserung bemerkt).
+
+**Allergien und Unverträglichkeiten:**
+- Nickel-Allerie (Exanthem).
+- Sonnenlicht (Bläschen/Vesikel).
+- Rohes Obst und Gemüse (Meteorismus).
+
+**Noxen:**
+- Ex-Raucherin: Habe mit 20 Jahren mit dem Rauchen angefangen (15-20 Zigaretten/Tag), Rauchstopp seit 11 Jahren (nach Geburt ihrer Tochter).
+- Alkoholkonsum: Unregelmäßig, nur bei Feiern.
+
+**Familienanamnese:**
+- Mutter: Leide an arterieller Hypertonie; habe letzte Woche eine allergische Reaktion gegen Ramipril (Zungenödem und Halskratzen) erlitten.
+- Vater: 88 Jahre alt, leide an pulmonaler Hypertonie.
+- Schwester: Leide an Uterusmyomen (Operation Myomektomie).
+
+**Sozialanamnese:**
+- Getrennt lebend.
+- Habe eine Tochter.
+- Arbeite als Verkäuferin in einem Spielwarengeschäft.
+- Veganerin.`,
+                    diagnosis: 'Appendizitis'
+                },
+                {
+                    id: 'ms_gastro5_2',
+                    title: 'Cholezystitis',
+                    case_description: `**Patient:** Herr Manfred Petersen, 56 Jahre alt (geb. 17.05.1969), 175cm, 93kg.
+
+**Aufnahmegrund:**
+Seit 3 Tagen Ikterus in den Augen, seit einem Tag auch in der Haut, begleitet von Cephalgie, leichten Oberbauchschmerzen ohne Ausstrahlung, Nausea, Ekzemen in der Handfläche, Achaolie und Cholurie.
+
+**Aktuelle Anamnese:**
+Herr Petersen stellte sich heute wegen seit 3 Tagen bestehendem Ikterus in den Augen vor, der seit einem Tag auch in der Haut sichtbar sei. Des Weiteren klage er über Kopfschmerzen, leichte Oberbauchschmerzen ohne Ausstrahlung, Nausea, Ekzeme in der Handfläche, acholischen Stuhl und Cholurie.
+
+**Vegetative Anamnese:**
+- Inappetenz seit 3 Tagen.
+- Insomnie wegen der Beschwerden seit 3 Tagen.
+Ansonsten sei die vegetative Anamnese unauffällig gewesen.
+
+**Vorerkrankungen:**
+- Cephalgie seit 20 Jahren.
+- Omalgie und Zervikalgie seit 6 Monaten.
+- Ohrekzem rechts seit 9 Monaten.
+- Herzrhythmusstörungen vor 3 Jahren, stationär beobachtet, aber Untersuchungen seien unauffällig gewesen.
+- Katarakt.
+
+**Voroperationen:**
+- Kreuzbandplastik links vor 13 Jahren ohne Komplikationen.
+
+**Medikamente:**
+- Ibuprofen 400mg b.B.
+- Cortisonsalbe b.B.
+- Omeprazol 20mg b.B. gegen Gastritis.
+- Pfefferminzöl b.B.
+
+**Allergien/Unverträglichkeiten:**
+- Amoxicillin-Allergie (Exanthem).
+- Laktoseintoleranz (Abdomenalgie).
+
+**Noxen:**
+- Alkoholkonsum: 1-2 Gläser Wein abends.
+- Seit 3 Jahren Nichtraucher. Zuvor 15-17 Zigaretten täglich für 38 Jahre.
+- Drogenkonsum sei verneint worden.
+
+**Familienanamnese:**
+- Vater: Habe vor 3 Jahren einen Schlaganfall gehabt und sei mit Thrombektomie über die Arteria Carotis behandelt worden.
+- Mutter: Leide seit 3 Monaten an Coxitis.
+
+**Sozialanamnese:**
+- Beruf: Sozialpädagoge (arbeite in einem Entzugsprogramm).
+- Seit 7 Jahren getrennt lebend.
+- Habe 2 Kinder (1 Sohn und 1 Tochter). Die Tochter habe an angeborener Hüftdysplasie gelitten.`,
+                    diagnosis: 'Cholezystitis'
+                },
+                {
+                    id: 'ms_gastro6',
+                    title: 'Divertikulitis',
+                    case_description: `**Patientin:** Frau Maria Wehmer, 65 Jahre alt (geb. 16.11.1956), 175 cm, 78 kg.
+
+**Aufnahmegrund:**
+Seit 2 Wochen bestehende, drückende Schmerzen im linken Unterbauch ohne Ausstrahlung, begleitet von Blähungen, Fieber (38,4 °C axillär) seit gestern und Appetitlosigkeit. Ähnliche Beschwerden seien bereits vor 4 Wochen aufgetreten.
+
+**Aktuelle Anamnese:**
+Die Patientin klage über seit 2 Wochen bestehende, langsam beginnende und sich im Verlauf verschlechternde, drückende Schmerzen im linken Unterbauch. Die Schmerzintensität liege zwischen 3 und 7 von 10. Die Schmerzen verschlimmerten sich bei fettigem Essen und besserten sich beim Sitzen. Paracetamol habe zu keiner Linderung geführt. Seit gestern habe sie Fieber von 38,4 °C (axillär) gehabt und leide unter Appetitlosigkeit und Blähungen. Des Weiteren berichte sie über wechselnden Stuhlgang (Durchfall und Verstopfung im Wechsel) seit 2 Jahren, Sodbrennen nach dem Essen und Nykturie (2-3 Mal pro Nacht). Auflagerungen auf der Zunge, Blässe und Tachykardie seien verneint worden.
+
+**Vegetative Anamnese:**
+- Durchschlafstörungen.
+
+**Vorerkrankungen und Voroperationen:**
+- Arterielle Hypertonie seit 15 Jahren.
+- Herzrhythmusstörungen seit 5 Jahren.
+- Erhöhte Blutfettwerte (Hyperlipidämie) seit 15 Jahren.
+- Immer wieder Blasenentzündung (Zystitis).
+- Hüftarthrose links.
+- Zustand nach Hysterektomie vor 12 Jahren (Grund unbekannt/nicht erfragt).
+
+**Medikamente:**
+- Beta-Blocker (1-0-1).
+- Atorvastatin 20 mg (0-0-1).
+- Voltaren 100 mg bei Bedarf.
+- Baldriantropfen seit 1 Monat.
+- Paracetamol (wegen aktueller Beschwerden).
+
+**Allergien und Unverträglichkeiten:**
+- Laktoseintoleranz (Blähungen, Bauchschmerzen).
+- Kupfer (Ein Metall) (Juckreiz, Hautausschlag).
+
+**Noxen:**
+- Rauche nicht.
+- Alkohol: Ein Viertel Wein jeden Abend.
+- Keine Drogen.
+
+**Familienanamnese:**
+- Vater: Habe Darmpolypen gehabt und sei an Schlaganfall vor 10 Jahren gestorben.
+- Mutter: Leide an DM Typ 2.
+- 2 Kinder: Seien gesund.
+- Keine Geschwister.
+
+**Sozialanamnese:**
+- Rentnerin seit 3 Monaten.`,
+                    diagnosis: 'Divertikulitis'
+                },
+                {
+                    id: 'ms_gastro7',
+                    title: 'Reizdarmsyndrom',
+                    case_description: `**Patient:** Herr Jöhen Müller, 59 Jahre alt (geb. 29.10.1965), 176 cm, 79 kg. Sein Hausarzt ist Dr. Maier.
+
+**Aufnahmegrund:**
+Seit 5–6 Wochen bestehende, zunehmende und starke, wechselnde Verdauungsbeschwerden mit Obstipation und Diarrhö, begleitet von starken Unterbauchkrämpfen.
+
+**Aktuelle Anamnese:**
+Herr Müller stelle sich mit seit 5–6 Wochen bestehenden, zunehmenden und starken Verdauungsbeschwerden vor, die einen wechselnden Charakter aufwiesen. An manchen Tagen habe er eine Obstipation gehabt, die sich durch harten und trockenen Stuhl äußere, der laut seiner Beschreibung einer großen, trockenen Wurst ähnele. An anderen Tagen, so erkläre er, habe er hingegen Diarrhö gehabt, die mit schleimigen, braunen Stühlen einhergehe.
+Er gebe an, dass die Beschwerden häufig von starken Krämpfen im Unterbauch begleitet seien, welche besonders intensiv vor der Defäkation aufträten, sich jedoch unmittelbar nach dem Stuhlgang deutlich verbesserten. Weiterhin habe er belastungsabhängige Dyspnoe bemerkt, die vor allem beim Treppensteigen spürbar sei, wobei fremdanamnestisch blasse Haut als Zeichen einer möglichen Zyanose (Pallor) beobachtet worden sei.
+Es sei erwähnenswert, dass er seit Langem an ähnlichen Symptomen leide, diese jedoch aktuell stärker ausgeprägt seien als früher.
+Übelkeit, Erbrechen, Gewichtsverlust, Fieber oder nächtliche Hyperhidrose seien auf Nachfrage verneint worden.
+
+**Vegetative Anamnese:**
+Der Patient berichte über einen selektiven Appetit auf Süßigkeiten und Schokolade. Es bestehe eine beschwerdebedingte Insomnie, wobei er in zwei Nächten durch plötzlich auftretende Diarrhö aus dem Schlaf gerissen worden sei.
+
+**Chronische Erkrankungen und Medikation:**
+- **Hypertonie:** Seit 8 Jahren bestehend, eingestellt mit Valsartan 80 mg (1-0-0).
+- **Halitosis:** Seit 2 Jahren bestehend, aktuell behandelt mit Omeprazol 40 mg (1-0-0).
+- **Sinusitis frontalis:** Vor einem Vierteljahr antibiotisch behandelt.
+- **Hüftgelenksarthrose:** Beidseitig seit 1 Jahr. Der Patient lehne eine Operation ab, „weil er zu alt sei“.
+- **Hämorrhoiden (Goldader):** Lange bestehend, behandelt mit Hametum-Salbe.
+- **Weitere Medikation:** Baldrian-Dragees zur Unterstützung.
+
+**Allergien:**
+- Fruchtzucker (Fruktoseintoleranz): Äußere sich mit Meteorismus.
+- Novalgin: Unbekannte Reaktion aus der Kindheit.
+
+**Noxen:**
+- **Nikotinkonsum:** Raucher seit der Jugend. Aktuell 5–6 Zigaretten/Tag, früher 1 Schachtel/Tag.
+- **Alkoholkonsum:** 1–2 kleine Biere nach der Arbeit.
+
+**Familienanamnese:**
+- **Vater:** Sei vor 7 Jahren an Kohlenbergarbeiter-Pneumokoniose (habe im Untertagebau gearbeitet) verstorben.
+- **Mutter:** Leide an Diabetes mellitus, lebe in einer Reha. Der linke Fuß sei wegen Wundheilungsstörungen amputiert worden.
+
+**Sozialanamnese:**
+- Verheiratet, jedoch getrennt lebend.
+- Ein erwachsener Sohn, zu dem kein Kontakt mehr bestehe (Verkehrsunfall vor 4 Jahren, V.a. Rückenverletzung Details unklar).
+- Seit drei Vierteljahren angestellt in einer Firma für Expeditionen, organisiere Reisen und begleite diese gelegentlich.
+- Impfstatus: Vollständig.`,
+                    diagnosis: 'Reizdarmsyndrom'
+                },
+                {
+                    id: 'ms_gastro8',
+                    title: 'Morbus Crohn',
+                    case_description: `**Patient:** Herr Gerhard Weiß, 50 Jahre alt (geb. 17.08.1971), 185 cm, 85 kg.
+
+**Aufnahmegrund:**
+Seit zweieinhalb Wochen bestehende, dumpfe undulierende Abdominalschmerzen im Bereich des Nabels (Regio Periumbilikale), mit Schmerzintensität von 1-2/10 bis 7/10 bei Krämpfen.
+
+**Aktuelle Anamnese:**
+Der Patient stellte sich wegen seit zweieinhalb Wochen bestehender dumpfer, wellenförmiger (undulierender) Bauchschmerzen im Nabelbereich vor. Die Schmerzintensität variiere von 1-2/10 bis zu 7/10 während Krämpfen. Darüber hinaus klage Herr Weiß über Nausea mit zweimaligem Erbrechen pro Tag und anhaltende wässrige, hellgelbe Diarrhöen (2-5 Mal pro Tag). Er gebe an, dass die Schmerzen nachlassen und dann wieder aufträten. Als Begleitsymptom sei ihm Fatigue (Abgeschlagenheit) aufgefallen. Auf Nachfrage seien Hämatochezie, Hämatemesis, Pyrexie, Hyperhidrosis, Auslandsreisen oder Kontakt mit einer infizierten Person mit ähnlicher Symptomatik verneint worden. Die Einnahme von MCP (Metoclopramid) Tropfen und Imodium akut habe ihm nicht geholfen.
+
+**Vegetative Anamnese:**
+Bis auf die oben genannten Symptome, Insomnie in Form von Durchschlafstörungen aufgrund von geschäftlichem Stress und einer ungewollten Gewichtsabnahme von 1,5 kg in den letzten zweieinhalb Wochen sei die Anamnese unauffällig gewesen.
+
+**Vorerkrankungen und Voroperationen:**
+- Seit 10 Jahren Arrhythmie, im Langzeit-EKG festgestellt.
+- Seit 9 Monaten Tinea cruris (haarlos, gerötet und juckend in der Leiste).
+- Skoliose (Wirbelsäulenverkrümmung) seit Kindheit, im jugendlichen Alter diagnostiziert, deswegen bestehe eine Gehbehinderung.
+- Zustand nach Herpes Zoster (Gürtelrose im Rücken und auf der rechten Brust) vor 2 Jahren.
+- Zustand nach Meningitis (Hirnhautentzündung) mit 15-16 Jahren.
+- Zustand nach Mandibulafraktur (Kieferbruch) rechts aufgrund eines Fahrradunfalls, Plattenosteosynthese, danach Plattenentfernungs-Operation.
+
+**Medikamente:**
+- Beloc-Zok 95 mg (1-0-0).
+- MCP Tropfen b.B.
+- Imodium akut b.B.
+- Multilind Heilsalbe gegen Tinea bei Bedarf (b.B.).
+- Baldrian Kapseln (0-0-1) in den letzten 3 Monaten wegen Durchschlafstörungen.
+
+**Allergien / Unverträglichkeiten:**
+- Nüsse-Unverträglichkeit (äußere sich mit Brennen auf der Zunge und Ödem).
+- Allergie gegen Kontrastmittel (äußere sich mit anaphylaktischem Schock und Bewusstlosigkeit nach CT vor einigen Jahren).
+
+**Noxen:**
+- Ex-Raucher, habe vor 5 Jahren mit dem Rauchen aufgehört. Damals habe er eine ½ Schachtel jeden Tag seit seinem 16. Lebensjahr geraucht.
+- Alkoholkonsum: Jeden Abend 1-2 Flaschen Bier (0,5 l).
+
+**Familienanamnese:**
+- Vater: Sei an Ösophagusvarizenruptur mit 82 Jahren (Krampfadern in der Speiseröhre, die geplatzt seien) infolge einer Leberzirrhose durch Alkoholkonsum gestorben.
+- Mutter: Sei wegen Darmverschluss durch Gallensteine (Gallensteinileus) operiert worden.
+- Keine Geschwister.
+
+**Sozialanamnese:**
+- Habe einen Sohn mit seiner zweiten Ehefrau, der an Down-Syndrom leide.
+- Habe ein eigenes Geschäft für Textilreinigung.
+- Empfinde viel Stress wegen seines Geschäfts und habe Angst, aufgrund einer Krankheit arbeitslos zu werden.`,
+                    diagnosis: 'Morbus Crohn'
+                },
+                {
+                    id: 'ms_gastro9',
+                    title: 'Kolorektal Karzinom',
+                    case_description: `**Patientin:** Frau Silke Reichert, 58 Jahre alt, 176 cm, 87 kg. In leicht reduziertem Allgemeinzustand (AZ) sowie übergewichtigem Ernährungszustand (EZ), zu Ort, Zeit sowie Person voll orientiert.
+
+**Aufnahmegrund:**
+Seit einem Monat bestehende Obstipation wechselnd mit Diarrhö, kolikartige Abdominalgie und aufgefallene Blässe (Pallor), vom Hausarzt überwiesen wegen positiven FOBT (Fäkaler Okkultbluttest).
+
+**Aktuelle Anamnese:**
+Die Patientin stelle sich mit seit einem Monat bestehender Obstipation, wechselnd mit Diarrhö, vor. Sie klage des Weiteren über kolikartige Bauchschmerzen. Ferner sei ihr eine Blässe aufgefallen, was auch von Freunden bestätigt worden sei ("Meine Freunde habe mir gesagt, dass ich mehr blass sei"). Sie schaue ihren Stuhl nicht so gern an und habe kein Blut bemerkt. Sie versuche auch nicht zuzunehmen. Fragen nach Meläna, Hämatochezie, Fieber, nächtlicher Hyperhidrose und Gewichtsreduktion seien verneint worden.
+
+**Vegetative Anamnese:**
+- Insomnie.
+Ansonsten sei die Anamnese unauffällig gewesen.
+
+**Vorerkrankungen und Voroperationen:**
+- Arterielle Hypertonie (aHT).
+- Gastroösophageale Refluxkrankheit (GERD) mit saurem Aufstoßen; deswegen sei bereits eine ÖGD (Ösophago-Gastro-Duodenoskopie) durchgeführt worden und sie nehme Omeprazol ein.
+- Hämorrhoiden.
+- Coxarthrose beidseits.
+- Zustand nach operativ versorgter Akromioklavikulargelenkfraktur (Schultereckgelenkverletzung) links nach einem Fahrradunfall vor 8 Jahren, komplikationslos.
+- Zustand nach ÖGD vor einem halben Jahr wegen saurer Regurgitation.
+- Zustand nach Sinusitis frontalis vor drei Vierteljahren, stationär mit Antibiotika behandelt.
+
+**Medikamente:**
+- Valsartan 80 mg (1-0-0).
+- Omeprazol 20 mg (0-0-1).
+- Ibuprofen 400 mg bei Bedarf (b.B.) wegen Coxalgie.
+- Karison Salbe (wegen Ekzem).
+
+**Allergien und Unverträglichkeiten:**
+- Novalgin-Allergie (Verdacht auf anaphylaktische Reaktion mit Dyspnoe).
+- Fruktoseintoleranz (führe zu Abdominalgien).
+
+**Noxen:**
+- Tabakkonsum: Die Patientin rauche 5-6 Zigaretten pro Tag seit 8 Jahren, früher habe sie eine Schachtel pro Tag für 32 Jahre geraucht.
+- Alkohol: Eine Flasche Bier/Tag.
+- Drogenkonsum sei verneint worden.
+
+**Sozialanamnese:**
+- Verheiratet, in Trennung lebend (getrennt).
+- Seit 3 Jahren arbeitslos, habe früher in einem Drogerie-Markt gearbeitet.
+
+**Familienanamnese:**
+- Vater: Habe Darmpolypen gehabt; sei an Apoplex vor 10 Jahren verstorben.
+- Mutter: Lebe im Pflegeheim; Zustand nach Amputation wegen Diabetes mellitus.
+- Sohn: Sei vor 8 Jahren wegen Testikularkarzinom operiert und danach mit Chemotherapie behandelt worden.`,
+                    diagnosis: 'Kolorektal Karzinom'
+                },
+                {
+                    id: 'ms_gastro10',
+                    title: 'Pankreaskopfkarzinom',
+                    case_description: `**Patient:** Herr Manfred Petersen, 59 Jahre alt (geb. 01.07.1966 - ausgedacht), 182 cm, 78 kg. Wohnt in Münster.
+
+**Aufnahmegrund:**
+Seit 3 Tagen Ikterus (Gelbfärbung wie ein Kanarienvogel), seit einer Woche zunehmende Fatigue, Pruritus, Nausea (ohne Erbrechen), 5 kg Gewichtsverlust in 2 Monaten, Inappetenz und nächtliche Hyperhidrose.
+
+**Aktuelle Anamnese:**
+Herr Petersen stelle sich aufgrund eines seit 3 Tagen bestehenden Ikterus vor, der sich als Gelbfärbung der Haut und Augen äußere ("Gelb wie ein Kanarienvogel"). Seit einer Woche leide er unter zunehmender Fatigue ("Ich sei sehr müde und könne kaum mein Alltag bewältigen") und generalisiertem Pruritus ("es jucke überall am Körper"). Er verspüre Nausea ("Ich wollte erbrechen, aber konnte nicht"). In den letzten 2 Monaten habe er 5 kg an Gewicht verloren und leide unter Inappetenz ("Ich könne nicht mehr essen"). Zudem bemerke er nächtliche Hyperhidrose ("ich fühle mich warm nachts und schwitze"). Fieber, Luftnot, Infektionsneigung, Bauchschmerzen oder Blutungen seien verneint worden. Kontakt mit infizierten Personen oder eine Bestrahlungstherapie seien ebenfalls verneint worden.
+
+**Vegetative Anamnese:**
+Bis auf die oben genannten Symptome sei die Anamnese unauffällig gewesen.
+
+**Vorerkrankungen:**
+- Katarakt (Grauer Star beidseits) seit 5 Jahren, unbehandelt.
+- Zustand nach Kreuzbandplastik des rechten Knies (Ligamentum Cruciatum anterius Plastik) nach einem Sportunfall.
+- Chronische Verspannungen am Nacken (chronischer Muskelspasmus).
+- Kopfschmerzen (Cephalgie) seit 25 Jahren.
+- Juckreiz und Hautausschlag am rechten Ohr (Ohrekzem).
+- Vor 8 Jahren stationäre Behandlung aufgrund des Verdachts auf Herzstolpern (Palpitationen/Arrhythmie), bei der jedoch keine Auffälligkeiten gefunden worden seien.
+
+**Medikamente:**
+- Ibuprofen Gel (für Nackenverspannung).
+- Ibuprofen 600 mg bei Bedarf.
+- Cortisonsalbe (für Ohrekzem).
+- Pfefferminzöl Tropfen auf Stirn (zur Förderung der Durchblutung bei Aufregung).
+
+**Allergien:**
+- Milchzuckerunverträglichkeit (Laktoseintoleranz), äußere sich mit Diarrhö.
+- Amoxicillin-Allergie, äußere sich mit Luftnot und Hautausschlag (Dyspnoe und Exanthem).
+
+**Noxen:**
+- Ex-Raucher (habe vor 3 Jahren mit dem Rauchen aufgehört). Zuvor habe er für 20 Jahre 10-15 Zigaretten pro Tag geraucht.
+- Alkoholkonsum: Täglich 2 Dosen Bier abends.
+
+**Familienanamnese:**
+- Keine Geschwister.
+- Vater: 80 Jahre alt, noch am Leben. Habe einen Schlaganfall (Apoplex) gehabt, nach dem eine Thrombendarteriektomie an der Halsschlagader durchgeführt worden sei.
+- Mutter: Habe vor einem Vierteljahr eine Hüftgelenksentzündung (Coxitis) gehabt.
+
+**Sozialanamnese:**
+- Regelmäßige Impfungen.
+- Sei vor 5 Jahren im Ausland gewesen (irrelevant für aktuelle Beschwerden).
+- Verheiratet, lebe jedoch seit 7 Jahren getrennt (Ehe nur auf dem Papier).
+- Habe 2 Töchter: eine sei gesund, die andere habe eine Lähmung (Parese) im rechten Bein aufgrund eines Geburtstraumas.
+- Arbeite als Sozialpädagoge in der Suchtberatung.`,
+                    diagnosis: 'Pankreaskopfkarzinom'
+                },
+                {
+                    id: 'ms_gastro11',
+                    title: 'Leberzirrhose',
+                    case_description: `**Patient:** Herr Manfred Petersen, 58 Jahre alt, 178 cm, 86 kg. Wohnt in Münster.
+
+**Aufnahmegrund:**
+Seit 2 Wochen bestehende, zunehmende Fatigue und Asthenie, Inappetenz, Nausea, Palmarerythem, epigastrische Dyspepsie (Völlegefühl unabhängig von Nahrungsaufnahme), Leukonychie, generalisierter Pruritus, Skleren- und Hautikterus.
+
+**Aktuelle Anamnese:**
+Herr Petersen berichte über seit einigen Tagen bestehende Müdigkeit und Antriebslosigkeit (Fatigue und Asthenie). Ihm sei aufgefallen, dass er keinen Appetit habe und ihm übel sei. Er habe Rötungen an den Handflächen (Palmarerythem) bemerkt. Er beschreibe ein "komisches Gefühl" im Bauch, das er als Völlegefühl identifiziere, welches sowohl nach dem Essen als auch unabhängig davon auftrete, selbst wenn er nichts gegessen habe. Dieses Gefühl lokalisiere er im Epigastrium. Die Beschwerden hätten vor 2 Wochen begonnen und sich seit 3 Tagen verschlimmert. Er habe auch eine helle Farbe seiner Nägel (Leukonychie) bemerkt. Es jucke ihm überall am Körper (generalisierter Pruritus), was seine Kollegin als Gelbfärbung der Augen (Sklerenikterus) bestätigt habe. Seine Kollegen hätten auch bemerkt, dass er blass und kränklich aussehe, und vermutet, er habe einen langen Urlaub gehabt (was auf einen Hautikterus hindeute). Keine Emesis, obwohl Nausea bestehe. Keine Gewichtsveränderung sei ihm bewusst, der Gürtel sei aber lockerer geworden.
+**Verneint worden seien:** Fieber, Luftnot, Infektionsneigung, Bauchschmerzen. Keine Blutung.
+
+**Vegetative Anamnese:**
+- Inappetenz.
+- Nausea ohne Emesis.
+- Stress bei der Arbeit (Sozialpädagoge im Entzugszentrum).
+- Ungewollter Gewichtsverlust (Gürtel lockerer, aber Gewicht nicht kontrolliert).
+
+**Vorerkrankungen:**
+- Gastroösophageale Refluxkrankheit (GERD) mit saurem Aufstoßen, behandelt mit Pantoprazol.
+- Gehörgangsekzem rechts.
+- Cephalgie (Kopfschmerzen) aufgrund von Nackenspasmen seit 2,5 Jahren.
+- Zustand nach stationärer Behandlung wegen Arrhythmie/Herzstolpern im Alter von 25 Jahren, wobei keine Auffälligkeiten gefunden worden seien.
+
+**Voroperationen:**
+- Zustand nach Kreuzbandplastik wegen einer Kreuzbandruptur nach einem Sportunfall beim Handballspielen vor 2 Jahren.
+
+**Medikamente:**
+- Ibuprofen-Tabletten 400 mg bei Bedarf (b.B.).
+- Ibu-Gel bei Bedarf (b.B.).
+- Cortison-Salbe 2-3 Mal pro Woche.
+- Pantoprazol 20 mg 3 Mal pro Woche.
+
+**Allergien:**
+- Keine Allergien bekannt.
+
+**Noxen:**
+- Alkoholkonsum: 1 Glas Wein jeden Abend (seit Langem).
+
+**Familienanamnese:**
+- Tochter: Habe angeborene Hüftdysplasie gehabt und sei im rechten Bein aufgrund eines Geburtstraumas gelähmt gewesen.
+- Vater: 80 Jahre alt, noch am Leben. Habe einen Apoplex gehabt, danach sei eine perkutane transluminale Angioplastie (PTA) der A. Carotis im Alter von 53 Jahren durchgeführt worden.
+- Mutter: Habe seit 3 Monaten Coxitis gehabt.
+
+**Sozialanamnese:**
+- Sozialpädagoge in der Suchtberatung.
+- Getrennt lebend (verheiratet, aber nur auf dem Papier).
+- Habe 2 Töchter (eine gesund, die andere mit Lähmung im rechten Bein).
+- Lasse sich regelmäßig impfen.`,
+                    diagnosis: 'Leberzirrhose'
+                },
+
+            ],
+            pneumologie: [
+                {
+                    id: 'ms_pneu1',
+                    title: 'Asthma Bronchiale',
+                    case_description: `**Patient:** Acksel Zwieback, 32 Jahre alt (geb. 10.03.1993 ), 180 cm, 75 kg.
+
+**Aufnahmegrund:**
+Zum ersten Mal in der letzten Nacht plötzlich aufgetretene, starke Dyspnoe, zusammen mit thorakalem Engegefühl, produktivem Husten und exspiratorischem Pfeifen, wodurch er geweckt worden sei.
+
+**Aktuelle Anamnese:**
+Der Patient sei in der letzten Nacht plötzlich durch Dyspnoe, thorakales Engegefühl, produktiven Husten und exspiratorisches Pfeifen geweckt worden. Der Auswurf sei zäh und leicht gelblich. Obwohl die Symptomatik sich von allein im Verlauf der Zeit etwas erleichtert habe, sei die Besserung minimal gewesen und deshalb sei er direkt ins Krankenhaus gekommen. Fieber, Nausea, Emesis, Schmerzen und Bewusstlosigkeit seien verneint worden. Zusätzlich gebe er an, dass er seit 2,5 Wochen eine noch nicht ganz ausgeheilte Erkältung habe. Er bemerke ab und zu ein exspiratorisches Pfeifen im Fitnessstudio und manchmal das Gefühl, als ob er eine Luftmatratze aufpusten müsste.
+
+**Vegetative Anamnese:**
+Unauffällig bis auf die oben genannten Symptome sei die Anamnese gewesen.
+
+**Vorerkrankungen und Voroperationen:**
+- Allergien gegen Gräser und Nüsse, die in der Kindheit unter einer Desensibilisierungsbehandlung nicht komplett kuriert worden seien.
+- Laktoseintoleranz.
+- Zustand nach Osteosynthese des Os zygomaticum (Jochbein) rechts, komplikationslos.
+- Zustand nach Resektion eines zusätzlichen Körperchens des Sprunggelenks links, komplikationslos.
+
+**Medikamente:**
+- Keine regelmäßige Medikation.
+- Cortisonsalbe bei Bedarf (wenn die Haut zu trocken sei).
+- Tropfen gegen Meteorismus bei Bedarf.
+- Ibuprofen 400mg gegen Muskelspannungsschmerzen bei Bedarf.
+
+**Allergien:**
+- Kreuzallergie gegen Gräser und Mehl - äußere sich mit Rhinokonjunktivitis.
+- Nüsseallergie - äußere sich mit Dyspnoe.
+- Laktoseintoleranz - äußere sich mit Abdominalgie und Diarrhö.
+
+**Noxen:**
+- Ex-Raucher: Seit 5 Jahren nicht mehr. Zuvor habe er ca. 20 Zigaretten über 12 Jahre täglich geraucht.
+- Alkoholkonsum: Verneint.
+- Drogenkonsum: Verneint.
+
+**Familienanamnese:**
+- Mutter: Habe vor kurzem einen Gesichtsfeldausfall gehabt und sei schon beim Arzt gewesen (wahrscheinlich arterielle Hypertonie).
+- Vater: (Genaue Angaben unbekannt, eventuell Leberzirrhose bei Alkoholismus).
+- Keine Geschwister.
+
+**Sozialanamnese:**
+- Wohne mit seiner Lebensgefährtin in einer Wohnung im ersten Stock ohne Aufzug.
+- Habe keine Kinder oder Tiere.
+- Beruf: Goldschmied. Verneine Kontakt auf der Arbeit mit möglichen Auslösern einer asthmatischen Krise.
+- Gehe zweimal pro Woche ins Fitnessstudio.`,
+                    diagnosis: 'Asthma Bronchiale'
+                },
+                {
+                    id: 'ms_pneu2',
+                    title: 'Pneumonie',
+                    case_description: `**Patient:** Herr Peter Müller, 62 Jahre alt (geb. 15.03.1963), 175 cm, 78 kg.
+
+**Aufnahmegrund:**
+Seit 1 Woche bestehender produktiver Husten mit gelblichem Sputum und Pyrexie (39,7 °C axillär), zusammen mit hustenabhängigen Thoraxschmerzen, Lippenzyanose, Dyspnoe beim Treppensteigen (nach ca. 1 Etage), Palpitationen und Fatigue.
+
+**Aktuelle Anamnese:**
+Herr Müller stelle sich heute wegen seit 1 Woche bestehenden produktiven Hustens mit gelblichem Sputum und Fieber vor. Er berichte, dass das Fieber am Dienstag 39,7 °C axillär betragen habe, nach Einnahme von Ibuprofen 600 mg auf 38,9 °C gesunken sei, aber innerhalb von 1-2 Stunden wieder über 39 °C angestiegen sei. Am Dienstag habe er 3-4 Tabletten Ibuprofen eingenommen, am Donnerstag 2. Zudem teile er mit, dass er hustenabhängige Thoraxschmerzen, Lippenzyanose, Dyspnoe beim Treppensteigen (bereits nach ca. 1 Etage), Herzklopfen (Palpitationen) und Müdigkeit (Fatigue) habe. Verneint worden seien Synkopen, Vertigo sowie andere Beschwerden. Er habe keinen COVID-19-Schnelltest gemacht und sei 2 oder 3 Mal geimpft (genaue Anzahl unbekannt) gewesen. Kontakt mit kranken Personen oder Exposition durch den Beruf würden verneint.
+
+**Vegetative Anamnese:**
+Insomnie (Schlafstörungen) wegen des Hustens und des Fiebers. Ansonsten sei die Anamnese unauffällig gewesen.
+
+**Vorerkrankungen und Voroperationen:**
+- Arterielle Hypertonie seit 15 Jahren.
+- Zustand nach Fazialem Herpes Zoster vor 10 Jahren, mit Acyclovir behandelt.
+- Zustand nach Orchiektomie im Alter von 24 Jahren wegen Testikularkarzinom, gefolgt von Chemotherapie. Viele Jahre danach sei er regelmäßig untersucht worden und alles sei seit 5 Jahren in Ordnung gewesen.
+- Zustand nach Os zygomaticus Fraktur (Jochbeinfraktur) rechts infolge eines Fahrradunfalls vor 7 Jahren, mit Osteosynthese behandelt. Er sei vom Fahrrad auf den Kopf gefallen, habe zum Glück einen Helm getragen. Danach sei er für 5 Tage ins Krankenhaus aufgenommen und untersucht worden. Aufgrund der Diplopie sei bei ihm ein CT des Kopfs durchgeführt worden. Die Untersuchungsergebnisse seien unauffällig gewesen.
+
+**Medikamente:**
+- Ramipril 10 mg (1-0-½).
+- ACC 600 mg (Mukolytikum).
+- Codein Dragees (Antitussiva).
+- Baldrian (Inhaltsstoffe unbekannt).
+
+**Allergien:**
+- Amoxicillin (führe zu Dyspnoe).
+- Hühnereiweiß (führe zu Zungenödem); vor 10 Jahren sei eine Immuntherapie zur Desensibilisierung durchgeführt worden.
+- Fruktoseintoleranz (führe zu Meteorismus).
+
+**Noxen:**
+- Ex-Raucher seit seinem 24. Lebensjahr (er habe gesagt: wegen Hodenkrebs). Davor habe er ab seinem 18. Lebensjahr 3-4 Zigaretten täglich geraucht.
+- Alkoholkonsum: 1-2 Gläser Wein abends.
+
+**Familienanamnese:**
+- Mutter: Katarakt (Grauer Star), arterielle Hypertonie.
+- Vater: Herzinsuffizienz (Patient berichte viel über Alkoholkonsum seines Vaters, der Hausarzt habe Alkoholabhängigkeit vermutet, aber dies sei nach Untersuchungen ausgeschlossen worden).
+- 2 Brüder: Der ältere Bruder leide an arterieller Hypertonie.
+
+**Sozialanamnese:**
+- Arbeite als Verkäufer in einem Drogeriemarkt (überwache die Arbeit der Mitarbeiter und setze sich dafür ein, dass alles an seinem Platz liege).
+- Verwitwet (erste Ehefrau sei an Mammakarzinom gestorben).
+- Lebe in fester Partnerschaft mit seiner Freundin zusammen.
+- Habe eine erwachsene Tochter. Sie habe leider einen Autounfall gesehen, bei dem 2 Leichen beteiligt gewesen seien (sie sei nicht teilgenommen, sondern nur Zeugin gewesen). Seitdem habe sie Probleme mit Kommunikation und habe Angst, alleine draußen zu gehen. Sie besuche regelmäßig einen Psychotherapeuten.`,
+                    diagnosis: 'Pneumonie'
+                },
+                {
+                    id: 'ms_pneu3',
+                    title: 'Angina Tonsillaris',
+                    case_description: `**Patient:** Herr Norbert Mayer, 56 Jahre (geb. 01.03.1969), 185 cm, 85 kg.
+
+            **Aufnahmegrund:**
+            Seit 5 Tagen bestehende, plötzlich aufgetretene Asthenie, Halsschmerzen, Odynophagie, Rhinitis und trockener Tussis.
+
+            **Aktuelle Anamnese:**
+            Herr Norbert Mayer stellte sich bei uns wegen seit 5 Tagen bestehender plötzlich aufgetretener Asthenie, Halsschmerzen, Odynophagie, Rhinitis und trockener Tussis vor. Der Patient erwähne, dass er hustenabhängige Thorakalgien begleiteten. Als Begleitsymptome nenne der Patient Cephalgie, Fieber bis 39,1 °C (axillär), Arthralgie und Myalgie.
+            Der Patient füge hinzu, dass ein COVID-19-Schnelltest bei ihm durchgeführt worden sei und das Ergebnis negativ gewesen sei.
+            Fragen nach Anosmie, Ageusie (Schmeckstörungen) und Dyspnoe seien verneint worden.
+            Auslandsreisen und Kontakt mit infizierten Personen seien ebenfalls verneint worden.
+
+            **Vegetative Anamnese:**
+            In der vegetativen Anamnese fänden sich Insomnie wegen des Hustens. Ansonsten sei sie unauffällig gewesen.
+
+            **Vorerkrankungen und Voroperationen:**
+            - Chronische Dorsalgie seit 20 Jahren wegen der Arbeit.
+            - Nephrolithiasis seit 5-6 Jahren.
+            - Arthritis urica seit 5-6 Jahren, letzter Anfall vor 1 Jahr (linkes Großzehengrundgelenk).
+            - Zustand nach Bursektomie (eitrige Schleimbeutelentzündung) links vor 5 Jahren.
+            - Zustand nach Schnittwunde (Inzision) der linken Hand (Arbeitsunfall, ambulante Wundversorgung in der Notaufnahme – genäht).
+            - Unguis incarnatus am linken kleinen Zeh (geplante OP beim Hausarzt).
+
+            **Medikamente:**
+            - Ibuprofen bei Bedarf (b.B.) wegen Rückenschmerzen und Kniegelenkschmerzen.
+            - Zyloric 300 mg (1-0-0) (Allopurinol).
+
+            **Allergien und Unverträglichkeiten:**
+            - Hülsenfrüchte – äußere sich mit Meteorismus.
+
+            **Noxen:**
+            - Nikotinkonsum: Seit 2,5 Jahren 20-30 Zigaretten pro Tag, früher 5-6 Zigaretten pro Tag.
+            - Alkoholkonsum: 1-2 Flaschen Bier pro Woche.
+
+            **Familienanamnese:**
+            Sein Vater habe an Arthritis urica gelitten und sei vor 6 Jahren an Silikose (Staublungen) gestorben.
+            Seine Mutter sei mehrmals wegen Ileus aufgrund von Adhäsionen operiert worden.
+
+            **Sozialanamnese:**
+            - Gärtner, arbeite in einem Laden.
+            - Seit 2,5 Jahren geschieden (deshalb sei er gestresst und rauche mehr).
+            - Wohne mit seiner Freundin zusammen.`,
+                    diagnosis: 'Angina Tonsillaris'
+                },
+                {
+                    id: 'ms_pneu4',
+                    title: 'Obstruktives Schlafapnoe-Syndrom (OSAS)',
+                    case_description: `**Patient:** Herr Franz Krämer, 61 Jahre alt (wird in 3 Wochen 62), 185 cm, 93 kg.
+
+            **Aufnahmegrund:**
+            Seit einem Monat bestehende Fatigue, begleitet von Cephalgie, Vertigo, Somnolenz und Globusgefühl im Hals.
+
+            **Aktuelle Anamnese:**
+            Herr Krämer stellte sich bei uns wegen seit einem Monat angefangener Fatigue vor. Des Weiteren berichte er über Cephalgie, Vertigo, Somnolenz und Globusgefühl im Hals. Im Bezug auf die Cephalgie erkläre der Patient, dass sie diffus, ohne Ausstrahlung und mit einer Intensität von 4-5/10 seien. Alle Beschwerden hätten in der selben Zeit angefangen. Laut der Partnerin des Patienten schnarche er und habe mehrmals in der Nacht Apnoen. Er füge hinzu, dass er eingenickt sei.
+
+            **Vegetative Anamnese:**
+            Die vegetative Anamnese ergebe, dass der Patient an intermittierender Obstipation sowie nächtlicher Hyperhidrose und Nykturie leide (Nykturie sei zielgerichtet erfragt worden).
+
+            **Vorerkrankungen:**
+            - Arterielle Hypertonie seit 15 Jahren.
+            - Diabetes mellitus Typ 2 seit 7-8 Jahren.
+            - Gonarthrose seit 6 Jahren (Schmerzen am Kniegelenk wegen Verschleiß).
+            - Zustand nach Steißbeinfistel-Operation (Pilonidalsinus).
+            - Zustand nach Handverbrennung bei einem Grillunfall.
+
+            **Medikamente:**
+            - Valsartan 80 mg (1-0-0).
+            - Metformin 500 mg (1-0-1).
+            - Ibuprofen Salbe bei Bedarf (b.B.).
+            - DulcoLax Tropfen.
+            - Spritzen gegen Allergie.
+
+            **Allergien:**
+            - Haselnusspollenallergie (führe zu Urtikaria/Nesselsucht).
+
+            **Noxen:**
+            - Nikotinkonsum: Habe mit 18 Jahren mit dem Rauchen angefangen (1 Schachtel/Tag), seit 2 Jahren rauche er 10 Zigaretten/Tag (insgesamt 42 Packungsjahre).
+            - Alkoholkonsum: Nicht angegeben.
+            - Drogenkonsum: Nicht angegeben.
+
+            **Familienanamnese:**
+            - Mutter: Leide an Glaukom (Grüner Star) und wohne in Heilhaus (Anmerkung: Name des Ortes).
+            - Vater: Sei an Ösophagusvarizenruptur verstorben.
+            - Ein Enkel leide an zystischer Fibrose (Mukoviszidose).
+            - Keine Geschwister.
+
+            **Sozialanamnese:**
+            - Beruf: Zahntechniker.
+            - Verwitwet.
+            - Wohne mit neuer Partnerin.
+            - Habe 3 Kinder und 2 Enkelkinder.`,
+                    diagnosis: 'Obstruktives Schlafapnoe-Syndrom (OSAS)'
+                }
+            ],
+            orthopädie: [
+                {
+                    id: 'ms_ortho1',
+                    title: 'LWS-Diskusprolaps',
+                    case_description: `**Patientin:** Frau Angela Doris Tempel, 53 Jahre (geb. 23.12.1967), 165 cm, 87 kg.
+
+**Aufnahmegrund:**
+Seit gestern bestehende Rückenschmerzen im unteren Bereich (Lendenschmerzen), mit Ausstrahlung in den Oberschenkel bis zum kleinen Zeh, begleitet von Kribbeln und Taubheitsgefühl im Fuß. Die Beschwerden traten nach dem Heben eines Kübels bei der Gartenarbeit auf.
+
+**Aktuelle Anamnese:**
+Die Patientin berichte über plötzlich aufgetretene, starke Schmerzen im unteren Rücken, die gestern beim Heben eines Kübels im Garten begonnen hätten. Der Schmerz strahle in den Oberschenkel bis zum kleinen Zeh aus. Gleichzeitig verspüre sie Kribbeln und Taubheitsgefühl im Fuß. Ähnliche Beschwerden habe sie zuvor noch nie gehabt. Gelegentlich leide sie unter Kopfschmerzen, die nach Ruhe in einem dunklen Zimmer wieder abklängen.
+
+**Vegetative Anamnese:**
+- Obstipation seit ihrer Jugendzeit.
+- Schlafstörungen seit den Wechseljahren (seit 7 Jahren).
+
+**Vorerkrankungen und Voroperationen:**
+- Diabetes mellitus Typ I seit Kindheit.
+- Hohe Blutfettwerte (Hyperlipidämie) seit 10 Jahren.
+- Herzrhythmusstörungen seit 7 Jahren.
+- Zustand nach Schulterarthroskopie nach einem Sturz vom Pferd vor 20 Jahren.
+
+**Medikamente:**
+- Insulinpumpe.
+- Atorvastatin 10 mg (1-0-0).
+
+**Allergien:**
+- Kreuzallergie: Birke/Haselnuss mit geschwollenen Lippen und Juckreiz.
+
+**Noxen:**
+- Nikotinkonsum: 10 Zigaretten täglich seit 35 Jahren.
+- Alkoholkonsum: Gelegentlich ein paar Gläser Wein oder Prosecco (Weißwein).
+
+**Familienanamnese:**
+- Vater: Zustand nach Milzruptur nach einem Fahrradunfall vor 30 Jahren, operiert.
+- Mutter: Zustand nach Schenkelhalsfraktur nach einem Autounfall vor 40 Jahren.
+
+**Sozialanamnese:**
+- Bauingenieurin.
+            - Verheiratet, habe 3 Kinder.`,
+                    diagnosis: 'LWS-Diskusprolaps'
+                }
+            ],
+            infekt: [
+                {
+                    id: 'ms_infekt1',
+                    title: 'Borreliose',
+                    case_description: `**Patient:** Herr Georg Rauter, 54 Jahre (geb. 23.09.1966), 178 cm, 87 kg.
+
+**Aufnahmegrund:**
+Seit 3 Tagen bestehende Abgeschlagenheit, Gelenkschmerzen und Fieber (37,9 °C), sowie eine seit 12 Tagen vorhandene, sich ausdehnende, schmerzhafte, ringförmige Hautrötung (ca. 5 cm) am linken Oberschenkel, die in der Mitte heller ist und von hinten nach vorne gewandert ist.
+
+**Aktuelle Anamnese:**
+Der Patient berichte über eine seit 3 Tagen bestehende Abgeschlagenheit, Gelenkschmerzen und Fieber. Am linken Oberschenkel sei ihm vor 12 Tagen eine ringförmige Rötung aufgefallen. Dieser Fleck sei etwa 5 cm groß, in der Mitte heller und habe sich im Laufe der Zeit ausgedehnt und sei von hinten nach vorne gewandert. Die Rötung sei schmerzhaft. Herr Rauter sei vor 2 Wochen im Schwarzwald wandern gewesen; seitdem bestehe die Hautrötung. Er wohne in der Stadt und habe keine Tiere.
+
+**Vegetative Anamnese:**
+- Einschlafstörungen seit mehreren Monaten aufgrund von Arbeitsstress.
+
+**Vorerkrankungen und Voroperationen:**
+- Heiserkeit nach einem Streit bei der Arbeit vor 10 Jahren.
+- Herzrhythmusstörungen vor 2 Jahren, stationär zum Langzeit-EKG.
+- Zustand nach Jochbeinfraktur nach einem Fahrradunfall vor 2 Jahren, konservativ behandelt.
+- Zustand nach Masern als Kind (durch Paramyxoviren verursacht).
+
+**Medikamente:**
+- Pastillen gegen Heiserkeit bei Bedarf.
+- Paracetamol bei Bedarf.
+- Baldriankapseln (3-4 Kapseln am Abend).
+
+**Allergien:**
+- Aspirin-Unverträglichkeit.
+- Allergie gegen Gummihandschuhe.
+- Apfelessigallergie.
+
+**Noxen:**
+- Nikotinkonsum: Seit 8 Jahren 8 Zigaretten täglich. Zuvor 30 Zigaretten täglich, begonnen mit 16 Jahren (49 Packungsjahre).
+- Alkoholkonsum: 1 Flasche Wein pro Woche.
+
+**Familienanamnese:**
+- Mutter: Koronare Herzkrankheit (KHK), 80 Jahre.
+- Vater: Zustand nach Harnvergiftung (Urämie), 85 Jahre.
+
+**Sozialanamnese:**
+- Habe eine eigene Büroreinigungsfirma.
+- Verheiratet, habe 2 Kinder.`,
+                    diagnosis: 'Borreliose'
+                },
+                {
+                    id: 'ms_infekt2',
+                    title: 'Infektiöse Mononukleose',
+                    case_description: `**Patient:** Herr Neumann, 55 Jahre alt (geb. 15.07.1970 - ausgedacht), 185 cm (ausgedacht), 85 kg (ausgedacht).
+
+            **Aufnahmegrund:**
+            Seit heute Morgen zunehmende, starke Halsschmerzen, begleitet von Asthenie, Odynophagie, Rhinitis und trockenem Husten, sowie Fieber (39 °C), Schüttelfrost, Hyperhidrose, Dysphagie und Lymphadenopathie.
+
+            **Aktuelle Anamnese:**
+            Herr Neumann stellte sich heute bei uns wegen seit heute Morgen bestehender, zunehmender starker Halsschmerzen vor. Der Patient berichte, dass die Schmerzen seit 5 Tagen langsam aufgetreten seien und sich im Verlauf der Zeit verschlechtert hätten. Des Weiteren gebe er an, dass die Schmerzen auf einer Schmerzskala bei 8/10 lägen, die trotz der Einnahme von Analgetika nicht verbessert würden. Ferner seien dem Patienten folgende Begleitsymptome aufgefallen: Pyrexie (39 °C), Schüttelfrost, Hyperhidrose, Dysphagie und Lymphadenopathie. Herr Neumann erkläre, dass er nicht essen oder trinken könne. Zusätzlich erzähle der Patient, dass er produktiven Husten mit hellem Sputum und Abdominalgie superior (Hepatosplenomegalie) habe.
+            Keine Dyspnoe oder Thorakalgie seien angegeben worden.
+
+            **Vegetative Anamnese:**
+            Bis auf Oligurie sei die vegetative Anamnese unauffällig gewesen.
+
+            **Vorerkrankungen und Voroperationen:**
+            - Diabetes mellitus Typ 2 seit 5 Jahren.
+            - Morbus Crohn seit 4 Jahren.
+            - Zustand nach Autounfall mit Gehirnerschütterung vor 5 Jahren.
+
+            **Medikamente:**
+            - Metformin 1000 mg (1-0-0) regelmäßig.
+            - Imurek gegen Morbus Crohn.
+
+            **Allergien:**
+            - Penizillin-Allergie.
+            - Erdnuss-Allergie.
+
+            **Noxen:**
+            - Nikotinkonsum: Raucht 10-20 Zigaretten pro Tag seit 30 Jahren.
+            - Alkoholkonsum: 1 Glas Bier am Wochenende.
+
+            **Familienanamnese:**
+            In der Familienanamnese fänden sich folgende wichtige Erkrankungen:
+            - Mutter: Ovarialkarzinom.
+            - Vater: Habe Diabetes mellitus Typ 2 gehabt und sei am Bein operiert worden.
+            - Bruder: Leide an Hypertonie.
+
+            **Sozialanamnese:**
+            - Beruf: Verkäufer.
+            - Verheiratet.
+            - Habe 2 Kinder.
+            - Sei zu Hause gut versorgt.`,
+                    diagnosis: 'Infektiöse Mononukleose'
+                }
+
+            ],
+            urologie: [
+                {
+                    id: 'ms_uro1',
+                    title: 'Urolithiasis',
+                    case_description: `**Patient:** Herr Hans-Ulrich Förster, 57 Jahre alt (geb. 12.11.1967), 183 cm, 86 kg. Sein Hausarzt sei Dr. Andreas Müller.
+
+**Aufnahmegrund:**
+Seit 1,5 Stunden bestehende, starke, stechende Unterleibschmerzen, die in das Genitale ausstrahlen, begleitet von Nausea, zweimaligem Erbrechen und Bauchkrämpfen.
+
+**Aktuelle Anamnese:**
+Herr Förster stellte sich mit seit 1,5 Stunden bestehenden, starken, stechenden Unterleibschmerzen vor. Die Schmerzintensität gebe er mit 8 bis 9 auf einer Skala an. Die Schmerzen strahlten in das Genitale aus. Des Weiteren klage er über Nausea („ich fühle mich sehr übel“), Emesis („ich habe zweimal erbrochen“) und Bauchkrämpfe.
+
+**Vegetative Anamnese:**
+Bis auf Insomnie (Durchschlafstörung) aufgrund der Schmerzen sei die Anamnese unauffällig gewesen.
+
+**Vorerkrankungen und Voroperationen:**
+- Arterielle Hypertonie (Bluthochdruck).
+- Tendovaginitis (Sehnenscheidenentzündung).
+- Zustand nach Rippenkontusion (Rippenprellung), wobei die stationäre Aufnahme aufgrund eines Verdachts auf Pneumothorax (Luft zwischen Rippen und Lunge) erfolgt sei.
+Der Patient sei noch nie operiert worden.
+
+**Medikamente:**
+- Diltiazem (1-0-1) regelmäßig.
+- Diclofenac-Salbe für die Tendovaginitis bei Bedarf (b.B.).
+- Baldrian bei Bedarf (b.B.).
+
+**Allergien:**
+- Es seien keine Allergien bekannt.
+
+**Noxen:**
+- Nikotinkonsum: Nichtraucher seit 4 Jahren. Zuvor habe er 40-50 Zigaretten pro Tag für 35 Jahre geraucht.
+- Alkoholkonsum: 2-3 Bier jeden Abend.
+- Drogenkonsum: Einen Joint Cannabis am Wochenende, um „runterzukommen“.
+
+**Familienanamnese:**
+- Mutter: Leide an einer durch Skoliose (Seitverbiegung der Wirbelsäule) bedingten Gehstörung.
+- Vater: Leide an einer Perfusionsstörung (Durchblutungsstörung) im rechten Bein. Der Hallux (Großzeh) sei amputiert worden.
+
+**Sozialanamnese:**
+- Arbeite in einer Reiseagentur und empfinde seine Arbeit als sehr stressig.
+- Verheiratet (nur auf dem Papier), wohne zurzeit mit seiner Freundin zusammen.
+- Habe 3 gesunde Kinder aus erster Ehe.
+- Habe keine Haustiere.
+- Lasse sich regelmäßig impfen.`,
+                    diagnosis: 'Urolithiasis'
+                },
+                {
+                    id: 'ms_uro2',
+                    title: 'Pyelonephritis',
+                    case_description: `**Patient:** Herr Thorsten Büttner, 41 Jahre alt (geb. 15.05.1983 - ausgedacht), 185 cm, 74 kg.
+
+**Aufnahmegrund:**
+Seit 2 Stunden bestehendes hohes Fieber (40 °C) sowie seit gestern Nachmittag bestehende, zunehmende, starke Schmerzen in der rechten Flanke, die in den Unterbauch ausstrahlen.
+
+**Aktuelle Anamnese:**
+Herr Büttner stelle sich heute wegen seit 2 Stunden bestehenden hohen Fiebers (40 °C) und seit gestern Nachmittag bestehenden Schmerzen in der rechten Flanke vor. Die Schmerzen hätten sich im Laufe der Zeit verschlimmert und lägen derzeit auf einer Schmerzskala bei 7-8. Er gebe an, dass die Schmerzen in den Unterbauch ausstrahlen würden. Darüber hinaus seien ihm folgende Begleitsymptome aufgefallen: Nausea, zweimaliges Erbrechen, Schüttelfrost, Pollakisurie (häufigeres Wasserlassen), Dysurie (brennende Schmerzen beim Wasserlassen) sowie Hämaturie (Blut im Urin). Er habe bereits Ibuprofen 400 mg eingenommen, was jedoch keine Besserung gebracht habe. Er äußere, dass er Novalgin Tabletten kenne und diese auch nehmen würde, aber keine zu Hause gehabt habe. Fragen nach Synkope, Vertigo sowie anderen Beschwerden seien verneint worden.
+
+**Vegetative Anamnese:**
+Insomnie (Schlafstörungen) wegen des Hustens und des Fiebers. Ansonsten sei die Anamnese unauffällig gewesen.
+
+**Vorerkrankungen und Voroperationen:**
+- Orthostatische Hypotonie seit langer Zeit.
+- Chronischer Meteorismus.
+- Clavus (Hühnerauge), konservativ mit Tropfen behandelt.
+- Im Alter von 25 Jahren habe er als Fahrer einen Autounfall erlitten, der zu einem Schleudertrauma der Halswirbelsäule (HWS) geführt und konservativ mit einer Halskrawatte behandelt worden sei.
+- Im Alter von 35 Jahren habe er eine perforierte Appendizitis erlitten, die zu einer Peritonitis geführt, operativ behandelt worden sei und bei der 2 Drainagerohre angelegt worden seien.
+
+**Medikamente:**
+- Lefax bei Bedarf (b.B.).
+- Effortil Tropfen.
+- Ibuprofen (wegen derzeitiger Beschwerden).
+- Omeprazol 20 mg jeden zweiten Tag.
+
+**Allergien:**
+- Amoxicillin-Allergie (Erythem).
+- Unverträglichkeit gegen Steinobst (z.B. Aprikosen), äußere sich mit Meteorismus und Dyspepsie.
+
+**Noxen:**
+- Ex-Raucher seit 7 Jahren. Zuvor habe er 10 Zigaretten täglich für 15 Jahre geraucht.
+- Alkoholkonsum: Gelegentlich bei Feiern und Einladungen.
+
+**Sozialanamnese:**
+- Getrennt lebend, habe eine Tochter in der dritten Klasse, die gesund sei.
+- Beruf: Friseur, habe sein eigenes Geschäft.
+
+**Familienanamnese:**
+- Mutter: 78 Jahre alt. Bei ihr sei ein MRT wegen Diskusprolaps durchgeführt worden, wobei zufällig ein gutartiger Nebennierenrindentumor (Conn-Adenom) festgestellt worden sei, der operativ entfernt worden sei.
+- Vater: Leide an einer Durchblutungsstörung im Bein (Raucherbein / pAVK) und könne nicht mehr als 100 m ohne Pause gehen.`,
+                    diagnosis: 'Pyelonephritis'
+                }
+            ],
+
+            dermatologie: [
+                {
+                    id: 'ms_derm1', // Neue ID für Dermatologie-Fall 1
+                    title: 'Lymphangitis nach Insektenstich',
+                    case_description: `**Patient:** Herr Tobias Becker, 34 Jahre (geb. 12.03.1990), 178 cm (ausgedacht), 75 kg (ausgedacht). Versichert bei: AOK Niedersachsen.
+
+        **Aufnahmegrund:**
+        Seit gestern zunehmende Rötung, Schwellung, Druckschmerz sowie ein sichtbarer roter Streifen am linken Unterschenkel, begleitet von stechenden Schmerzen, Fieber und Schüttelfrost nach einem Wespenstich.
+
+        **Aktuelle Anamnese:**
+        Der Patient stellte sich wegen seit gestern zunehmender Rötung, Schwellung, Druckschmerz sowie eines sichtbaren roten Streifens am linken Unterschenkel vor. Er berichte, dass er am Vortag während eines Wanderausflugs im Harz einen Wespenstich erlitten habe. Seitdem bestünden stechende Schmerzen (5/10), ein deutlich spürbarer roter Strich oberhalb der Stichstelle, sowie Fieber (gemessen bis 38,5 °C) und Schüttelfrost. Übelkeit, Juckreiz und Atemnot seien verneint worden.
+
+        **Vegetative Anamnese:**
+        Der Appetit sei normal gewesen, das Gewicht stabil. Vermehrtes Schwitzen bestehe durch das Fieber. Der Schlaf sei leicht gestört gewesen, da die Tochter erkältet sei. Stuhlgang und Miktion seien unauffällig gewesen.
+
+        **Vorerkrankungen:**
+        - Mikroprolaktinom der Hypophyse (behandelt mit Norprolac).
+        - Konjunktivitis.
+        - Osteitis pubis.
+        - Rippenkontusion.
+
+        **Voroperationen:**
+        Keine Operationen.
+
+        **Medikamente:**
+        - Norprolac 75 mcg.
+        - Loperamid bei Bedarf.
+
+        **Allergien / Unverträglichkeiten:**
+        - Amoxicillin (führe zu anaphylaktischem Schock).
+        - Latex (führe zu Juckreiz).
+        - Rohkost (führe zu Durchfall bei ungenügend gekochtem Gemüse).
+
+        **Noxen:**
+        - Raucher bis 29 Jahre (6,5 Packungsjahre), aktuell Nichtraucher.
+        - Alkoholkonsum: Gelegentlich 1 Glas Wein, aktuell Verzicht wegen Norprolac.
+
+        **Sozialanamnese:**
+        - Selbstständiger Podologe.
+        - Verheiratet, habe 2 Töchter (die ältere habe eine Stammzelltransplantation wegen Leukämie gehabt).
+
+        **Familienanamnese:**
+        - Vater: Habe ein Ulcus ventriculi gehabt und sei operiert worden.
+        - Mutter: Habe eine Perikarditis gehabt (stationäre Behandlung).`,
+                    diagnosis: 'Lymphangitis nach Insektenstich'
+                },
+                {
+                    id: 'ms_derm2', // Neue ID für Dermatologie-Fall 2
+                    title: 'Erysipel nach Insektenstich',
+                    case_description: `**Patient:** Herr Florian Seidel, 34 Jahre (geb. 24.07.1990), 178 cm (ausgedacht), 75 kg (ausgedacht). Versichert bei: TK.
+
+        **Aufnahmegrund:**
+        Seit gestern zunehmend schmerzhafte, stark gerötete und geschwollene, scharf begrenzte, glänzende und überwärmte Stelle am linken Unterschenkel nach einem Wespenstich vor 2 Tagen, begleitet von Fieber bis 39 °C, Schüttelfrost und Müdigkeit.
+
+        **Aktuelle Anamnese:**
+        Der Patient bemerke seit gestern eine zunehmend schmerzhafte, stark gerötete und geschwollene Stelle am linken Unterschenkel. Er sei dort vor 2 Tagen von einer Wespe gestochen worden. Die Rötung habe sich rasch ausgeweitet, sei scharf begrenzt, die Haut glänze, und die Region sei überwärmt. Zusätzlich bestünden Fieber bis 39 °C, Schüttelfrost und Müdigkeit. Ein roter Strich sei nicht sichtbar gewesen und Juckreiz bestehe nicht.
+
+        **Vegetative Anamnese:**
+        Der Appetit sei vermindert gewesen, das Gewicht stabil. Der Schlaf sei gestört gewesen. Stuhlgang und Miktion seien unauffällig gewesen.
+
+        **Vorerkrankungen:**
+        - Mikroprolaktinom.
+        - Konjunktivitis.
+        - Osteitis pubis.
+        - Rippenprellung.
+
+        **Voroperationen:**
+        Keine Operationen.
+
+        **Medikamente:**
+        - Norprolac 75 mcg.
+        - Loperamid bei Bedarf.
+
+        **Allergien / Unverträglichkeiten:**
+        - Amoxicillin (führe zu anaphylaktischem Schock).
+        - Latex (führe zu Pruritus).
+
+        **Noxen:**
+        - Ex-Raucher.
+        - Kein Alkoholkonsum.
+
+        **Sozialanamnese:**
+        - Selbstständiger Podologe.
+        - Verheiratet, habe 2 Kinder.
+
+        **Familienanamnese:**
+        - Vater: Habe ein Ulcus ventriculi gehabt.
+        - Mutter: Habe eine Perikarditis gehabt.`,
+                    diagnosis: 'Erysipel nach Insektenstich'
+                },
+                {
+                    id: 'ms_derm3', // Neue ID für Dermatologie-Fall 3
+                    title: 'Allergische Reaktion nach Wespenstich',
+                    case_description: `**Patient:** Herr Markus Steiner, 34 Jahre (geb. 18.06.1990), 178 cm (ausgedacht), 75 kg (ausgedacht). Versichert bei: Barmer.
+
+        **Aufnahmegrund:**
+        Innerhalb von Minuten nach einem Wespenstich am linken Unterschenkel entwickelte sich eine großflächige Rötung, Schwellung und starker Juckreiz, begleitet von leichtem Engegefühl im Brustkorb, Schwindel und Übelkeit.
+
+        **Aktuelle Anamnese:**
+        Der Patient berichte, dass er gestern beim Grillen im Garten von einer Wespe am linken Unterschenkel gestochen worden sei. Innerhalb von Minuten hätten sich eine großflächige Rötung, Schwellung und starker Juckreiz entwickelt. Er klage über ein leichtes Engegefühl im Brustkorb, Schwindel und Übelkeit. Eine Synkope sei nicht aufgetreten. Fieber, ein roter Strich oder starke Schmerzen seien verneint worden.
+
+        **Vegetative Anamnese:**
+        Der Appetit sei leicht vermindert gewesen, das Gewicht stabil. Der Schlaf sei gestört gewesen. Stuhlgang und Miktion seien normal gewesen.
+
+        **Vorerkrankungen:**
+        - Mikroprolaktinom.
+        - Konjunktivitis.
+        - Osteitis pubis.
+        - Rippenkontusion.
+
+        **Voroperationen:**
+        Keine Operationen.
+
+        **Medikamente:**
+        - Norprolac 75 mcg.
+        - Loperamid bei Bedarf (b.B.).
+
+        **Allergien / Unverträglichkeiten:**
+        - Amoxicillin (führe zu anaphylaktischem Schock).
+        - Latex (führe zu Hautreaktionen/Pruritus).
+
+        **Noxen:**
+        - Ex-Raucher.
+        - Kein aktueller Alkoholkonsum.
+
+        **Sozialanamnese:**
+        - Selbstständig in der Fußpflege.
+        - Verheiratet, habe 2 Kinder.
+
+        **Familienanamnese:**
+        - Vater: Habe eine Magen-OP gehabt (Ulcus ventriculi operiert).
+        - Mutter: Habe eine Perikarditis gehabt.`,
+                    diagnosis: 'Allergische Reaktion nach Wespenstich'
+                },
+                {
+                    id: 'ms_derm4', // Neue ID für Dermatologie-Fall 4
+                    title: 'Herpes Zoster',
+                    case_description: `**Patient:** Herr Gerhard Hübner, 68 Jahre (geb. 01.04.1955 - ausgedacht), 173 cm, 67 kg.
+
+        **Aufnahmegrund:**
+        Seit 3-4 Wochen bestehende, drückende Rückenschmerzen im unteren Bereich, die sich beim Sitzen und Liegen verstärken, begleitet von Brachialgien und Oberschenkelschmerzen seit 1 Woche, sowie roten, ringförmigen Eiterbläschen (Pusteln) mit Juckreiz im Bereich der linken Skapula seit einigen Tagen. Zusätzlich bestehe Verwirrtheit und Müdigkeit.
+
+        **Aktuelle Anamnese:**
+        Herr Hübner stellte sich wegen seit 3-4 Wochen bestehender, drückender Rückenschmerzen im unteren Bereich vor. Die Schmerzintensität liege bei 7-8/10. Beim Sitzen sowie Liegen verstärkten sich die Schmerzen. Seit 1 Woche bestünden zudem Brachialgien und Oberschenkelschmerzen. Seit ein paar Tagen seien rote, ringförmige Eiterbläschen (Pusteln) mit Juckreiz auf der Haut im Bereich der linken Skapula aufgetreten. Er sei verwirrt und leide seit 10 Tagen unter Müdigkeit. Fieber und Nachtschweiß seien verneint worden. Er esse seit 10 Tagen kein Fleisch mehr, was mit Appetitlosigkeit seit dieser Zeit einhergehe.
+
+        **Vegetative Anamnese:**
+        Der Patient berichte über Probleme beim Ein- und Durchschlafen wegen der Schmerzen. Seit Jahren bestehe Obstipation. Eine ungewollte Gewichtsabnahme von 6 kg in 2 Monaten sei zu verzeichnen.
+
+        **Vorerkrankungen:**
+        - Arterielle Hypertonie (aHT) seit 20 Jahren.
+        - Beckenschiefstand (Beinlängendifferenz).
+        - Arbeitsunfall mit Rippenprellung vor 7 Jahren, konservativ behandelt.
+        - Prostatakarzinom vor 3,5 Jahren, operativ behandelt; die regelmäßigen Nachkontrollen seien unauffällig gewesen, die letzte Kontrolle sei vor 5 Monaten erfolgt.
+        - Ohrekzem (links).
+
+        **Medikamente:**
+        - Valsartan 80 mg (1-0-0) gegen aHT.
+        - Baldrian Dragees (3-4 Tropfen täglich).
+        - Leinsamen bei Bedarf (gegen Verstopfung).
+        - Tiazolin Salbe 2%.
+
+        **Allergien und Unverträglichkeiten:**
+        - Kreuzallergie zwischen Gräsern (führe zu Schnupfen) und Melone (führe zu Diarrhö).
+        - Allergie gegen Novalgin (führe zu Übelkeit).
+
+        **Noxen:**
+        - Nikotinkonsum: 1-2 Zigaretten/Tag (seit 4 Jahren), 5-10 Z/T (seit 20. Lebensjahr), Abends 1 Glas Rotwein.
+
+        **Familienanamnese:**
+        - Mutter: Sei mit 85 Jahren an Darminfarkt gestorben.
+        - Vater: Lebe im Seniorenheim und leide an Kachexie und Wundheilungsstörungen.
+
+        **Sozialanamnese:**
+        - Rentner, zuvor Industriebandarbeiter.
+        - Verheiratet; die goldene Hochzeit stehe nächste Woche an.`,
+                    diagnosis: 'Herpes Zoster'
+                },
+                {
+                    id: 'ms_derm5', // Neue ID für Dermatologie-Fall 5
+                    title: 'Basaliom',
+                    case_description: `**Patientin:** Frau Lorinz Marianne, 61 Jahre (geb. 23.09.1962), 179 cm, 86 kg.
+
+            **Aufnahmegrund:**
+            Seit 3-4 Wochen bestehende, offene, nicht schmerzhafte, nicht heilende Wunde am linken Nasenflügel, die kraterförmig aussieht, Perlenknötchen und rötliche Gefäße am Rand aufweist, verkrustet ist, manchmal nässt und blutet.
+
+            **Aktuelle Anamnese:**
+            Die Patientin stellte sich heute wegen seit 3-4 Wochen bestehender offener, nicht schmerzhafter, nicht heilender Wunde am linken Nasenflügel vor. Die Wunde sehe wie ein Krater (Loch/Vase) aus, habe Perlenknötchen (Papula), rötliche Gefäße um die Grenze und sei verkrustet, jedoch nässe (Sekretion) sie manchmal und gehe mit Blutung einher. In den letzten 10 Tagen habe sich die Wunde vergrößert und sei ungefähr 4-5 mm groß. Seit einer Woche verwende sie Bepanthen Creme, die keine wesentliche Verbesserung gebracht habe. Auf Nachfrage verneinte sie eine Verletzung oder Sonnenbrand.
+
+            **Vegetative Anamnese:**
+            Bis auf Parasomnie und Diarrhö wegen Fruktoseintoleranz sei die vegetative Anamnese unauffällig gewesen. Ihr Partner schnarche (hier habe die Patientin gelacht und über den ersten Mann erzählt, dass er auch geschnarcht habe).
+
+            **Gynäkologische Anamnese:**
+            Die gynäkologische Anamnese habe ein Klimakterium ergeben.
+
+            **Impfstatus:**
+            Unauffällig.
+
+            **Vorerkrankungen:**
+            1.  Ulkus Duodeni, die vor 2 Jahren diagnostiziert worden sei; damals habe sie eine Therapie (Antibiotikum) gegen Helicobacter pylori bekommen. Sie nehme Omeprazol 20 mg abends ein.
+            2.  Chronische Cephalgie wegen Wetterempfindlichkeit seit 10 Jahren, Ibuprofen bei Bedarf oder Homöopathisches Mittel.
+            3.  Wadenschmerzen nach Fahrradfahren seit langem, Magnesium bei Bedarf (Frage nach Varizen sei verneint worden).
+            4.  Panaritium (Nagelgeschwür) am rechten Zeigefinger vor 2,5 Wochen (etwas sei bei der Gartenarbeit in ihren Finger gekommen; im Sommer sei sie fast immer draußen im Garten).
+            5.  Verdacht auf Vorhofflimmern vor 7 Jahren (sei im Krankenhaus gewesen, die Diagnose sei ausgeschlossen worden).
+
+            **Voroperationen:**
+            - Tibiakopffraktur (Caput tibiae Fraktur) links im Alter von 18 Jahren wegen eines Fahrradunfalls, die mit Osteosynthese behandelt worden sei.
+
+            **Medikamente:**
+            - Omeprazol 20 mg (0-0-1).
+            - Ibuprofen bei Bedarf (b.B.).
+            - Magnesium bei Bedarf (b.B.).
+            - Homöopathisches Mittel bei Bedarf (b.B.).
+            - Bepanthen Creme (wegen aktueller Beschwerden).
+
+            **Allergien:**
+            - Gräserpollen (führe zu Rhinitis, Niesen/Sternutation).
+            - Laktoseintoleranz (führe zu Diarrhö).
+
+            **Noxen:**
+            - Ex-Raucherin seit dem 40. Lebensjahr. Davor habe sie 25 Jahre lang ½ Schachtel geraucht (12,5 Packungsjahre).
+            - Alkoholkonsum: 1 Glas alkoholfreies Bier täglich.
+
+            **Familienanamnese:**
+            - Vater: Morbus Scheuermann (habe eine leichte Kyphose/sei leicht nach vorne gebeugt).
+            - Mutter: Anus praeter, Rektumkarzinom (Mastdarmkrebs).
+            - Keine Geschwister.
+
+            **Sozialanamnese:**
+            - Geschieden, sei in Partnerschaft und lebe mit ihrem Partner zusammen.
+            - Beruf: Briefträgerin (hohe Sonnenexposition).
+            - Verbringe oft Zeit im Garten.
+            - Habe 4 erwachsene Kinder; die mittlere Tochter leide an Multipler Sklerose (Encephalomyelitis disseminata).`,
+                    diagnosis: 'Basaliom'
+                }
+
+            ],
+            angiologie: [
+                {
+                    id: 'ms_angio1', // Neue ID für Angiologie-Fall 1
+                    title: 'Periphere arterielle Verschlusskrankheit (pAVK)',
+                    case_description: `**Patient:** Herr Löffler, 69 Jahre alt (geb. 01.07.1955 - ausgedacht), 179 cm, 96 kg.
+
+**Aufnahmegrund:**
+Seit 3-4 Wochen progrediente, dumpfe, persistierende Schmerzen in der rechten Wadenregion (Regio Suralis) mit Ausstrahlung in den rechten Fuß. Die Schmerzen träten beim Gehen nach etwa 100 Metern auf.
+
+**Aktuelle Anamnese:**
+Herr Löffler stellte sich heute wegen seit 3-4 Wochen progredienter, dumpfer, persistierender rechtseitiger Schmerzen in der Wadenregion (Regio Suralis) mit Ausstrahlung in den rechten Fuß vor. Die Schmerzen seien langsam aufgetreten und im Laufe der Zeit schlimmer geworden. Ferner beklage er Schmerzen nach 100 Metern Gehen; früher habe er 500 Meter ohne Schmerzen gehen können. Darüber hinaus klage er über Nageldystrophie (Fehlwuchs, Nagelbrüchigkeit), glänzende Haut, Haarausfall und ein Kältegefühl in der Regio Suralis. Er habe noch keine Medikamente gegen die aktuellen Beschwerden eingenommen.
+Fragen nach Vomitus, Dyspnoe, Nausea, Tachykardie, Palpitationen, Vertigo und Ödemen seien verneint worden.
+
+**Vegetative Anamnese:**
+Chronische Obstipation mit hartem Stuhl, manchmal mit Blutauflagerungen. Er habe guten Appetit und nehme ballaststoffreiche Kost wegen des harten Stuhls zu sich. Er habe viel zugenommen (keine bestimmte Gewichtsangabe). Es bestehe arbeitsbedingter Husten, da er Tischler gewesen sei und während der Arbeit keine Maske aufgetragen habe. Er leide an Insomnie wegen Stress und müsse 3-4 Stunden im Bett liegen, um einzuschlafen. Er trinke fast jeden Abend 1-2 Flaschen Bier.
+
+**Vorerkrankungen und Voroperationen:**
+- Diabetes mellitus (DM) seit 10 Jahren, behandelt mit Metformin 1000 mg (1-0-1).
+- Hypercholesterinämie seit langer Zeit, behandelt mit Simvastatin.
+- Arterielle Hypertonie (aHT) seit 7 Jahren, behandelt mit BelocZok (1-0-0).
+- Hämorrhoiden seit 15 Jahren, behandelt mit Zäpfchen bei Bedarf.
+- Handverletzung vor 30 Jahren, konservativ behandelt.
+- Vor 2,5 Jahren Koronare Herzkrankheit (KHK), mit perkutaner transluminaler koronarer Angioplastie (PTCA) durch den Leistenbereich behandelt und auch mit Stentanlage.
+
+**Allergien:**
+- Novalgin.
+- Glutenintoleranz (führe zu Abdominalgie und Meteorismus); Zöliakie sei erfragt worden.
+
+**Noxen:**
+- Alkoholkonsum: 1-2 Flaschen Bier jeden Abend seit 40 Jahren.
+- Nikotinkonsum: Ex-Raucher seit 2,5 Jahren (wegen PTCA). Früher habe er 1 Schachtel pro Tag für 51 Jahre geraucht.
+
+**Familienanamnese:**
+- Vater: Habe Niereninsuffizienz gehabt.
+- Mutter: Sei vor 40 Jahren wegen Aortendissektion (Aufspaltung, Riss, Ruptur) verstorben.
+- Eine gesunde Tochter.
+- Eine gesunde Enkeltochter.
+- Ein Enkelsohn leide an kongenitaler Anämie.
+
+**Sozialanamnese:**
+- Seit 4 Jahren Rentner, früher Tischler.
+- Verheiratet, wohne aber allein, da seine Frau im Pflegeheim wegen Demenz wohne.
+            - Habe 1 gesunde Tochter, 1 gesunde Enkeltochter und 1 Enkelsohn.`,
+                    diagnosis: 'Periphere arterielle Verschlusskrankheit (pAVK)'
+                },
+                {
+                    id: 'ms_angio2', // Neue ID für Angiologie-Fall 2
+                    title: 'Ulcus cruris',
+                    case_description: `**Patient:** Herr Peter Braun, 62 Jahre (geb. 23.12.1958), 175 cm, 95 kg.
+
+**Aufnahmegrund:**
+Seit 10 Monaten bestehende, zunehmende Schmerzen am linken Innenknöchel (Malleolus medialis tibiae) mit Wunde, flüssigem, blutigem Sekret, warmer Haut, Rötung und Schwellung in diesem Bereich. Seit 1 Monat geschwollene Beine nach der Arbeit.
+
+**Aktuelle Anamnese:**
+Herr Braun stellte sich wegen seit 10 Monaten bestehender Schmerzen am linken Innenknöchel vor. Die Wunde sei plötzlich angefangen und habe sich mit der Zeit vergrößert und verschlimmert. Es beständen flüssiges, blutiges Sekret, warme Haut, Rötung und Schwellung in diesem Bereich. Er sei schon beim Hausarzt gewesen und habe einen Verband bekommen, den er täglich wechseln solle; er habe ihn aber nur zweimal pro Woche gewechselt. Seit einem Monat bemerke er geschwollene Beine nach der Arbeit. Fragen nach Haarlosigkeit, Verletzung und Hinken seien verneint worden.
+
+**Vegetative Anamnese:**
+Unauffällig.
+
+**Vorerkrankungen:**
+- Arterielle Hypertonie (aHT) seit 10 Jahren (ob kontrolliert, sei nicht bekannt).
+- Chronischer trockener Husten seit schon langem (Verdacht auf Bronchitis).
+- Zustand nach tiefer Venenthrombose (TVT) im linken Unterschenkel in 2012.
+- Zustand nach Varizen-OP vor 7 Jahren.
+- Zustand nach Polypektomie bei Koloskopie vor 7 Jahren.
+- Zustand nach Schulterfraktur vor 10 Jahren bei einem Autounfall.
+
+**Medikamente:**
+- ACE-Hemmer (1-0-1).
+- HCT 25 mg (½-0-0).
+- ASS 100 mg (1-0-0).
+
+**Allergien:**
+- Nickel (Schmuck) (führe zu Exanthem).
+
+**Noxen:**
+- Nikotinkonsum: 15 Zigaretten täglich, habe mit 15 Jahren angefangen.
+- Alkoholkonsum: 5-6 Flaschen Bier täglich.
+
+**Familienanamnese:**
+- Mutter: Leide an Herzinsuffizienz, 89 Jahre, lebe im Altenheim.
+- Vater: Nebennierenkrebs mit 65 Jahren daran gestorben.
+
+**Sozialanamnese:**
+- Beruf: Verkäufer in einem Baumarkt, müsse viel laufen.
+- Verheiratet.
+- Lebe mit der Ehefrau zusammen.
+                - Habe 3 Kinder und ein Enkelkind, das an Scharlach (Skarlatina) leide.`,
+                    diagnosis: 'Ulcus cruris'
+                },
+                {
+                    id: 'ms_angio3', // Neue ID für Angiologie-Fall 3
+                    title: 'Tiefe Venenthrombose (TVT)',
+                    case_description: `**Patient:** Herr Klaus Berger, 54 Jahre (geb. 15.08.1970), 174 cm, 98 kg.
+
+            **Aufnahmegrund:**
+            Seit 48 Stunden zunehmende, ziehende und drückende Schmerzen im rechten Unterschenkel ohne erkennbaren Auslöser, begleitet von Schwellung, bläulicher Verfärbung und Spannungsgefühl.
+
+            **Aktuelle Anamnese:**
+            Herr Berger stellte sich wegen seit 48 Stunden zunehmender, ziehender und drückender Schmerzen im rechten Unterschenkel ohne erkennbaren Auslöser vor. Er berichte, dass eine Schwellung, bläuliche Verfärbung und ein Spannungsgefühl bestünden. Die Schmerzintensität liege in Ruhe bei 5/10 und bei Belastung bei 7/10. Keine Dyspnoe oder Palpitationen seien angegeben worden.
+
+            **Vegetative Anamnese:**
+            Gelegentliche Obstipation und stressbedingte Schlafstörungen seien bekannt.
+
+            **Vorerkrankungen:**
+            - Arterielle Hypertonie seit 12 Jahren.
+            - Tendinitis rechtes Handgelenk.
+            - Ekzem an den Augenbrauen.
+            - Keine bekannte Varikose.
+
+            **Voroperationen:**
+            - Zustand nach Fraktur des Os scaphoideum (rechts).
+            - Zustand nach Sprunggelenksluxation (links), konservativ behandelt.
+
+            **Medikamente:**
+            - Voltum plus 20/12,5 mg (1-0-0).
+            - Diclofenac bei Bedarf (b.B.).
+            - Cortisonsalbe (1-0-1).
+            - Dulcolax.
+
+            **Allergien / Unverträglichkeiten:**
+            - Amoxicillin (führe zu Exanthem und Dyspnoe).
+            - Laktose (führe zu Diarrhö und Obstipation).
+
+            **Noxen:**
+            - Nikotinkonsum: 30 Zigaretten pro Tag seit 30 Jahren.
+            - Alkoholkonsum: Gelegentlich Wein.
+            - Drogenkonsum: Keine Drogen (Patient habe gereizt reagiert).
+
+            **Familienanamnese:**
+            - Mutter: Leide an einer Gerinnungsstörung.
+            - Vater: Sei an Mesenterialinfarkt verstorben.
+
+            **Sozialanamnese:**
+            - Beruf: Versicherungsmakler, selbstständig.
+            - Zweite Ehe.
+            - Habe eine Pflegetochter mit Pilzinfektion.`,
+                    diagnosis: 'Tiefe Venenthrombose (TVT)'
+                },
+                {
+                    id: 'ms_angio4', // Neue ID für Angiologie-Fall 4
+                    title: 'Thrombophlebitis (nicht varikös)',
+                    case_description: `**Patient:** Herr Thomas Reichel, 54 Jahre (geb. 24.02.1971), 171 cm, 97 kg.
+
+            **Aufnahmegrund:**
+            Seit 2 Tagen Schmerzen im rechten Unterschenkel, lokal stechend und ziehend, besonders beim Auftreten, begleitet von Rötung, Schwellung und einem tastbaren schmerzhaften Strang.
+
+            **Aktuelle Anamnese:**
+            Herr Reichel stellte sich wegen seit 2 Tagen bestehender Schmerzen im rechten Unterschenkel vor. Die Schmerzen seien lokal stechend und ziehend, besonders beim Auftreten. Eine Rötung, Schwellung und ein tastbarer schmerzhafter Strang bestünden. Systemische Symptome seien nicht vorhanden gewesen.
+
+            **Vegetative Anamnese:**
+            Stressbedingte Insomnie und gelegentliche Obstipation seien bekannt.
+
+            **Vorerkrankungen:**
+            - Arterielle Hypertonie.
+            - Tendinitis rechtes Handgelenk.
+            - Ekzem.
+            - Keine bekannte Varikose.
+
+            **Voroperationen:**
+            - Zustand nach Fraktur des Os scaphoideum (rechts).
+            - Zustand nach Sprunggelenksluxation (links).
+
+            **Medikamente:**
+            - Voltum plus.
+            - Diclofenac bei Bedarf (b.B.).
+            - Cortisonsalbe (1-0-1).
+            - Dulcolax.
+
+            **Allergien / Unverträglichkeiten:**
+            - Amoxicillin (führe zu Exanthem und Dyspnoe).
+            - Laktoseintoleranz.
+
+            **Noxen:**
+            - Nikotinkonsum: 30 Zigaretten pro Tag.
+            - Alkoholkonsum: Gelegentlich Wein.
+            - Drogenkonsum: Keine Drogen (Patient habe sich geärgert).
+
+            **Familienanamnese:**
+            - Mutter: Leide an Coxitis und einer Gerinnungsstörung.
+            - Vater: Sei an Mesenterialinfarkt verstorben.
+
+            **Sozialanamnese:**
+            - Beruf: Selbstständiger Versicherungsmakler.
+            - Zweite Ehe.
+            - Habe eine Pflegetochter mit Pilzinfektion.`,
+                    diagnosis: 'Thrombophlebitis (nicht varikös)'
+                },
+                {
+                    id: 'ms_angio5', // Neue ID für Angiologie-Fall 5
+                    title: 'Varikophlebitis',
+                    case_description: `**Patient:** Herr Uwe Langer, 53 Jahre (geb. 12.05.1972), 172 cm, 99 kg.
+
+            **Aufnahmegrund:**
+            Seit 3 Tagen brennende Schmerzen über einer bekannten Krampfader im rechten Unterschenkel, begleitet von Druckschmerz, Verhärtung und Rötung entlang der geschlängelten Vene.
+
+            **Aktuelle Anamnese:**
+            Herr Langer stellte sich wegen seit 3 Tagen bestehender brennender Schmerzen über einer bekannten Krampfader im rechten Unterschenkel vor. Es beständen Druckschmerz, eine Verhärtung und Rötung entlang der geschlängelten Vene. Dyspnoe oder Fieber seien nicht angegeben worden.
+
+            **Vegetative Anamnese:**
+            Verstopfung und Schlafstörungen unter Stress seien bekannt.
+
+            **Vorerkrankungen:**
+            - Varikose seit über 10 Jahren.
+            - Arterielle Hypertonie.
+            - Tendinitis.
+            - Ekzem.
+
+            **Voroperationen:**
+            - Zustand nach Fraktur des Os scaphoideum.
+            - Zustand nach Sprunggelenksverletzung.
+
+            **Medikamente:**
+            - Voltum plus.
+            - Diclofenac bei Bedarf (b.B.).
+            - Cortisonsalbe.
+            - Dulcolax.
+
+            **Allergien / Unverträglichkeiten:**
+            - Amoxicillin (führe zu Exanthem und Atemnot).
+            - Laktose (führe zu Diarrhö und Obstipation).
+
+            **Noxen:**
+            - Nikotinkonsum: Stark rauchend.
+            - Alkoholkonsum: Gelegentlich.
+            - Drogenkonsum: Keine Drogen (Patient habe deutlich verneint).
+
+            **Familienanamnese:**
+            - Mutter: Leide an Gerinnungsstörung.
+            - Vater: Habe vaskuläre Komplikationen gehabt.
+
+            **Sozialanamnese:**
+            - Beruf: Selbstständig.
+            - Verheiratet.
+            - Habe eine Pflegetochter.`,
+                    diagnosis: 'Varikophlebitis'
+                }
+
+            ],
+            endokrinologie: [
+                {
+                    id: 'ms_endo1', // Neue ID für Endokrinologie-Fall 1
+                    title: 'Hyperthyreose',
+                    case_description: `**Patient:** Herr Helmut Schultz, 53 Jahre (geb. 01.07.1972 - ausgedacht), 173 cm, 70 kg. Hausarzt: Herr Mair.
+
+            **Aufnahmegrund:**
+            Seit 3 Monaten bestehende Fatigue, Nervosität und Konzentrationsstörungen, begleitet von Heißhunger, Hitzeintoleranz und Tremor.
+
+            **Aktuelle Anamnese:**
+            Der Patient stellte sich bei uns wegen seit 3 Monaten bestehender Fatigue, Nervosität und Konzentrationsstörungen vor. Des Weiteren klage er über Heißhunger (Hyperphagie), Hitzeintoleranz und Tremor. Nach Angaben des Patienten habe er Palpitationen, palmare Hyperhidrose und Struma. Die Frage nach Dysphagie, Dysphonie, Pyrexie und Thoraxbeschwerden sei verneint worden. Eine Toxikose könne ausgeschlossen werden.
+
+            **Vegetative Anamnese:**
+            Die vegetative Anamnese ergebe eine Gewichtsabnahme von 8 kg, Diarrhö und Insomnie.
+
+            **Vorerkrankungen und Voroperationen:**
+            - Keratitis wegen Kontaktlinsen vor 2-3 Wochen, dagegen Augentropfen.
+            - Hyperlipidämie seit 5 Jahren, behandelt mit Simvastatin.
+            - Kreuzschmerzen (Sakralgie)/Dorsalgie seit mehreren Jahren, behandelt mit Diclofenac-Tabletten.
+            - Omeprazol 1-0-0 als Magenschutz.
+            - Zustand nach Bursektomie nach Bursitis im Ellenbogen im Jahr 2013 (links oder rechts sei nicht bekannt).
+            - Zustand nach operativ behandelter Phimose (Zirkumzision) im Alter von 5 Jahren.
+
+            **Medikamente:**
+            - Simvastatin.
+            - Diclofenac-Tabletten.
+            - Omeprazol 1-0-0.
+            - Augentropfen (wegen Keratitis).
+
+            **Allergien:**
+            - Kreuzallergie gegen Mandeln und Birkenpollen (führe zu Dyspnoe und Rhinitis).
+
+            **Noxen:**
+            - Nikotinkonsum: 3-4 Zigarillos täglich seit 2 Jahren.
+            - Alkoholkonsum: 1-2 Gläser Bier abends.
+
+            **Familienanamnese:**
+            - Mutter: Sei an Magenkarzinom gestorben.
+            - Vater: Habe eine Reanimation nach Asystolie gehabt.
+
+            **Sozialanamnese:**
+            - Verwitwet (seine Frau sei an Ösophaguskarzinom gestorben).
+            - Lebe alleine.
+            - Habe 3 Kinder (1 Sohn mit Cannabisabusus).
+            - Besitze eine Textilreinigungsfirma.`,
+                    diagnosis: 'Hyperthyreose'
+                },
+                {
+                    id: 'ms_endo2', // Neue ID für Endokrinologie-Fall 2
+                    title: 'Hypothyreose',
+                    case_description: `**Patient:** Herr Daniel Kürnier, 57 Jahre (geb. 01.01.1968 - ausgedacht), 184 cm, 89 kg.
+
+            **Aufnahmegrund:**
+            Seit 3-4 Wochen zunehmende Asthenie, Abgeschlagenheit, Schläfrigkeit sowie Konzentrationsstörung, begleitet von Kälteintoleranz, Alopezie, Dysphonie, trockener Haut und brüchigen Nägeln.
+
+            **Aktuelle Anamnese:**
+            Herr Kürnier stellte sich heute bei uns wegen seit 3-4 Wochen bestehender progredienter Asthenie, Abgeschlagenheit, Schläfrigkeit sowie Konzentrationsstörung vor. Des Weiteren klage er über Kälteintoleranz, Alopezie, Dysphonie (er habe gesagt, seine Stimme sei rau), trockene Haut und brüchige Nägel. Auf Nachfrage seien Ronchopathie, Struma, Myxödem und Dyspnoe verneint worden. Seine Kollegen hätten ihm gesagt, dass sein Gesicht runder geworden sei.
+
+            **Vegetative Anamnese:**
+            Bis auf Obstipation seit 3 Wochen sei die vegetative Anamnese unauffällig gewesen. In den vergangenen 3 Monaten habe er 5 kg Gewicht zugenommen, obwohl sein Appetit gut sei.
+
+            **Vorerkrankungen und Voroperationen:**
+            - Nasal Polyposis seit 7 Jahren (Operation sei für den nächsten Monat geplant).
+            - Seit längerer Zeit Cephalgie und Nackenspasmen.
+            - Seit 4 Jahren Ekzem im Bereich der Kopfhaut.
+            - Zustand nach Skaphoidfraktur rechts nach einem Unfall im Garten vor 11 Jahren, operativ behandelt mit Osteosynthese.
+            - Zustand nach Unterlidschwellung mit Rötung, tränenden Augen und SIKKA vor 3 Jahren (Blepharitis vermutet), operativ behandelt.
+
+            **Medikamente:**
+            - ASS 500 mg (1-0-0) täglich.
+            - Laktulose (der Patient habe es als "Milchmedikament" bezeichnet).
+            - Shampoo (Name nicht erfragt).
+            - Ladival Laesa (Pflanzliches Mittel gegen Stimmungsschwankungen).
+
+            **Allergien und Unverträglichkeiten:**
+            - Pferdehaare seit der Kindheit (führe zu Exanthem, Pruritus).
+            - Voltaren (Allergie, nicht Unverträglichkeit), äußere sich mit Exanthem, Erythem, Pruritus.
+
+            **Noxen:**
+            - Nichtraucher seit 7 Jahren; früher habe er 1 Schachtel geraucht, als er mit 23 Jahren angefangen habe.
+            - Alkoholkonsum: 1 Flasche Bier gelegentlich.
+
+            **Familienanamnese:**
+            - Mutter: Sei im Alter von 60 Jahren an Herzstillstand (Asystolie) gestorben.
+            - Vater: Sei im Alter von 65 Jahren an einem Schlaganfall gestorben (Information zu Ursache/Krankheit fehlt hier in deinen Notizen, Annahme: Schlaganfall).
+
+            **Sozialanamnese:**
+            - Verheiratet, habe einen Sohn (behindert seit Kindheit, habe rechtsseitige Parese im Arm wegen Asphyxie), wohne mit seiner Familie.
+            - Beruf: Steuerberater im Büro (stressig).`,
+                    diagnosis: 'Hypothyreose'
+                },
+                {
+                    id: 'ms_endo3', // Neue ID für Endokrinologie-Fall 3
+                    title: 'Diabetes mellitus Typ 2',
+                    case_description: `**Patient:** Herr Gerhard Jäger, 67 Jahre (geb. 15.01.1958 - ausgedacht), 174 cm, 97 kg.
+
+            **Aufnahmegrund:**
+            Seit 3-4 Wochen bestehende Müdigkeit, Abgeschlagenheit, Polydipsie, Polyurie und Nykturie, begleitet von Insomnie, Meteorismus und ab und zu auftretenden Sehstörungen.
+
+            **Aktuelle Anamnese:**
+            Herr Jäger stellte sich heute bei uns wegen seit 3-4 Wochen bestehender Müdigkeit und Abgeschlagenheit vor. Er berichte, er habe Polydipsie und trinke alles: Wasser, Milch, Saft, Bier usw. Des Weiteren klage er über Polyurie und Nykturie, was zu Insomnie führe. Meteorismus und ab und zu auftretende Sehstörungen seien ihm ebenfalls aufgefallen. Pyrexie, Tussis, Diarrhö, Obstipation, Tenesmus, Inappetenz und Gewichtsänderung seien verneint worden. Eine Auslandsreise sei auch verneint worden. Der Hausarzt sei im Urlaub gewesen, weswegen er direkt zu uns gekommen sei.
+
+            **Vegetative Anamnese:**
+            Bis auf die oben genannten Symptome sei die vegetative Anamnese unauffällig gewesen.
+
+            **Vorerkrankungen und Voroperationen:**
+            - Arterielle Hypertonie (aHT).
+            - Tinea inguinalis.
+            - Zustand nach Bursektomie im Knie (Knieschleimbeutelentzündung) vor 10-15 Jahren.
+            - Zustand nach Os zygomaticum Fraktur (Jochbeinfraktur) vor 8 Jahren, konservativ behandelt (beim Tennisspielen habe ein Ball sein Jochbein getroffen).
+            - Vor 3 Tagen habe er einen Arbeitsunfall erlitten, bei dem er seinen Kopf gegen die Schrankkante geschlagen habe. Eine Platzwunde am Kopf sei in der Zentralen Notaufnahme genäht worden (Tetanus-Impfschutz sei nicht ausreichend gewesen und müsse aufgefrischt werden).
+
+            **Medikamente:**
+            - Exforge 5/160 mg (1-0-0).
+            - HCT 12,5 mg (1-0-0).
+            - Eine Salbe gegen Tinea inguinalis (Name habe er vergessen).
+            - Maaloxan (0-0-1) (Sein Sohn habe es gegoogelt und ihm diese Medikamente gekauft).
+
+            **Allergien:**
+            - Hühnerproteinallergie (führe zu Dysphagie).
+
+            **Noxen:**
+            - Nikotinkonsum: Seit 16-18 Jahren 30 Zigaretten pro Tag, seit 2008 10-15 Zigaretten pro Tag.
+            - Alkoholkonsum: Abends 3-4 Flaschen Bier.
+            - Drogenkonsum sei bewusst nicht erfragt worden.
+
+            **Familienanamnese:**
+            - Mutter: Habe Diabetes mellitus Typ 1 (insulinpflichtig) und Arthrose gehabt (laut dem behandelnden Arzt der Mutter benötige sie keine Endoprothese/Gelenkersatz).
+            - Vater: Sei vor 5-6 Jahren wegen einer perforierten Appendizitis (Peritonitis) verstorben.
+            - Keine Geschwister.
+
+            **Sozialanamnese:**
+            - Verheiratet, sei Gastwirt und habe eine eigene Gaststätte.
+            - Wohne mit seiner Frau und seinem Sohn zusammen.
+            - Seine Frau befinde sich zurzeit wegen Coxitis in einer Rehaklinik.
+            - Sein Sohn habe vor 8 Jahren einen Motorradunfall gehabt (Rippenprellung und 2-3 Rippenserienbruch, keine Operation).`,
+                    diagnosis: 'Diabetes mellitus Typ 2'
+                },
+                {
+                    id: 'ms_endo4', // Neue ID für Endokrinologie-Fall 4
+                    title: 'Hypoglykämie',
+                    case_description: `**Patient:** Herr Richard Friedrich, 65 Jahre alt (geb. 01.07.1959 - ausgedacht), 175 cm (ausgedacht), 75 kg (ausgedacht). Ein Insulin-bedürftiger Patient.
+
+            **Aufnahmegrund:**
+            Um 12:00 Uhr plötzlich aufgetretene Präsynkope, begleitet von Tremor der Hände, Hyperhidrose, Palpitationen, Visusverminderung, Parästhesien der oberen und unteren Extremitäten, Benommenheit, Hypomnesie und Hyperphagie.
+
+            **Aktuelle Anamnese:**
+            Herr Friedrich stellte sich heute in unserer Notaufnahme wegen um 12:00 Uhr plötzlich aufgetretener Präsynkope vor. Laut dem Patienten habe er heute an einer Fahrradtour teilgenommen, als ihm plötzlich Tremor der Hände, Hyperhidrose, Palpitationen, Visusverminderung, Parästhesien der oberen und unteren Extremitäten aufgefallen seien. Des Weiteren klage er über Benommenheit und Hypomnesie (er habe sich an den Namen der Freunde nicht erinnern können). Dazu gebe er an, Hyperphagie zu haben. Als möglicher Auslöser komme das Insulinspritzen ohne gut zu frühstücken in Frage.
+            Fragen nach Sturzereignis, Verletzungen und Muskelplegie seien verneint worden. Während des Gesprächs sei der Blutzucker gemessen worden, um eine Unterzuckerung auszuschließen.
+
+            **Vegetative Anamnese:**
+            Ein Gewichtsverlust von 5 kg in den letzten 2 Monaten, Insomnie (Einschlafstörungen), Obstipation und Stress („Meine Frau sei vor 1,5 Jahren verstorben“) seien bekannt.
+
+            **Vorerkrankungen und Voroperationen:**
+            - Diabetes mellitus Typ 2 seit ¾ Jahren.
+            - Arthrose des Sprunggelenks links seit 1-2 Jahren.
+            - Tinea corporis in der Regio axillaris links seit 1 Woche.
+            - Zustand nach Fersenbeinfraktur (Calcaneusfraktur) links vor 30 Jahren („er sei von einer Mauer gesprungen“), konservativ behandelt.
+            - Vor 1 Jahr sei der Verdacht auf Herzrhythmusstörungen durch Langzeit-EKG ausgeschlossen worden.
+
+            **Medikamente:**
+            - Metformin 500 mg (1-0-1).
+            - Insulinbasal-Spritze 14 IE (1-0-0) seit 1,5 Monaten.
+            - Baldrian Dragees bei Bedarf (b.B.).
+            - Diclofenac bei Bedarf (b.B.).
+            - Canesten Salbe (1-0-1).
+
+            **Allergien:**
+            - Penicillin-Allergie (in der Kindheit entdeckt, er wisse nicht, wie sie sich äußere).
+            - Pferdehaare (führe zu Rhinitis).
+
+            **Noxen:**
+            - Nikotinkonsum: Raucher seit dem 22. Lebensjahr; seit 3 Jahren rauche er 5-6 Zigaretten pro Tag, vorher dreifach mehr (15 Zigaretten).
+            - Alkoholkonsum: 1-2 Flaschen Bier gelegentlich.
+
+            **Familienanamnese:**
+            - Vater: Sei vor 3 Jahren an Nasennebenhöhlenkarzinom verstorben.
+            - Mutter: Lebe im Pflegeheim, habe infizierte Dekubitus.
+            - Tochter: Leide an Angststörung.
+
+            **Sozialanamnese:**
+            - Rentner, früher Angestellter im Sozialamt.
+            - Verwitwet.
+            - Habe 3 Kinder.`,
+                    diagnosis: 'Hypoglykämie'
+                }
+            ],
+            rheomatologie: [
+                {
+                    id: 'ms_rheuma1', // Neue ID für Rheumatologie-Fall 1
+                    title: 'Arthritis urica (Gichtanfall)',
+                    case_description: `**Patient:** Herr Norbert Bauer, 57 Jahre alt (geb. 15.06.1968 - ausgedacht), 179 cm, 94 kg.
+
+            **Aufnahmegrund:**
+            Heute Morgen um 6:00 Uhr plötzlich aufgetretene, unerträgliche Schmerzen am linken Großzeh (Hallux), begleitet von Rötung, Schwellung und Überwärmung des betroffenen Gelenks.
+
+            **Aktuelle Anamnese:**
+            Herr Norbert Bauer sei heute Morgen um 6:00 Uhr wegen plötzlich aufgetretener, unerträglicher Schmerzen am linken Großzeh (Hallux) aufgewacht. Das betroffene Gelenk sei gerötet, geschwollen und warm. Der Patient habe nicht gut laufen können, und die Fußzehen habe er nicht versucht zu bewegen. Er habe gestern einen Ausflug von seiner Firma gemacht und dabei viel Alkohol getrunken und Fleisch gegessen. Herr Bauer habe heute Morgen hohes Fieber (38,2 °C rektal gemessen) und Schüttelfrost gehabt. Im Stuhl habe er frisches Blut bemerkt.
+            Fragen nach Insomnie, Inappetenz, Algurie, Dysurie und Nykturie seien verneint worden. (Es sei ihm ein Schmerzmittel gegeben und er beruhigt worden. Später sei gefragt worden, ob das Medikament ihm geholfen habe.)
+
+            **Vegetative Anamnese:**
+            Unauffällig bis auf gelegentliches frisches Blut im Stuhl.
+
+            **Vorerkrankungen und Voroperationen:**
+            - Arterielle Hypertonie (aHT) seit 4,5 Jahren.
+            - Hämorrhoiden (Goldader) seit seinem 25. Lebensjahr.
+            - Lumbalgie seit langem (wegen der Schmerzen habe er seine Arbeit gewechselt).
+            - Zustand nach Luxation an der Articulatio cubiti (Ausrenkung, Auskugelung) links (Arbeitsunfall; konservativ behandelt).
+            - Paroxysmale Tachykardie vor ¾ Jahr (Langzeit-EKG ohne pathologischen Befund).
+            - Daltonismus (Farbenblindheit), sei ihm beim Sehtest für den Führerschein festgestellt worden.
+
+            **Medikamente:**
+            - Votum plus 20/12,5 mg (1-0-0).
+            - Ibuprofen 400 mg bei Bedarf (b.B.).
+            - Proktologische Zäpfchen bei Bedarf (b.B.).
+
+            **Allergien:**
+            - Haselnusspollen (führe zu Rhinokonjunktivitis).
+            - Braunes Pflaster (führe zu atopischer Dermatitis).
+
+            **Noxen:**
+            - Nikotinkonsum: Raucher 15-20 Zigaretten pro Tag seit 40 Jahren (ca. 40 Packungsjahre).
+            - Alkoholkonsum: 2-3 Gläser Bier am Abend.
+
+            **Familienanamnese:**
+            - Vater: Sei an Sinuskarzinom verstorben.
+            - Mutter: Sei sehbehindert und lebe im Altenheim.
+            - Die jüngste Tochter leide an posttraumatischem Psychosyndrom (wegen eines Autounfalls; psychiatrische Therapie).
+
+            **Sozialanamnese:**
+            - Zwei Mal verheiratet, habe 3 Kinder aus erster Ehe.
+            - Lebe mit seiner zweiten Ehefrau zusammen.
+            - Beruf: Früher Maurer, jetzt Kassierer in einem Getränkemarkt.`,
+                    diagnosis: 'Arthritis urica (Gichtanfall)'
+                }
+            ],
+            onkologie: [
+                {
+                    id: 'ms_onko1',
+                    title: 'Knochenmetastasen bei Prostatakarzinom',
+                    case_description: `**Patient:** Herr Ulrich Hübner, 68 Jahre alt (geb. 01.07.1957 - ausgedacht), 173 cm, 75 kg (ausgedacht).
+
+**Aufnahmegrund:**
+Seit 3-4 Wochen bestehende Knochenschmerzen (Lumbalgie, Brachialgie, Femurschmerzen), die sich beim Sitzen und Liegen verstärken, begleitet von Fatigue, Insomnie, Palpitationen und Inappetenz.
+
+**Aktuelle Anamnese:**
+Herr Ulrich Hübner stellte sich in der Notaufnahme aufgrund seit 3-4 Wochen bestehender Knochenschmerzen vor. Er berichte, dass er Lumbalgie, Brachialgie sowie Femurschmerzen habe. Die dumpfen Schmerzen seien auf einer Schmerzskala von 1-10 bei 5-6 einzuordnen, und beim Sitzen sowie Liegen würden sich die Schmerzen verstärken. Er sage, dass die täglichen Aktivitäten langsam gingen und es keine deutlichen Einschränkungen gäbe. Zudem beklage er, dass er an Fatigue (seit 4-5 Wochen), Insomnie (Ein- und Durchschlafstörungen), Palpitationen und Inappetenz leide. Er teile mit, dass er ungerne Fleisch esse.
+
+**Vegetative Anamnese:**
+Bis auf einen Gewichtsverlust von 5-6 kg in den letzten zwei Monaten und eine chronische Obstipation sei die vegetative Anamnese unauffällig gewesen.
+
+**Vorerkrankungen und Voroperationen:**
+- Zustand nach Prostatakarzinom-Operation (OP vor 3,5 Jahren).
+- Arterielle Hypertonie (aHT) seit 12 Jahren.
+- Ekzem hinter dem linken Ohr (retroaurikuläres Ekzem).
+- Angeborene Anomalie: Sein linkes Bein sei kürzer als das rechte (Beckenschiefstand/Beinlängendifferenz).
+- Zustand nach Cholezystektomie vor 4,5 Jahren.
+- Zustand nach Arbeitsunfall vor 8 Jahren, wobei eine Rippenprellung festgestellt und konservativ behandelt worden sei.
+
+**Medikamente:**
+- Laxantien bei Bedarf.
+- Salbe gegen das Ekzem bei Bedarf.
+- Valsartan 80 mg (1-0-0).
+- Baldrian 3-4 Dragees.
+
+**Allergien:**
+- Kreuzallergie: Gräser (führe zu Schnupfen) und Melone (führe zu Diarrhö).
+
+**Noxen:**
+- Nikotinkonsum: 1-2 Zigaretten/Tag (seit 4 Jahren), 5-10 Z/T ( für 44 Jahren davor).
+- Alkoholabusus: 1 Glas Rotwein Abends.
+
+**Sozialanamnese:**
+- Rentner seit 4 Jahren.
+- Habe als Aushilfe bei Ford in Köln am Band gearbeitet.
+- Verheiratet (nächste Woche stehe die goldene Hochzeit an, d.h. 50 Jahre verheiratet).
+- Habe 3 Kinder (eine Tochter leide an psychischer Behandlung aufgrund rezidiver Panikattacken, 2 gesunde Söhne).
+
+**Familienanamnese:**
+- Vater: Habe Wundheilungsstörungen und Kachexie gehabt (er sage, er sei "Knochen und Haut"), wohne im Altenheim.
+- Mutter: Sei vor 4 Jahren an einem lethal verlaufenden Mesenterialinfarkt verstorben.
+            - Keine Geschwister.`,
+                    diagnosis: 'Knochenmetastasen bei Prostatakarzinom'
+                },
+                {
+                    id: 'ms_onko2',
+                    title: 'Knochenmetastasen bei Prostatakarzinom mit Herpes Zoster',
+                    case_description: `**Patient:** Herr Köhler, 69 Jahre alt (geb. 26.07.1954), 178 cm, 68 kg.
+
+            **Aufnahmegrund:**
+            Seit 2-3 Monaten bestehende Brachialgien und Oberschenkelschmerzen, begleitet von Asthenie und Fatigue, 3 kg Gewichtsabnahme innerhalb von 2-3 Monaten, sowie seit letzter Woche Herzunregelmäßigkeiten bei Belastung (Palpitationen) und ringförmige Pusteln auf der rechten Skapula.
+
+            **Aktuelle Anamnese:**
+            Herr Köhler stellte sich aufgrund seit 2-3 Monaten bestehender Brachialgien und Oberschenkelschmerzen vor. Er leide an Asthenie und Fatigue. Eine Gewichtsabnahme von 3 kg innerhalb von 2-3 Monaten sei zu verzeichnen. Seit letzter Woche habe er Herzunregelmäßigkeiten (nicht Herzrasen, sondern Stolpern) bei Belastung, besonders beim Treppensteigen (belastungsabhängige Palpitationen).
+            Vor ein paar Tagen habe seine älteste Tochter eine ringförmige Pusteln (Eiterbläschen), groß wie eine Fingerkuppe, auf seiner rechten Skapula bemerkt und ihm davon berichtet. Trauma oder Insektenbiss seien verneint worden.
+
+            **Vegetative Anamnese:**
+            Bis auf Inappetenz und schmerzbedingte Insomnie sei die vegetative Anamnese unauffällig gewesen. Später habe er hinzugefügt, dass er ab und zu Obstipation habe. Dagegen nehme er Leinsamen (pflanzliche Substanz) ein.
+
+            **Vorerkrankungen und Voroperationen:**
+            - Erhöhter Blutdruck (aHT) seit 15 Jahren, behandelt mit Valsartan 80 mg einmal täglich.
+            - Koloskopie vor 14 Jahren zur Prävention.
+            - Prostataektomie mittels Roboterassistenz vor 5,5 Jahren (regelmäßige Nachkontrollen, Information zu Chemotherapie sei nicht bekannt).
+            - Gallenblasen-Operation (Cholezystektomie).
+            - Retroaurikuläres Ekzem (Mykose), behandelt mit Terzolin 2% Creme (Ketoconazol).
+            - Zustand nach Rippenprellung vor 4-5 Jahren bei einem Arbeitsunfall, bei dem er auf seine rechte Seite auf den Boden gefallen sei und für 3 Tage im Krankenhaus bleiben habe müssen.
+            - Angeborene Bein-Anomalie: Sein linkes Bein sei kürzer als das rechte (Beckenschiefstand/Beinlängendifferenz); er benutze diese Beinanlagen in seinem Schuh.
+
+            **Medikamente:**
+            - Valsartan 80 mg (1-0-0).
+            - Leinsamen bei Bedarf (b.B.).
+            - Salbe gegen Ekzem (Terzolin 2% Creme) bei Bedarf.
+
+            **Allergien:**
+            - Kreuzallergie: Gräser (führe zu Schnupfen) und Melone (führe zu Diarrhö).
+
+            **Noxen:**
+            - Nikotinkonsum: 3 Zigaretten pro Tag seit 4,5 Jahren. Früher habe er 1 Schachtel pro Tag seit dem 30. Lebensjahr geraucht.
+            - Alkoholkonsum: 1 Glas Wein täglich.
+
+            **Familienanamnese:**
+            - Mutter: Sei vor 8 Jahren im Alter von ca. 80 Jahren an einem Mesenterialinfarkt verstorben.
+            - Vater: 90 Jahre alt, wohne im Altenheim und habe Druckgeschwüre (Dekubitus).
+            - Keine Geschwister.
+
+            **Sozialanamnese:**
+            - Beruf: Rentner.
+            - Habe als Aushilfe bei Ford in Köln am Band gearbeitet.
+            - Verwitwet (seine Frau sei vor 4-5 Jahren im Alter von 65 Jahren verstorben).
+            - Die goldene Hochzeit stünde nächste Woche an.
+            - Habe 3 Kinder; die jüngste Tochter leide an Tics und sei in einer speziellen psychiatrischen Klinik aufgenommen worden.`,
+                    diagnosis: 'Knochenmetastasen bei Prostatakarzinom mit Herpes Zoster'
+                },
+                {
+                    id: 'ms_onko3',
+                    title: 'Leukämie',
+                    case_description: `**Patient:** Herr Feidler, 32 Jahre alt (geb. 01.07.1993), 175 cm, 70 kg .
+
+            **Aufnahmegrund:**
+            Seit 3-4 Wochen zunehmende, schwere Müdigkeit und Schlappheit, Konzentrationsstörungen, morgendliche Schwierigkeiten beim Aufstehen, Blässe, leichte Blutungsneigung (blaue Flecken, Zahnfleischbluten) und belastungsabhängige Dyspnoe.
+
+            **Aktuelle Anamnese:**
+            Ein 32-jähriger Mann fühle sich seit 3-4 Wochen total schlapp und müde, habe Konzentrationsstörungen, und am Morgen sei es ihm schwer, an den Beinen aufzustehen. Seine Ehefrau habe gesagt, dass seine Haut komplett blass aussehe. Seine Kollegen hätten ebenfalls bemerkt, dass Herr Feidler nicht gut aussehe, trotzdem sei der Patient jeden Tag zur Arbeit gegangen.
+            Des Weiteren sei ihm aufgefallen, dass er blaue Flecken bekomme, wenn er sich mit den Unterarmen bei der Arbeit an den Tisch anstürze. Und es mache ihm große Sorge, dass er beim Treppenaufstieg ab sofort nach mindestens einer halben Etage Atemnot kriege. Der Patient fühle sich seit einer Woche noch schlimmer. Seine Knochen am ganzen Körper täten ständig weh, und er habe ständige Hyperhidrose, besonders beim Schlafen (nächtliche Transpiration). Schmerzintensität, -art, -strahlung seien nicht näher spezifiziert worden. Die Fragen nach vorherigen ähnlichen Beschwerden seien verneint worden. Er habe nichts dagegen eingenommen und sei aufgrund der Beschwerden nicht beim Hausarzt gewesen. Der Patient habe zugefügt, dass er unter Cephalgie leide und bei Bedarf Paracetamol 500 mg (NRS 4/10, drückend, ab und zu) nehme. Der Patient habe erwähnt, dass sein Zahnfleisch blute, wenn er die Zähne putze. Auch gibt es einen Gewichtsverlust von 6kg in den letzten 3-4 Wochen, was ihm Sorgen bereite.
+
+            **Vegetative Anamnese:**
+            Insomnie, Meteorismus. Er sei deprimiert und nehme deswegen Johanniskraut-Tabletten ein (habe sie selbst ohne Empfehlung gekauft). Wichtig sei ein Gewichtsverlust gewesen. Der Patient sei seit zwei Jahren vegetarisch. Da er seit Kindheit an Neurodermitis leide, habe er versucht, vegetarisch zu bleiben, und das habe ihm geholfen. Er esse kein Fleisch, aber Eier und selten Fisch.
+            Neurodermitis äußere sich gerade an der rechten Ellenbeuge (Fossa cubitalis), er benutze dagegen Cortisonsalbe.
+            Fragen nach Pyrexie, Synkope, Nausea, Emesis, Nagelfarbeveränderung und Wanderungen seien verneint worden.
+            Stuhlgang, bis auf den oben genannten Meteorismus, und Wasserlassen seien unauffällig gewesen.
+
+            **Vorerkrankungen und Voroperationen:**
+            - Oben genannte Neurodermitis seit Kindheit.
+            - Sehnenscheidenentzündung (Tendovaginitis) am rechten Handgelenk, vor mehreren Jahren, konservativ behandelt, trage eine Bandage.
+            - Gasvergiftung (Gasintoxikation), da im Uniraum ein Brand gewesen sei. Der Patient sei ein paar Tage im Krankenhaus behandelt und dann nach Hause entlassen worden.
+            - Lungenentzündung (Pneumonie) vor 3 Monaten, ambulant für 2 Wochen mit Antibiotika (Augmentin 1000 mg 1-0-1) behandelt, komplikationslos.
+            - Nasenbeinbruch (Os nasale Fraktur) vor 8 Jahren, operativ behandelt, komplikationslos (Fall beim Sport – er habe beim Boarden auf das Gesicht gefallen).
+
+            **Medikamente:**
+            - Paracetamol 500 mg bei Bedarf (b.B.).
+            - Cortisonsalbe bei Bedarf (b.B.).
+            - Otrivin 0,25 % bei Bedarf (b.B.).
+            - Johanniskraut-Tabletten (ohne Empfehlung gekauft).
+
+            **Allergien:**
+            - Haselnusspollenallergie seit langem (führe zu Heuschnupfen/Rhinitis).
+            - Sonnenallergie (führe zu Urtikaria).
+
+            **Noxen:**
+            - Nichtraucher.
+            - Alkoholkonsum: ein Glas Wein am Wochenende.
+            - Drogenkonsum: Nicht erfragt.
+
+            **Familienanamnese:**
+            - Einzelkind.
+            - Vater: Sei 2013 an Schilddrüsenkarzinom gestorben (vorher Strahlentherapie, Chemotherapie).
+            - Mutter: Habe Kurzsichtigkeit (Myopie) gehabt und sei aufgrund einer Netzhautablösung (Ablatio retina) gelasert worden, komplikationslos.
+
+            **Sozialanamnese:**
+            - Lebe in fester Partnerschaft, nicht offiziell verheiratet.
+            - Habe keine Kinder.
+            - Beruf: Wissenschaftler im technischen Bereich an der Universität (Vollzeit).`,
+                    diagnosis: 'Leukämie'
+                },
+                {
+                    id: 'ms_onko4', // Neue ID für Onkologie-Fall 4
+                    title: 'Hodgkin-Lymphom',
+                    case_description: `**Patientin:** Frau Anna-Lena Voß, 73 Jahre alt (geb. 01.07.1952 - ausgedacht), 168 cm. Gewicht sei nicht bekannt, Kleidung sei größer geworden.
+
+            **Aufnahmegrund:**
+            Seit 2 Wochen bestehende Inappetenz und Fatigue, begleitet von seit 6 Monaten bestehenden, schmerzlosen, zervikalen Lymphadenopathien beidseits, trockenem Husten, Fieber (38,7 °C), Schüttelfrost, nächtlicher Hyperhidrose, Insomnie, Gewichtsabnahme und Pyrosis.
+
+            **Aktuelle Anamnese:**
+            Frau Fuß stellte sich bei uns wegen seit 2 Wochen bestehender Inappetenz und Fatigue vor. Des Weiteren klage sie über seit 6 Monaten bestehende, schmerzlose, zervikale Lymphadenopathien beidseits. Deswegen sei sie vor 5 Monaten beim Arzt gewesen, der die Beschwerden als Zeichen einer Infektion beschrieben habe (seitdem vertraue die Patientin den Ärzten nicht mehr). Zudem berichte Frau Fuß von trockenem Husten tagsüber. Begleitend zeigten sich Fieber (38,7 °C), Schüttelfrost, nächtliche Hyperhidrose (sie habe gesagt: sie schwitze nachts wie eine Sau), Insomnie und Gewichtsabnahme. Die Patientin klage auch über Pyrosis. Die Frage nach Thorakalgie, Knochenschmerzen und Alkoholschmerz seien verneint worden.
+
+            **Vegetative Anamnese:**
+            Die vegetative Anamnese sei bis auf die oben genannten Symptome unauffällig gewesen.
+
+            **Vorerkrankungen:**
+            - Hypercholesterinämie seit 10 Jahren, die mit Simvastatin 40 mg (0-0-1) behandelt werde.
+            - Divertikulitis vor 5 Jahren, die medikamentös behandelt worden sei.
+
+            **Medikamente:**
+            - Simvastatin 40 mg (0-0-1).
+            - Pantoprazol 40 mg bei Bedarf (b.B.) aufgrund der Pyrosis.
+
+            **Allergien:**
+            - Erdbeere (führe zu Lippenödem).
+            - Saisonale Konjunktivitis (im Frühling).
+
+            **Noxen:**
+            - Nichtraucherin.
+            - Gelegentlicher Alkoholkonsum liege vor.
+            - Drogenkonsum sei verneint worden.
+
+            **Sozialanamnese:**
+            - Ledig, habe keine Kinder und lebe in einem Seniorenheim.
+
+            **Familienanamnese:**
+            - Vater: Sei an Bronchialkarzinom verstorben.
+            - Mutter: Sei an Mammakarzinom verstorben.
+            - Schwester: Leide an Multipler Sklerose (MS) und sitze im Rollstuhl.`,
+                    diagnosis: 'Hodgkin-Lymphom'
+                }
+            ],
+            Unfallchirurgie: [
+                {
+                    id: 'ms_unfall1', // Neue ID für Unfallchirurgie-Fall 1
+                    title: 'Polytrauma: SHT Grad I, Milzruptur, Humerusfraktur',
+                    case_description: `**Patient:** Herr Henrik Schröder, 27 Jahre alt (geb. 01.01.1998), 176 cm, 96 kg.
+
+            **Aufnahmegrund:**
+            Notfallmäßige Einlieferung mit dem RTW nach einem Fahrradunfall um 02:30 Uhr mit Cephalgie, Abdominalgie, Thorakalgie, Omalgie rechts und Brachialgie rechts.
+
+            **Aktuelle Anamnese:**
+            Herr Schröder stellte sich bei uns notfallmäßig wegen seit um 02:30 Uhr bestehender Cephalgie, Abdominalgie, Thorakalgie, Omalgie rechts und Brachialgie rechts nach einem Fahrradunfall vor. Er sei mit dem RTW eingeliefert worden. Eine Katze sei über die Straße gelaufen, sodass er plötzlich habe bremsen müssen und auf die rechte Körperseite gefallen sei. Der Patient habe einen Helm getragen, der aber beim Aufprall zerbrochen worden sei. Er könne sich nicht genau erinnern. Sein Freund, der hinter ihm gefahren sei, habe alles erzählt.
+            Der Patient berichte über Vertigo, Nausea und einmalige Emesis nach dem Unfall.
+            Darüber hinaus seien ihm folgende Begleitsymptome aufgefallen:
+            - Diffuse Abdominalgie seit heute Morgen, 9/10, Peritonismus (Bauch sei hart und dick).
+            - Einatmungsabhängige Thorakalgie mit Husten.
+            - Cephalgie im ganzen Kopf, 8/10, verschlimmernd, mit einer offenen Wunde am Hinterkopf.
+            - Brachialgie rechts, 7/10 und ein blauer Fleck am Oberarm.
+            - Omalgie rechts mit Bewegungseinschränkung.
+            Auf Nachfrage seien Synkope, Exkoriationen, Ödeme, Durchblutungsstörungen und Sensibilitätsstörungen verneint worden. Bei ihm sei die Tetanus-Impfung zum letzten Mal vor 5 Jahren aufgefrischt worden (müsse alle 10 Jahre aufgefrischt werden). Der Patient sei gegen COVID-19 vollständig geimpft gewesen.
+
+            **Vegetative Anamnese:**
+            Die vegetative Anamnese sei bis auf morgendliche Fatigue und Neigung zur Obstipation unauffällig gewesen. Zudem teile er mit, dass er seit eineinhalb Jahren Veganer sei.
+
+            **Vorerkrankungen:**
+            - Schilddrüsenproblem seit 3 Jahren, behandelt mit L-Thyroxin (Euthyrox) 75 mcg (1-0-0).
+            - Osteitis Pubis seit unbekannter Zeit, behandelt mit Ibuprofen 600 mg.
+            - Wadenspasmen seit ¾ Jahren, behandelt mit Magnesium 300 mg (1-0-0).
+            - Gehörgangsekzem seit 4 Monaten, behandelt mit Cortisol-Ohrtropfen (1-0-1).
+
+            **Voroperationen:**
+            - Zustand nach Phimose-Operation im Alter von 8 Jahren.
+
+            **Medikamente:**
+            - L-Thyroxin (Euthyrox) 75 mcg (1-0-0).
+            - Ibuprofen 600 mg bei Bedarf (b.B.).
+            - Magnesium 300 mg (1-0-0).
+            - Cortisol-Ohrtropfen (1-0-1).
+
+            **Allergien:**
+            - Bienenstich-Allergie vor 4 Jahren (führe zu anaphylaktischem Schock, seitdem trage er immer Adrenalin-Pen bei sich).
+            - Braunes Pflaster (führe zu Ekzem).
+
+            **Genussmittel/Drogen:**
+            - Nichtraucher.
+            - Alkohol zu bestimmten Anlässen (gelegentlich).
+            - Joint gelegentlich.
+
+            **Sozialanamnese:**
+            - Student der Erziehungswissenschaft.
+            - Ledig, wohne allein in einer Mietwohnung.
+
+            **Familienanamnese:**
+            - Mutter: Leide seit der letzten Woche an einem psychosomatisch bedingten Skotom.
+            - Vater: Habe Wundheilungsstörungen im Rahmen einer Bypass-Operation wegen KHK vor einem Vierteljahr gehabt.
+            - Zwillingsschwester: Leide an Panikattacken.`,
+                    diagnosis: 'Polytrauma: SHT Grad I, Milzruptur, Humerusfraktur'
+                },
+                {
+                    id: 'ms_unfall2', // Neue ID für Unfallchirurgie-Fall 2
+                    title: 'Polytrauma: Radiusfraktur und Rippenfraktur',
+                    case_description: `**Patient:** Herr Maik Büchner, 47 Jahre alt (geb. 01.07.1977), 175 cm , 78 kg .
+
+            **Aufnahmegrund:**
+            Notfallmäßige Einlieferung mit dem RTW nach einem Motorradunfall vor 20-30 Minuten mit Schmerzen, Rötung, Bewegungseinschränkung, Schwellung und Abschürfung am rechten Handgelenk sowie einatmungsabhängiger Thorakalgie rechts.
+
+            **Aktuelle Anamnese:**
+            Herr Büchner sei wegen seit 20-30 Minuten bestehender Beschwerden nach einem Motorradunfall mit dem RTW eingeliefert worden. Der Patient berichte, er sei auf dem Arbeitsweg plötzlich ausgerutscht und auf seiner rechten Seite hingefallen. Er habe seinen Helm getragen.
+            Herr Büchner klage über Schmerzen (Dolor), Rötung (Rubor), Bewegungseinschränkung (Functio laesa), Schwellung (Ödem) und Abschürfung (Exkoriation) am rechten Handgelenk (Articulatio manus) sowie einatmungsabhängige Thorakalgie rechts.
+            Fragen nach Kopf-, Hals-, Bauch- oder Beinschmerzen seien verneint worden.
+
+            **Vegetative Anamnese:**
+            Bis auf chronische Verstopfung (Obstipation) und Schlafstörungen (Insomnie) sei die vegetative Anamnese unauffällig gewesen.
+
+            **Vorerkrankungen und Voroperationen:**
+            - Chronische Schulterschmerzen links (Omalgie) seit 10 Jahren.
+            - Niedriger Blutdruck (arterielle Hypotonie) seit dem 17en Lebensjahr.
+            - Gehörgangsekzem rechts seit 3 Jahren.
+            - Pilzinfektion am Nagel (Onychomykose) seit 3 Monaten.
+            - Zustand nach Sterilisation (Vasektomie) vor 5 Jahren.
+
+            **Medikamente:**
+            - Tropfen gegen Hypotonie (Name habe er nicht gewusst, es werde Ephedrin vermutet).
+            - Cortisonsalbe gegen Ekzem.
+            - Tropfen gegen Onychomykose.
+            - Diclofenac Gel gegen Omalgie.
+
+            **Allergien:**
+            - Kontrastmittel (führe zu anaphylaktischem Schock).
+
+            **Noxen:**
+            - Nikotinkonsum: Raucher seit seinem 16. Lebensjahr. Seit 5 Jahren rauche er 3-4 Zigaretten pro Tag. Vorher habe er viermal mehr geraucht.
+            - Alkoholkonsum: Ein Glas Wein am Wochenende.
+            - Drogenkonsum: Einmaliger Konsum eines Joints sei bejaht worden.
+
+            **Familienanamnese:**
+            - Vater: Habe 2016 Herpes Zoster (Gürtelrose) gehabt.
+            - Mutter: Leide an Herzrhythmusstörungen (sie habe gesagt: „Meine Mutter könne aufgrund dieser HRS einen Schlaganfall erleiden.“ Es werde Vorhofflimmern vermutet).
+            - Keine Geschwister.
+
+            **Sozialanamnese:**
+            - Beruf: Werbeagentur.
+            - Verheiratet.
+            - Habe 2 Töchter (die ältere leide an Essstörung / Anorexia Nervosa).
+            - Vollständig geimpft.`,
+                    diagnosis: 'Polytrauma: Radiusfraktur und Rippenfraktur'
+                },
+                {
+                    id: 'ms_unfall3', // Neue ID für Unfallchirurgie-Fall 3
+                    title: 'Polytrauma: SHT Grad I, Coxaluxation, Claviculafraktur, Rippenfraktur, Frakturen von Hand und Ellenbogen (im Rahmen einer Hypoglykämie)',
+                    case_description: `**Patient:** Herr Jochen Dietrich, 59 Jahre alt (geb. 01.07.1965 - ausgedacht), 175 cm (ausgedacht), 80 kg (ausgedacht).
+
+            **Aufnahmegrund:**
+            Notfallmäßige Einlieferung nach einem Sturz heute Nachmittag um 14:30 Uhr, mit Cephalgie, Thorakalgie, sowie Schmerzen und Ödemen an Hüfte, Schulter, Ellenbogen, Handgelenk und Unterarm. Der Sturz sei im Rahmen einer möglichen Hypoglykämie erfolgt.
+
+            **Aktuelle Anamnese:**
+            Herr Jochen Dietrich, ein 59-jähriger Mann, sei notfallmäßig vom Rettungsdienst zu uns gebracht worden, da er seit heute Nachmittag um 14:30 Uhr gestürzt sei. Er habe um 8:00 Uhr ein bisschen gefrühstückt und 15 IE Insulin gespritzt, danach jedoch nichts mehr gegessen. Er sei mit seiner Freundin auf dem Dachboden gewesen und habe lange aufgeräumt, weil seine Freundin bei ihm eingezogen sei. Er sei beim Runterlaufen auf der Treppe ausgerutscht und auf die linke Seite gefallen.
+            Vor dem Sturz sei ihm schwindelig gewesen und er habe schwarze Punkte vor den Augen gesehen, zudem habe er Flimmern, Herzrasen und Kaltschweiß gehabt.
+            Nach dem Sturz leide er an Cephalgie (drückend, 8/10 auf der Schmerzskala, ohne Ausstrahlung), habe eine Beule und ein Hämatom am Hinterkopf sowie inspirationsabhängige Thorakalgien (7/10). Außerdem berichte er von Schmerzen und Ödemen an der Hüfte (Coxa), Schulter, am Ellenbogen (Articulatio cubiti), am Handgelenk (Articulatio manus) und am Unterarm (Antebrachium). Alle Schmerzen lägen bei 7/10 auf der Schmerzskala. Es beständen Hämatome an der Coxa und am Antebrachium, Exkoriationen in der rechten Palma manus, am Antebrachium und an der Coxa. Er klage über Bewegungseinschränkungen, und die Coxa fühle sich ein bisschen warm an.
+            Fragen nach Synkope, Exkoriationen (weiteren), Ödemen (generellen), Durchblutungsstörungen und Sensibilitätsstörungen seien verneint worden. Seine Tetanus-Impfung sei zuletzt vor 5 Jahren aufgefrischt worden.
+
+            **Vegetative Anamnese:**
+            Obstipation, behandelt mit Laxans. Stress („Meine Frau sei vor 1,5 Jahren verstorben“) sei bekannt. Ansonsten sei die vegetative Anamnese unauffällig gewesen.
+
+            **Vorerkrankungen und Voroperationen:**
+            - Diabetes mellitus (DM), seit 2 Wochen mit Insulin 15 IE einmal täglich behandelt, vorher Metformin 1000 mg.
+            - Arterielle Hypertonie (aHT), seit 8 Jahren mit Benazepril 40 mg (1-0-0) behandelt, vorher habe er Beta-Blocker eingenommen.
+            - Zustand nach Pilzintoxikation (Vergiftung) vor 3 Monaten, 10 Tage stationäre Behandlung.
+            - Zustand nach Hörsturz (rechts).
+            - Zustand nach Bänderruptur (Ligamentumruptur) am rechten Kniegelenk aufgrund eines Unfalls während eines Handballspiels im Alter von 10 Jahren, chirurgisch behandelt.
+            - Zustand nach Cephalgie vor 3 Monaten, die mit Antibiotika für 10 Tage behandelt worden sei (Meningitis durch i.v. Antibiotika vermutet).
+            - Zustand nach Phimose-Operation im Alter von 8 Jahren.
+
+            **Medikamente:**
+            - Laxans bei Bedarf (b.B.).
+            - Insulin 15 IE (1-0-0).
+            - Benazepril 40 mg (1-0-0).
+            - Metformin 1000 mg (1-0-1).
+
+            **Allergien:**
+            - Erdbeeren (führe zu Lippenödem/Angioödem, Pruritus).
+            - Amoxicillin (führe zu Pruritus).
+
+            **Noxen:**
+            - Nikotinkonsum: Seit 10 Jahren 5 Zigaretten täglich, vorher 30 Jahre lang 15 Zigaretten täglich.
+            - Alkoholkonsum: 2-3 Flaschen Bier dreimal pro Woche.
+
+            **Familienanamnese:**
+            - Vater: Sei an Nasenkarzinom verstorben und sei Kettenraucher gewesen.
+            - Mutter: Sei vor 15 Jahren an Apoplex gestorben.
+            - Ehefrau: Sei vor 3 Jahren an Uteruskarzinom gestorben.
+            - Sohn: Leide an angeborener neurologischer Behinderung.
+
+            **Sozialanamnese:**
+            - Beruf: IT-Ingenieur.
+            - Verwitwet, lebe seit 6 Monaten mit neuer Freundin zusammen.
+            - Habe 1 Sohn (30 Jahre alt).`,
+                    diagnosis: 'Polytrauma: Commotio cerebri, Coxaluxation, Claviculafraktur, Rippenfraktur, Fraktur von Hand und Ellenbogen (im Rahmen einer Hypoglykämie)'
+                },
+                {
+                    id: 'ms_unfall4', // Neue ID für Unfallchirurgie-Fall 4
+                    title: 'Milzruptur',
+                    case_description: `**Patientin:** Frau Anke Scherer, 32 Jahre (geb. 17.10.1987), 159 cm, 62 kg.
+
+            **Aufnahmegrund:**
+            Diffuse, drückende, dumpfe Bauchschmerzen seit heute Morgen, mit beginnender Vergrößerung und Verhärtung des Bauches, großem Hämatom am linken Bauch, Hämaturie, Ausstrahlung in die linke Schulter und den Rücken, sowie Herzrasen, Kaltschweiß, leichtem Schwindel und starker Müdigkeit, nach einem Fahrradunfall gestern Nachmittag.
+
+            **Aktuelle Anamnese:**
+            Frau Scherer sei gestern Nachmittag gegen 17:00 Uhr auf dem Weg von der Arbeit nach Hause mit dem Fahrrad gefahren. Ein entgegenkommendes Auto sei auf ihre Spur gefahren, und sie habe ausweichen wollen, aber das Gleichgewicht verloren und sei zur linken Seite auf einen Pfosten (Pfahl, Zäune, Poller, Stabmatten) mit dem Bauch gefallen. Sie habe keinen Helm getragen.
+            Sie klage über diffuse Bauchschmerzen (9/10, drückend, dumpf) seit heute Morgen, die gestern zuerst im Oberbauch lokalisiert gewesen seien. Der Bauch sei hart und dicker geworden, habe einen großen blauen Fleck am Bauch links, und heute Morgen sei Blut im Urin aufgetreten. Die Schmerzen strahlten in die linke Schulter und den Rücken aus (9/10), und der Bauch sei größer geworden. Sie leide an Herzrasen, Kaltschweiß, leichtem Schwindel und sei sehr müde. Gestern nach dem Sturz habe es im Moment sehr wehgetan, dann sei es besser geworden, sie habe ein Paracetamol genommen und geschlafen. Seit gestern Abend habe sie Kopf- und Nackenschmerzen (8/10, dumpf), die schlimmer geworden seien, ohne Ausstrahlung, und sie könne den Nacken nicht bewegen. Abschürfungen (Exkoriation) am Kniegelenk (Articulatio genus) und am Oberarm (Brachium) beständen.
+
+            **Vegetative Anamnese:**
+            Parasomnie sei bekannt.
+
+            **Vorerkrankungen:**
+            - Migräne seit der Jugendzeit.
+            - Ekzem am Augenlid seit 3 Wochen.
+            - Zustand nach Pfeiffer-Drüsenfieber mit 17 Jahren, stationär behandelt.
+            - Zustand nach Nasenscheidewandoperation (Septumplastik) vor 10 Jahren.
+
+            **Medikamente:**
+            - Dolopyrin AL bei Bedarf (b.B.), 2-3 Mal pro Woche.
+            - Salbe gegen Ekzem (Name habe sie nicht nennen können).
+
+            **Allergien:**
+            - Penicillin (führe zu Dyspnoe).
+            - Laktoseintoleranz (führe zu Meteorismus, Diarrhö).
+
+            **Noxen:**
+            - Genussmittel seien unauffällig gewesen.
+
+            **Familienanamnese:**
+            - Vater: Habe Kehlkopfkarzinom gehabt und sei mit Luftröhrenkanüle (Laryngektomie mit Tracheostoma) operiert worden.
+            - Mutter: Leide an Krampfadern.
+            - Tochter: 4 Jahre alt, leide an Herzklappenstenose.
+
+            **Sozialanamnese:**
+            - Beruf: Logopädin, die Arbeit sei stressig, mache ihr aber Freude.
+            - Nicht verheiratet.
+            - Wohne mit ihrem Freund und der Tochter.`,
+                    diagnosis: 'Milzruptur'
+                },
+                {
+                    id: 'ms_unfall5', // Neue ID für Unfallchirurgie-Fall 5
+                    title: 'Milzruptur nach Inlineskater-Unfall',
+                    case_description: `**Patientin:** Frau Anka Götz, 31 Jahre alt (wird am 14.03. 32 Jahre alt, geb. 17.10.1992 ), 159 cm, 62 kg.
+
+            **Aufnahmegrund:**
+            Starke, dumpfe, drückende Schmerzen im linken Oberbauch mit Ausstrahlung in den linken Arm und die Schulter, begleitet von Hämaturie, Hämatom am Bauch, Tachykardie/Palpitationen, Blässe, Vertigo und frierendem Gefühl, nach einem Inlineskater-Unfall gestern Abend.
+
+            **Aktuelle Anamnese:**
+            Die Patientin sei gestern Abend bei einer Fahrt mit Inlineskatern (Rollschuhen) gegen einen Absperrpfosten gestoßen. Ein anderer Fahrradfahrer habe ihr die Vorfahrt genommen, und sie habe stark bremsen müssen.
+            Sie klage über starke, dumpfe, drückende Schmerzen im linken Oberbauch mit einer Ausstrahlung in den linken Arm und die Schulter. Hämaturie und ein Hämatom am Bauch beständen. Sie leide an Tachykardie/Palpitationen („mein Puls schlage schneller, das störe mich sehr“), Blässe („im Spiegel habe ich gesehen, wie blass ich bin“), Vertigo und einem frierenden Gefühl.
+
+            **Vegetative Anamnese:**
+            Bis auf Schlafstörungen sei die vegetative Anamnese unauffällig gewesen („Ich wache in der Nacht mehrmals auf, warum, wisse ich nicht, einfach so“). Sie sei Veganerin, und ihr Freund habe ihr empfohlen, Eisentabletten einzunehmen, die sie seit einer Woche nehme.
+
+            **Vorerkrankungen und Voroperationen:**
+            - Cephalgie seit mehreren Jahren.
+            - Ekzem an den Augenlidern (Seborrhoisches Ekzem) seit 2 Wochen.
+            - Zustand nach Septumplastik (wegen Nasenseptumdeviation) vor 9 Jahren.
+
+            **Medikamente:**
+            - ASS + Koffein Tabletten.
+            - Ein Medikament gegen Meteorismus (Name habe sie nie zuvor gehört).
+            - Fettcreme gegen Ekzem.
+            - Eisentabletten.
+            (Sie habe alle Medikamente von der Apotheke ohne Rezept oder ärztliche Empfehlung gekauft).
+
+            **Allergien:**
+            - Amoxicillin (führe zu Exanthem).
+            - Laktoseintoleranz (führe zu Meteorismus, Diarrhö).
+
+            **Noxen:**
+            - Nichtraucherin seit 5 Jahren. Zuvor habe sie 12-15 Zigaretten pro Tag für 8 Jahre geraucht.
+            - Alkoholkonsum: 1-2 Gläser Wein abends (seit wann sei nicht erfragt worden).
+
+            **Familienanamnese:**
+            - Mutter: Leide an rheumatoider Arthritis (Gelenk-Rheuma).
+            - Vater: Habe ein Larynxkarzinom gehabt und habe ein Tracheostoma.
+            - Keine Geschwister.
+
+            **Sozialanamnese:**
+            - Ledig (aber in einer festen Beziehung).
+            - Habe eine Tochter (4 Jahre alt, leide an rechter Herzklappenverengung).`,
+                    diagnosis: 'Milzruptur'
+                },
+                {
+                    id: 'ms_unfall6', // Bleibt gleich
+                    title: 'Sprunggelenkfraktur', // Bleibt gleich
+                    case_description: `**Patient:** Herr Matthias Krämer, 46 Jahre (geb. 12.08.1976), 175 cm , 80 kg.
+
+            **Aufnahmegrund:**
+            Seit heute Vormittag bestehende starker, pochender Schmerzen im rechten Sprunggelenk (Articulatio talocruralis) nach einem Sturzereignis, begleitet von Hämatom, Ödem, lokaler Zyanose sowie Functio laesa.
+
+            **Aktuelle Anamnese:**
+            Herr Krämer stellte sich in unserer Notaufnahme wegen seit heute Vormittag bestehender starker, pochender Schmerzen im rechten Sprunggelenk (Articulatio talocruralis) vor. Die Schmerzen seien so stark wie nie zuvor. Sie seien von einem Hämatom, Ödem, lokaler Zyanose sowie Functio laesa begleitet. Er berichte, dass er beim Spazierengehen eine Baustelle auf dem Gehweg übersehen habe und mit dem rechten Fuß dort eingetreten sei. Dabei sei er mit dem rechten Fuß umgeknickt und habe ein Knirschen (Krepitation) gehört. Er sei dabei nicht gefallen.
+            (Es sei ihm ein Schmerzmittel angeboten und es erst gegeben worden, nachdem nach seinen Allergien gefragt worden sei).
+
+            **Vegetative Anamnese:**
+            Bis auf stressbedingte Einschlafstörungen (Insomnie) und intermittierende Diarrhö sowie Meteorismus (beim Gemüsekonsum) sei die vegetative Anamnese unauffällig gewesen.
+
+            **Vorerkrankungen und Voroperationen:**
+            - Colon Irritabile seit 2-4 Jahren.
+            - Chronische Lumbalgie und Zervikalgie (seit 12 Jahren nach einem Motorradunfall).
+            - Chronische Dysphonie (wegen der Arbeit).
+            - Zustand nach Hörsturz links vor 2,5 Jahren (konservative Behandlung).
+            - Zustand nach Wirbelsäulenverletzung nach einem Motorradunfall im 34. Lebensjahr („ich will seitdem kein Motorradfahren“).
+            - Zustand nach Arthroskopie des rechten Kniegelenks (Articulatio genus re.) bei der Bursitis vor 9 Monaten („vor drei Viertel Jahr“).
+
+            **Medikamente:**
+            - Cetirizin 10 mg (1-0-0).
+            - Imodium bei Bedarf (b.B.).
+            - Johanniskraut bei B.
+            - Ibuprofen oder Diclofenac bei Bedarf (b.B.).
+            - Neo Angin Lutschtabletten wegen der Heiserkeit bei Bedarf (b.B.).
+
+            **Allergien:**
+            - Pollenallergie (Birkenpollen).
+            - Nickel (der Patient habe seinen Allergieausweis dabei).
+            - Rohkost- und Gemüseintoleranz.
+
+            **Noxen:**
+            - Nikotinabusus: Rauche zurzeit 15 Zigaretten pro Tag seit 5 Jahren, vorher habe er 30 Zigaretten pro Tag geraucht („doppelt so viel“). Er habe seit dem 15.-16. Lebensjahr geraucht („seit der Schulzeit, so circa 8-9 Klasse“).
+            - Alkoholkonsum: 2-3 Weingläschen täglich („ich arbeite als Weinhändler und muss wissen, was ich verkaufe“).
+
+            **Sozialanamnese:**
+            - Verheiratet, habe einen Sohn (leide an eine Sprachstörung/Dysarthrie), wohne zusammen mit dem Sohn und der Frau.
+            - Beruf: Selbständiger Weinhändler und damit auch privatversichert.
+
+            **Familienanamnese:**
+            - Vater: Sehbehindert, „etwas mit der Netzhaut“.
+            - Mutter: „Etwas mit dem Hüftgelenk, sie brauche ein neues, es tue ihr sehr weh, sie habe in ein paar Wochen einen OP-Termin“ (TEP Termin).`,
+                    diagnosis: 'Sprunggelenkfraktur'
+                },
+                {
+                    id: 'ms_unfall7', // Neue ID für Unfallchirurgie-Fall 7
+                    title: 'Patellafraktur',
+                    case_description: `**Patientin:** Frau Katja Reuter, 39 Jahre (geb. 06.06.1985), 165 cm, 65 kg.
+
+            **Aufnahmegrund:**
+            Notfallmäßige Einlieferung mit dem Rettungswagen nach einem Auffahrunfall, wobei sie mit dem rechten Knie gegen das Armaturenbrett stieß. Seitdem bestünden starke Schmerzen (10/10 zuerst, jetzt 8/10), Krepitation, Exkoriation und Hämatom am Knie, sowie leichte proximale Femurschmerzen.
+
+            **Aktuelle Anamnese:**
+            Frau Reuter sei als Beifahrerin im Auto gewesen. Ihr Partner habe plötzlich bremsen müssen, weil eine ältere Frau mit einem E-Bike (Elektrofahrrad) auf der Straße gestürzt sei. Dann habe die Patientin mit dem Knie gegen das Armaturenbrett gestoßen. Sie klage über rechte Knieschmerzen (zuerst 10/10, jetzt 8/10), Krepitation, Exkoriation und Hämatom am Knie sowie leichte proximale Femurschmerzen. (Ein Schmerzmittel sei angeboten, aber abgelehnt worden.)
+
+            **Vegetative Anamnese:**
+            Stress wegen der Arbeit. Insomnie wegen Restless-Legs-Syndrom.
+
+            **Vorerkrankungen:**
+            - Restless-Legs-Syndrom.
+            - Pediculosis capitis (Kopfläuse).
+            - Rechte Omalgie (da die Patientin in der Freizeit Tennis spiele).
+            - Kieferzyste vor 4 Jahren ambulant operiert (ob Ober- oder Unterkiefer, sei nicht erfragt worden).
+            - Claviculafraktur, die mit Rucksackverband behandelt worden sei.
+
+            **Medikamente:**
+            - ASS 500 mg jeden zweiten Tag wegen Omalgie.
+            - Dimeticon Öl wegen Pediculosis capitis.
+            - Lefax Kautabletten bei Bedarf (b.B.) bei Meteorismus.
+            - Cetirizin bei Bedarf (b.B.) bei Rhinokonjunktivitis.
+
+            **Allergien / Unverträglichkeiten:**
+            - Rohes Gemüse (führe zu Meteorismus).
+            - Haselnussallergie (führe zu Rhinokonjunktivitis).
+            - Braunes Pflaster (führe zu Erythem).
+
+            **Noxen:**
+            - Nikotinkonsum: Habe seit der Geburt ihrer Tochter (5 Jahre) aufgehört zu rauchen. Davor habe sie 10 Zigaretten pro Tag für 12 Jahre geraucht (6 Packungsjahre).
+            - Alkoholkonsum: Ein Glas Rotwein jeden Abend.
+
+            **Sozialanamnese:**
+            - Verheiratet; nächste Woche stünde der 10. Jahrestag der Hochzeit an.
+            - Habe eine Tochter (5 Jahre alt, leide an Pediculosis capitis und Wutanfällen).
+            - Beruf: Zahntechnikerin, habe Stress wegen ihrer Chefin und wolle selbstständig sein.
+
+            **Familienanamnese:**
+            - Vater: 67 Jahre alt, habe Anus praeter seit 3 Monaten wegen kolorektalem Karzinom.
+            - Mutter: 66 Jahre alt, bei ihr sei vor 6 Wochen Struma maligna diagnostiziert worden.`,
+                    diagnosis: 'Patellafraktur'
+                },
+                {
+                    id: 'ms_unfall8', // Neue ID für Unfallchirurgie-Fall 8
+                    title: 'Ligamentum cruciatum genus Ruptur',
+                    case_description: `**Patient:** Herr Hans-Dieter Krüger, 20 Jahre alt (geb. 16.01.2001), 178 cm, 71 kg. Hausarzt: Dr. Maier.
+
+            **Aufnahmegrund:**
+            Seit vier Wochen bestehende, zunehmende Knieschmerzen rechts (aktuell 4-5/10 in Ruhe, 6-7/10 bei Bewegung), begleitet von Schwellung, blauer Verfärbung und Überwärmung des Knies, nach einem Fußballspiel.
+
+            **Aktuelle Anamnese:**
+            Zufolge des Patienten habe er Knieschmerzen rechts, die bis auf 4-5 in Ruhe und 6-7 bei der Bewegung lägen, und sein Knie sei im Moment angeschwollen, und die Haut sei blau verfärbt. Diese Situation bestehe schon seit vier Wochen. Das sei nach einem Fußballspiel passiert: Er habe den Ball nicht richtig getroffen, dann sei er mit dem rechten Bein umgeknickt und hingefallen und habe wieder diese Probleme gekriegt, aber dieses Mal sei alles schlechter. Vor 4 Wochen habe er ein Hämatom (Blausucht) gehabt. Es sei ihm geschienen, dass die Haut in seinem Kniebereich etwas wärmer (Dolor, Calor) als das linke Knie sei. Die Schmerzen seien dort noch stärker als jetzt gewesen, Tabletten (Ibuprofen 600 mg, zweimal jeden Tag) hätten ihm ein bisschen geholfen. Natürlich habe er, wie immer, eine Voltaren Salbe aufgetragen, jeden Tag seit vier Wochen, morgens oder abends. Im Moment habe er Schmerzen.
+            Parästhesie und Hypästhesie seien verneint worden.
+
+            **Vegetative Anamnese:**
+            Obstipation (Verstopfung) bestehe (alle 2 Tage, aber manchmal gehe er jeden Tag zur Toilette, kein Medikament dagegen).
+
+            **Vorerkrankungen und Voroperationen:**
+            - Pyrosis seit 5 Jahren, behandelt mit Pantoprazol 20 mg (1-0-0).
+            - Chronischer Husten (Tussis) mit gräulichem Auswurf (Sputum) seit 4 Jahren (kein Medikament dagegen), in dieser Situation handle es sich um chronische Bronchitis.
+            - Knieluxation (Knieverrenkung) vor 8 Jahren beim Weitsprung. Vor acht Jahren habe er sich das erste Mal seine Kniescheibe verrenkt, jetzt komme das sehr oft wieder. Im Jahr 2013 beim Weitsprung in den Bundesjugendspielen habe er das erste Mal gehabt. Damals habe er Dolor, Hämatom und eingeschränkte Bewegung mit dem rechten Kniegelenk gehabt. Dann sei er 6 Tage im Krankenhaus gewesen, bei ihm sei eine Kniegelenkarthroskopie durchgeführt worden. Der Arzt habe ihm dann gesagt, dass er keine ansteckende Erkrankung (septische/infektiöse Arthritis) gehabt habe, weil in der Flüssigkeit von dem Gelenk keine Bakterien gewesen seien. Und bei Röntgen sei eine Fraktur auch ausgeschlossen worden. Seitdem habe er immer häufiger ähnliche Probleme, er bekomme die Verrenkung (Luxation) 3-4 Mal pro Jahr, es komme wiederkehrend (rezidivierend). Anfangs, schon vor 5-6 Jahren, sei es nur während des Sports gewesen, aber jetzt trete es bei täglichen Bewegungen auf, deswegen treibe er keinen Sport; vor diesen 4 Wochen habe er es nur probieren wollen.
+            - Appendektomie im Jahr 2009 unter allgemeiner Betäubung.
+            Beide Operationen seien komplikationslos verlaufen.
+
+            **Medikamente:**
+            - Pantoprazol 20 mg (1-0-0).
+            - Ibuprofen 600 mg bei Bedarf (b.B.).
+            - Voltaren Salbe bei Bedarf (b.B.).
+
+            **Allergien:**
+            - Kuhmilchunverträglichkeit, also alle Milchprodukte (Laktoseintoleranz).
+
+            **Noxen:**
+            - Nikotinkonsum: Raucher seit 6 Jahren. Jetzt 1 Schachtel/Tag (20 Zigaretten), früher 2 Schachteln/Tag (seit er 14 Jahre sei).
+            - Alkoholkonsum: Jedes Wochenende trinke er Cocktails und Bier. Er wisse nicht, wie viel, aber er werde immer getrunken.
+            - Drogenkonsum: Habe für 2 Jahre Haschisch gekifft. Seit 4 Jahren aufgehört.
+
+            **Familienanamnese:**
+            - Vater: Kerngesund; Lehrer.
+            - Mutter: Lehrerin, Adipositas, aHT, insulinpflichtiger Diabetes mellitus seit Jugend.
+            - Mütterlicherseitige Großmutter: Habe Mammakarzinom gehabt (mit Chirurgie, Chemo- und Strahlentherapie behandelt, habe schon Metastasen gehabt). Er sei noch ein Kind gewesen und erinnere sich nicht an die Großmutter, aber die Familie habe alles erzählt.
+            - Keine Geschwister.
+
+            **Sozialanamnese:**
+            - Ausbildung zum Einzelhandelskaufmann.
+            - Ledig.
+            - Habe 1 gesunden Sohn, 5 Jahre alt. Er komme regelmäßig zum Besuch.
+            - Wohne mit seiner Familie zusammen.`,
+                    diagnosis: 'Ligamentum cruciatum genus Ruptur'
+                },
+                {
+                    id: 'ms_unfall9', // Neue ID für Unfallchirurgie-Fall 9
+                    title: 'Patellafraktur nach Fahrradunfall',
+                    case_description: `**Patient:** Herr Krüger, 43 Jahre alt (geb. 01.07.1981 ), 178 cm, 80 kg.
+
+            **Aufnahmegrund:**
+            Starke Schmerzen, Schwellung (Tumor), Hämatom (Bluterguss), Abschürfung (Exkoriation), Knistergeräusche (Krepitation) und Bewegungseinschränkung (insbesondere die Extension sei nicht mehr möglich) am rechten Kniegelenk (Articulatio genus) nach einem Fahrradunfall.
+
+            **Aktuelle Anamnese:**
+            Herr Krüger stellte sich in unserer Notaufnahme nach einem Fahrradunfall vor. Der 43-jährige Patient habe angegeben, dass er mit dem Fahrrad gefahren sei, als ein anderes Fahrrad aus der Seitenstraße plötzlich gekommen sei. Deswegen habe er bremsen müssen und sei auf der rechten Seite aufgestürzt und mit dem rechten Knie gegen die Bordsteinkante geknallt. Er habe seinen Helm getragen und sich nicht den Kopf gestoßen.
+            Des Weiteren klage der Patient über starke Schmerzen, Schwellung (Tumor), Hämatom (Bluterguss), Abschürfung (Exkoriation), Krepitation (Knistergeräusche) und Bewegungseinschränkungen (die Extension sei nicht mehr möglich) im rechten Kniegelenk (Articulatio genus).
+            Außerdem gebe der Patient an, dass er leichte Schmerzen und eine palmare Exkoriation rechts (an der Handfläche) habe.
+            Fragen nach Bewusstlosigkeit, Vertigo, Abdominalschmerzen sowie Thoraxschmerzen seien verneint worden.
+
+            **Vegetative Anamnese:**
+            Bis auf Obstipation, die mit Laktulose (1 Löffel bei Bedarf) behandelt werde, sei die vegetative Anamnese unauffällig gewesen.
+
+            **Vorerkrankungen und Voroperationen:**
+            - Urtikaria (Quaddeln), die mit Cetirizin bei Bedarf behandelt werde.
+            - Mandibulärzyste (Kieferzyste), vor 4 Jahren ambulant operiert.
+            - Zustand nach Reitunfall vor 7 Jahren (Verdacht auf Collum humeri Fraktur, aber nur eine Kontusion/Prellung sei festgestellt worden).
+            - Pediculosis capitis (Kopfläuse) vor ein paar Tagen, die mit Dimeticon Öl behandelt werde.
+
+            **Medikamente:**
+            - Laktulose 1 Löffel bei Bedarf (b.B.) (1-0-0).
+            - Cetirizin bei Bedarf (b.B.).
+            - Dimeticon Öl.
+
+            **Allergien und Unverträglichkeiten:**
+            - Kreuzallergie gegen Gräserpollen und Mehl, die sich mit Rhinokonjunktivitis und Tussis äußere („Heuschnupfen, meine Augen jucken, Husten“).
+
+            **Noxen:**
+            - Ex-Raucher seit 10 Jahren. Früher habe er für 15 Jahre 10 Zigaretten pro Tag geraucht (eine halbe Schachtel).
+            - Alkoholkonsum: Ein Glas Wein abends.
+
+            **Familienanamnese:**
+            - Vater: Sei an Hirnmetastasen infolge eines Melanoms (schwarzer Hautkrebs) verstorben.
+            - Mutter: Sei noch am Leben und leide an chronischer Lebererkrankung (vermutlich Hepatitis, da sie nach Asien gereist sei).
+            - Keine Geschwister.
+
+            **Sozialanamnese:**
+            - Beruf: Werbeagentur.
+            - Verheiratet.
+            - Habe 2 Töchter (die ältere leide an Essstörung / Anorexia Nervosa).
+            - Vollständig geimpft.`,
+                    diagnosis: 'Patellafraktur'
+                },
+                {
+                    id: 'ms_unfall10', // Neue ID für Unfallchirurgie-Fall 10
+                    title: 'Patellafraktur nach Fahrradunfall (2)',
+                    case_description: `**Patient:** Herr Olaf Krüger, 43 Jahre alt (geb. 13.09.1981), 176 cm, 75 kg.
+
+            **Aufnahmegrund:**
+            Seit 45 Minuten bestehende, starke Gonalgie rechts nach einem Fahrradunfall, begleitet von Hämatom, Ödem, Krepitation, offener Wunde am Knie und Bewegungseinschränkung.
+
+            **Aktuelle Anamnese:**
+            Der oben genannte Patient stellte sich bei uns wegen seit 45 Minuten bestehender starker Gonalgie rechts nach einem Fahrradunfall vor. Er erzählte, dass er plötzlich eine andere Fahrradfahrerin bemerkt habe, deswegen habe er vollbremsen müssen und sei auf die rechte Seite gestürzt. Der Patient sei mit dem Rettungswagen (RTW) zu uns geliefert worden. Des Weiteren klage er über das Folgende: blauer Fleck (Hämatom), Ödem, Knirschen (Krepitation), Läsion (er habe gemeint, er könne die Knochen sehen! – eine offene Wunde), Schmerzen (9/10 bei der Bewegung, 2-3/10 in Ruhe) und Bewegungseinschränkung am rechten Knie. Er habe hinzugefügt, dass er mit der Hand versucht habe, sich zu schützen, deswegen habe er eine Exkoriation (Abschürfung) an der rechten Palma manus (Handfläche) gehabt. Die Tetanusimpfung sei aktuell (vor 5 Jahren) gewesen. Der Patient habe einen Helm getragen, und die Frage nach Synkope sei verneint worden.
+
+            **Vegetative Anamnese:**
+            Bis auf Obstipation und Insomnie sei die vegetative Anamnese unauffällig gewesen (er habe viel Stress bei der Arbeit wegen eines neuen Projektes).
+
+            **Vorerkrankungen und Voroperationen:**
+            - Nackenschmerzen seit 20 Jahren.
+            - Tonsillitis vor 3,5 Wochen (sei konservativ vom Hausarzt behandelt worden).
+            - Pediculosis capitis (Kopfläuse) seit 7 Tagen.
+            - Zustand nach Maxillazyste-Operation links vor 4 Jahren.
+            - Krankenhausaufenthalt wegen Verdachts auf Collum femoris Fraktur (Schenkelhalsfraktur), aber es sei nur eine Kontusion (Prellung) festgestellt worden.
+
+            **Medikamente:**
+            - Laktulose Sirup (1 Löffel, 1-0-0) bei Bedarf (b.B.).
+            - Cetirizin bei Bedarf (b.B.).
+            - Dimeticon Öl.
+            - ASS 500 mg (1-0-0) alle 2 Tage.
+
+            **Allergien:**
+            - Kreuzallergie gegen Gräserpollen und Mehl, die sich mit Rhinokonjunktivitis und Tussis äußere („Heuschnupfen, meine Augen jucken, Husten“).
+
+            **Noxen:**
+            - Ex-Raucher seit 10 Jahren. Vorher habe er eine halbe Schachtel pro Tag für 15 Jahre geraucht.
+            - Alkoholkonsum: 1 Glas Wein abends.
+
+            **Familienanamnese:**
+            - Eltern hätten in Indien gewohnt.
+            - Mutter: Leide an chronischer Hepatitis.
+            - Vater: Sei an Hautkarzinom mit intrazerebraler Metastase im Alter von 81 Jahren verstorben.
+
+            **Sozialanamnese:**
+            - Beruf: Arbeite im Reisebüro.
+            - Verheiratet.
+            - Habe 2 Töchter. Die älteste habe die Pediculosis capitis (Kopflaus) aus der Schule mitgebracht, deswegen habe die ganze Familie an Pediculosis capitis gelitten. Die jüngste Tochter leide an Urtikaria.`,
+                    diagnosis: 'Patellafraktur'
+                }
+            ]
+        };
+
+        function renderCases() {
+            container.innerHTML = '';
+
+            if (!muensterCases) {
+                container.innerHTML = '<p>Keine Fälle für Münster gefunden.</p>';
+                return;
+            }
+
+            for (const [specialty, cases] of Object.entries(muensterCases)) {
+                const specialtyName = specialty.charAt(0).toUpperCase() + specialty.slice(1).replace(/_/g, ' ');
+
+                const specialtyDetails = document.createElement('details');
+                specialtyDetails.className = 'specialty-group';
+
+                const specialtySummary = document.createElement('summary');
+                specialtySummary.innerHTML = `<span>${specialtyName}</span> <span class="badge">${cases.length} Fälle</span>`;
+                specialtyDetails.appendChild(specialtySummary);
+
+                const specialtyContent = document.createElement('div');
+                specialtyContent.className = 'specialty-content';
+
+                cases.forEach(caseItem => {
+                    const caseDetails = document.createElement('details');
+                    caseDetails.className = 'case-item';
+
+                    const caseSummary = document.createElement('summary');
+                    caseSummary.innerHTML = `<span>${caseItem.title}</span>`;
+                    caseDetails.appendChild(caseSummary);
+
+                    const caseContent = document.createElement('div');
+                    caseContent.className = 'case-content';
+
+                    let formattedDescription = caseItem.case_description || '';
+                    formattedDescription = formattedDescription.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+                    caseContent.innerHTML = `
+                        <div class="case-diagnosis">Diagnose: ${caseItem.diagnosis}</div>
+                        <div class="case-description">${formattedDescription}</div>
+                    `;
+
+                    caseDetails.appendChild(caseContent);
+                    specialtyContent.appendChild(caseDetails);
+                });
+
+                specialtyDetails.appendChild(specialtyContent);
+                container.appendChild(specialtyDetails);
+            }
+        }
+
+        renderCases();
+
+        // Toggle logic
+        document.getElementById('expand-all').addEventListener('click', () => {
+            document.querySelectorAll('details').forEach(d => d.open = true);
+        });
+
+        document.getElementById('collapse-all').addEventListener('click', () => {
+            document.querySelectorAll('details').forEach(d => d.open = false);
+        });
+    </script>
+</body>
+
+</html>
