@@ -544,6 +544,7 @@
         // --- 2. STATE MANAGEMENT ---
         let cards = [];
         let currentCard = null;
+        let isProcessing = false;
 
         // --- 6. STATS LOGIC ---
         let stats = {
@@ -597,6 +598,7 @@
         }
 
         function loadNextCard() {
+            isProcessing = false;
             const due = getDueCards();
 
             // UI Handling for "No cards left"
@@ -638,6 +640,8 @@
 
         function handleResult(success, event) {
             if (event) event.stopPropagation();
+            if (isProcessing) return;
+            isProcessing = true;
 
             const container = document.getElementById('card-container');
             if (!success) {
@@ -701,6 +705,23 @@
             );
             renderGlossary(filtered);
         }
+
+        // Keyboard Shortcuts
+        window.addEventListener('keydown', (e) => {
+            // Ignore if search is focused
+            if (document.activeElement.id === 'search-input') return;
+
+            const cardVisible = document.getElementById('card-container').style.display !== 'none';
+            const flipped = document.getElementById('flashcard').classList.contains('flipped');
+
+            if (e.code === 'Space' && cardVisible && !flipped) {
+                e.preventDefault();
+                flipCard();
+            } else if (flipped && cardVisible) {
+                if (e.key === '1' || e.key === 'Enter' || e.key === 'ArrowRight') handleResult(true, e);
+                else if (e.key === '0' || e.key === 'Backspace' || e.key === 'ArrowLeft') handleResult(false, e);
+            }
+        });
 
         function loadStats() {
             const stored = localStorage.getItem(STATS_KEY);
