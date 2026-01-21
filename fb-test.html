@@ -279,6 +279,70 @@
             overflow-y: auto;
         }
 
+        /* Stats Panel */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .badge-container {
+            text-align: center;
+            margin: 20px 0 40px;
+        }
+
+        .rank-badge {
+            font-size: 1.5rem;
+            font-weight: 800;
+            padding: 10px 25px;
+            background: linear-gradient(135deg, #ffd700, #ffa500);
+            color: #000;
+            border-radius: 50px;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            from {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
         .panel.active {
             display: flex;
         }
@@ -365,12 +429,14 @@
 
     <div class="top-nav">
         <button class="nav-btn" onclick="toggleGlossary()" title="Glossary">📖</button>
+        <button class="nav-btn" onclick="toggleStats()" title="Stats">📊</button>
         <button class="nav-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle Theme">🌙</button>
     </div>
 
     <div class="header">
         <span id="due-count">Fällig: 0</span>
-        <span id="total-count">Gesamt: 0</span>
+        <span id="streak-header">🔥 0</span>
+        <span id="daily-header">📅 0</span>
     </div>
 
     <div id="finished-msg" class="empty-state">
@@ -405,6 +471,43 @@
         </button>
     </div>
 
+    <!-- Stats Panel -->
+    <div class="panel" id="stats-panel">
+        <button class="nav-btn" onclick="toggleStats()" style="position: absolute; top: 20px; right: 20px;">✕</button>
+
+        <div style="text-align: center; margin-top: 20px;">
+            <h2 style="font-size: 2rem;">Dein Fortschritt 🚀</h2>
+
+            <div class="badge-container">
+                <div id="rank-display" class="rank-badge">Lade...</div>
+                <p style="margin-top: 15px; opacity: 0.7; font-size: 0.9rem;">AKTUELLER RANG</p>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="streak-display">0</div>
+                <div class="stat-label">Streak 🔥</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="daily-display">0</div>
+                <div class="stat-label">Heute 📅</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="accuracy-display">0%</div>
+                <div class="stat-label">Genauigkeit 🎯</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="total-display">0</div>
+                <div class="stat-label">Gesamt 📚</div>
+            </div>
+        </div>
+
+        <p style="text-align: center; opacity: 0.6; margin-top: 20px; font-size: 0.9rem;">
+            Bleib dran! Jeder Tag zählt.
+        </p>
+    </div>
+
     <!-- Glossary Panel -->
     <div class="panel" id="glossary-panel">
         <button class="nav-btn close-panel" onclick="toggleGlossary()">✕</button>
@@ -435,11 +538,24 @@
         }
 
         const STORAGE_KEY = 'medical_flashcards_de_v1';
+        const STATS_KEY = 'medical_flashcards_de_stats_v1';
 
 
         // --- 2. STATE MANAGEMENT ---
         let cards = [];
         let currentCard = null;
+
+        // --- 6. STATS LOGIC ---
+        let stats = {
+            totalReviewed: 0,
+            correct: 0,
+            incorrect: 0,
+            currentStreak: 0,
+            bestStreak: 0,
+            dailyCount: 0,
+            lastStudyDate: new Date().toDateString()
+        };
+
         // Start the app
         init();
         // Updated storage key to avoid conflict with English version if tested on same domain
@@ -462,6 +578,9 @@
                 })).sort(() => Math.random() - 0.5);
                 saveData();
             }
+
+            loadStats(); // Load stats
+            updateStatsUI();
             loadNextCard();
             renderGlossary();
         }
@@ -526,6 +645,9 @@
                 setTimeout(() => container.classList.remove('shake'), 400);
             }
 
+            // Update Stats
+            updateStats(success);
+
             const now = Date.now();
             const ONE_MINUTE = 60 * 1000;
 
@@ -580,28 +702,79 @@
             renderGlossary(filtered);
         }
 
-        // Keyboard Shortcuts
-        window.addEventListener('keydown', (e) => {
-            // Ignore if search is focused
-            if (document.activeElement.id === 'search-input') return;
-
-            const cardVisible = document.getElementById('card-container').style.display !== 'none';
-            const flipped = document.getElementById('flashcard').classList.contains('flipped');
-
-            if (e.code === 'Space' && cardVisible && !flipped) {
-                e.preventDefault();
-                flipCard();
-            } else if (flipped) {
-                if (e.key === '1' || e.key === 'Enter' || e.key === 'ArrowRight') handleResult(true);
-                else if (e.key === '0' || e.key === 'Backspace' || e.key === 'ArrowLeft') handleResult(false);
+        function loadStats() {
+            const stored = localStorage.getItem(STATS_KEY);
+            if (stored) {
+                stats = JSON.parse(stored);
+                // Daily Reset Check
+                if (stats.lastStudyDate !== new Date().toDateString()) {
+                    stats.dailyCount = 0;
+                    stats.lastStudyDate = new Date().toDateString();
+                    saveStats();
+                }
             }
-        });
+        }
 
-        // --- 6. UTILITIES ---
+        function saveStats() {
+            localStorage.setItem(STATS_KEY, JSON.stringify(stats));
+        }
+
+        function updateStats(isSuccess) {
+            stats.totalReviewed++;
+            stats.dailyCount++;
+
+            if (isSuccess) {
+                stats.correct++;
+                stats.currentStreak++;
+                if (stats.currentStreak > stats.bestStreak) stats.bestStreak = stats.currentStreak;
+            } else {
+                stats.incorrect++;
+                stats.currentStreak = 0;
+            }
+            stats.lastStudyDate = new Date().toDateString();
+            saveStats();
+            updateStatsUI();
+        }
+
+        function getRank() {
+            const total = stats.totalReviewed;
+            if (total < 10) return "Erstsemester 🌱";
+            if (total < 50) return "Famulant 💉";
+            if (total < 100) return "PJ-ler 🏥";
+            if (total < 250) return "Assistenzarzt 🩺";
+            if (total < 500) return "Facharzt 👨‍⚕️";
+            if (total < 1000) return "Oberarzt 🔬";
+            return "Chefarzt 👑";
+        }
+
+        function updateStatsUI() {
+            // Header
+            if (document.getElementById('streak-header')) document.getElementById('streak-header').textContent = `🔥 ${stats.currentStreak}`;
+            if (document.getElementById('daily-header')) document.getElementById('daily-header').textContent = `📅 ${stats.dailyCount}`;
+
+            // Panel
+            if (document.getElementById('streak-display')) {
+                document.getElementById('streak-display').textContent = stats.currentStreak;
+                document.getElementById('daily-display').textContent = stats.dailyCount;
+
+                const acc = stats.totalReviewed === 0 ? 0 : Math.round((stats.correct / stats.totalReviewed) * 100);
+                document.getElementById('accuracy-display').textContent = acc + "%";
+
+                document.getElementById('total-display').textContent = stats.totalReviewed;
+                document.getElementById('rank-display').textContent = getRank();
+            }
+        }
+
+        function toggleStats() {
+            updateStatsUI();
+            document.getElementById('stats-panel').classList.toggle('active');
+        }
+
+        // --- 7. UTILITIES ---
         function updateHeader() {
             const dueCount = getDueCards().length;
             document.getElementById('due-count').textContent = `Fällig: ${dueCount}`;
-            document.getElementById('total-count').textContent = `Gesamt: ${cards.length}`;
+            // Total removed from header to make room for stats
         }
 
         function resetReviewTimes() {
@@ -628,6 +801,7 @@
         window.toggleTheme = toggleTheme;
         window.toggleGlossary = toggleGlossary;
         window.filterGlossary = filterGlossary;
+        window.toggleStats = toggleStats;
     </script>
 </body>
 
