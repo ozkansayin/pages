@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medizinische Terminologie - Prüfung</title>
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --bg: #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.8);
+            --text: #1e293b;
+            --header-text: #64748b;
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --input-bg: #ffffff;
+            --nav-height: 80px;
+        }
+
+        [data-theme="dark"] {
+            --primary: #60a5fa;
+            --success: #4ade80;
+            --danger: #f87171;
+            --bg: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.8);
+            --text: #f1f5f9;
+            --header-text: #94a3b8;
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            --input-bg: #1e293b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            background-image: radial-gradient(at 0% 0%, hsla(210, 100%, 93%, 1) 0, transparent 50%),
+                radial-gradient(at 50% 0%, hsla(225, 39%, 30%, 0.1) 0, transparent 50%),
+                radial-gradient(at 100% 0%, hsla(190, 100%, 91%, 1) 0, transparent 50%);
+            background-attachment: fixed;
+            color: var(--text);
+            min-height: 100vh;
+            padding-top: calc(var(--nav-height) + 100px);
+            /* Extra space for expanded nav */
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        [data-theme="dark"] body {
+            background-image: radial-gradient(at 0% 0%, hsla(222, 47%, 11%, 1) 0, transparent 50%),
+                radial-gradient(at 100% 0%, hsla(222, 47%, 15%, 1) 0, transparent 50%);
+        }
+
+        /* Sticky Header */
+        .sticky-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: auto;
+            min-height: var(--nav-height);
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            padding: 10px 20px;
+            box-shadow: var(--shadow);
+            gap: 10px;
+        }
+
+        .nav-top-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 5px;
+        }
+
+        .nav-controls-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            width: 100%;
+            flex-wrap: wrap;
+            padding-bottom: 5px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .nav-stats {
+            display: flex;
+            gap: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--header-text);
+        }
+
+        .nav-stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .nav-stat-value {
+            font-size: 1.1rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            height: 44px;
+            /* Ensure uniform height */
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            /* Soft red */
+            color: #fff;
+            /* Dark text for contrast on light red */
+            border: none;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+            /* Darker red */
+        }
+
+        /* Segmented Control / Switch */
+        .switch-container {
+            display: flex;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 4px;
+            gap: 4px;
+        }
+
+        .switch-option {
+            position: relative;
+        }
+
+        .switch-option input {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .switch-option label {
+            display: block;
+            padding: 6px 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            color: var(--header-text);
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .switch-option input:checked+label {
+            background: var(--card-bg);
+            color: var(--primary);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .switch-option:hover label {
+            color: var(--text);
+        }
+
+        .mode-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--header-text);
+            opacity: 0.8;
+            font-weight: 700;
+        }
+
+        /* Quiz Container */
+        .quiz-container {
+            max-width: 900px;
+            /* Update: Wider container */
+            margin: 20px auto;
+            padding: 0 20px 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr 40px;
+            /* Update: More space for input */
+            /* Question | Input | Status */
+            gap: 15px;
+            align-items: start;
+            /* Update: Align top for multiline */
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .question-card:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+            transform: scale(1.01);
+        }
+
+        .question-text {
+            font-weight: 600;
+            font-size: 1rem;
+            padding-top: 10px;
+            /* Update: Align with input text base */
+        }
+
+        .question-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--header-text);
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .input-group {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+            /* Update: Align button top */
+        }
+
+        .answer-input {
+            background: var(--input-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text);
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 1rem;
+            width: 100%;
+            outline: none;
+            transition: border-color 0.2s;
+            flex: 1;
+            /* Update: Textarea styles */
+            resize: none;
+            overflow: hidden;
+            min-height: 44px;
+            line-height: 1.5;
+            font-family: inherit;
+        }
+
+        .answer-input:focus {
+            border-color: var(--primary);
+        }
+
+        /* Status Indicators & Feedback */
+        .status-icon {
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 50px;
+            /* Update: Align with top somewhat */
+        }
+
+        .feedback-msg {
+            font-size: 0.85rem;
+            margin-top: 5px;
+            font-weight: 500;
+        }
+
+        /* States */
+        .correct .answer-input {
+            border-color: var(--success);
+            background-color: rgba(34, 197, 94, 0.1);
+        }
+
+        .correct .status-icon {
+            color: var(--success);
+        }
+
+        .wrong .answer-input {
+            border-color: var(--danger);
+            background-color: rgba(239, 68, 68, 0.1);
+        }
+
+        .wrong .status-icon {
+            color: var(--danger);
+        }
+
+        .wrong .feedback-msg {
+            color: var(--danger);
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .question-card {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .status-icon {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+            }
+
+            .nav-stats span.label {
+                display: none;
+                /* Hide labels on mobile stats to save space */
+            }
+
+            .nav-controls-row {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .switch-container {
+                width: 100%;
+                justify-content: center;
+            }
+
+            body {
+                padding-top: calc(var(--nav-height) + 160px);
+            }
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .modal {
+            background: var(--bg);
+            padding: 30px;
+            border-radius: 16px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            border: 1px solid var(--glass-border);
+        }
+
+        .modal h2 {
+            margin-bottom: 15px;
+        }
+
+        .modal p {
+            margin-bottom: 25px;
+            color: var(--header-text);
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="sticky-nav">
+        <!-- Top Row: Brand, Stats, Global Actions -->
+        <div class="nav-top-row">
+            <!-- Brand / Title -->
+            <div style="font-weight:800; font-size:1.2rem; display: flex; align-items: center; gap: 10px;">
+                <span>🩺 Quiz</span>
+            </div>
+
+            <!-- Stats -->
+            <div class="nav-stats">
+                <div class="nav-stat-item">
+                    <span class="nav-stat-value" id="stat-progress">0/0</span>
+                    <span class="label">Beantwortet</span>
+                </div>
+                <div class="nav-stat-item">
+                    <span class="nav-stat-value" style="color:var(--success)" id="stat-correct">0</span>
+                    <span class="label">Richtig</span>
+                </div>
+                <div class="nav-stat-item">
+                    <span class="nav-stat-value" style="color:var(--danger)" id="stat-wrong">0</span>
+                    <span class="label">Falsch</span>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="nav-actions">
+                <button class="btn" onclick="checkAll()">
+                    <span>📝</span> <span class="label">Alle Prüfen</span>
+                </button>
+                <button class="btn btn-danger" onclick="confirmReset()">
+                    <span>↻</span> <span class="label">Auswahl löschen</span>
+                </button>
+                <button class="btn" onclick="toggleTheme()" id="theme-btn">🌙</button>
+            </div>
+        </div>
+
+        <!-- Bottom Row: Modes -->
+        <div class="nav-controls-row">
+            <div class="control-group">
+                <span class="mode-label">Frage-Modus</span>
+                <div class="switch-container">
+                    <div class="switch-option">
+                        <input type="radio" id="mode-term" name="qmode" value="term"
+                            onchange="changeQuestionMode('term')">
+                        <label for="mode-term">Begriff</label>
+                    </div>
+                    <div class="switch-option">
+                        <input type="radio" id="mode-mixed" name="qmode" value="mixed"
+                            onchange="changeQuestionMode('mixed')" checked>
+                        <label for="mode-mixed">Zufall</label>
+                    </div>
+                    <div class="switch-option">
+                        <input type="radio" id="mode-def" name="qmode" value="definition"
+                            onchange="changeQuestionMode('definition')">
+                        <label for="mode-def">Definition</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <span class="mode-label">Prüf-Modus</span>
+                <div class="switch-container">
+                    <div class="switch-option">
+                        <input type="radio" id="eval-immediate" name="emode" value="immediate"
+                            onchange="changeEvalMode('immediate')" checked>
+                        <label for="eval-immediate">Sofort</label>
+                    </div>
+                    <div class="switch-option">
+                        <input type="radio" id="eval-manual" name="emode" value="manual"
+                            onchange="changeEvalMode('manual')">
+                        <label for="eval-manual">Manuell</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="quiz-container" id="quiz-list">
+        <!-- Questions will be injected here -->
+        <div style="text-align:center; padding: 40px; color: var(--header-text);">
+            Lade Fragen...
+        </div>
+    </div>
+
+    <!-- Generic Confirm Modal -->
+    <div class="modal-overlay" id="confirm-modal">
+        <div class="modal">
+            <h2 id="modal-title">Bestätigung</h2>
+            <p id="modal-text">Bist du sicher?</p>
+            <div class="modal-actions">
+                <button class="btn" onclick="cancelModal()">Abbrechen</button>
+                <button class="btn btn-danger" id="modal-confirm-btn">Bestätigen</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        const STORAGE_KEY = 'medical_quiz_state_v2';
+        const DATA_URL = './fb.json'; // Preserve user choice
+
+        let quizData = [];
+        let appState = {
+            answers: {},
+            checked: {},
+            mode: {},
+            settings: {
+                questionMode: 'mixed',
+                evalMode: 'immediate'
+            }
+        };
+
+        // Modal State
+        let pendingModalAction = null;
+        let cancelModalAction = null;
+
+        // Initialize
+        init();
+
+        async function init() {
+            // Theme setup
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            document.getElementById('theme-btn').textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+
+            // Load Data
+            try {
+                const response = await fetch(DATA_URL);
+                const rawData = await response.json();
+
+                // Prepare Data (IDs based on original index)
+                quizData = rawData.map((item, index) => ({
+                    id: index,
+                    term: item.term,
+                    definition: item.definition
+                }));
+
+                loadState();
+
+                // Apply Order (Restore or Shuffle)
+                if (appState.order && appState.order.length === quizData.length) {
+                    // Restore preserved order
+                    const dataMap = new Map(quizData.map(i => [i.id, i]));
+                    quizData = appState.order.map(id => dataMap.get(id)).filter(item => item);
+                } else {
+                    // New shuffled order
+                    shuffleArray(quizData);
+                    appState.order = quizData.map(i => i.id);
+                    saveState();
+                }
+
+                // Set initial switch values
+                updateRadioButtons('qmode', appState.settings.questionMode);
+                updateRadioButtons('emode', appState.settings.evalMode);
+
+                renderQuiz();
+                updateStats();
+
+            } catch (error) {
+                console.error("Failed to load data", error);
+                document.getElementById('quiz-list').innerHTML = `<div style="text-align:center; color:var(--danger)">Fehler beim Laden der Daten.<br>${error.message}</div>`;
+            }
+        }
+
+        function updateRadioButtons(name, value) {
+            const rads = document.querySelectorAll(`input[name="${name}"]`);
+            rads.forEach(r => {
+                if (r.value === value) r.checked = true;
+            });
+        }
+
+        function loadState() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) {
+                const loaded = JSON.parse(stored);
+                // Merge loaded state
+                appState.answers = loaded.answers || {};
+                appState.checked = loaded.checked || {};
+                appState.mode = loaded.mode || {};
+                appState.order = loaded.order || [];
+                appState.settings = { ...appState.settings, ...(loaded.settings || {}) };
+
+                // Ensure we have random modes if missing
+                if (Object.keys(appState.mode).length === 0) {
+                    generateRandomModes();
+                }
+            } else {
+                generateRandomModes();
+                saveState();
+            }
+        }
+
+        function generateRandomModes() {
+            quizData.forEach(item => {
+                appState.mode[item.id] = Math.random() > 0.5 ? 'term' : 'def';
+            });
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function saveState() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+            updateStats();
+        }
+
+        function resetAnswers() {
+            appState.answers = {};
+            appState.checked = {};
+            generateRandomModes(); // Re-roll random modes for freshness in mixed mode
+            saveState();
+        }
+
+        window.changeQuestionMode = (newMode) => {
+            // Check if we need confirmation
+            const hasAnswers = Object.keys(appState.answers).length > 0;
+            const currentMode = appState.settings.questionMode;
+
+            if (hasAnswers && newMode !== currentMode) {
+                showModal(
+                    "Modus wechseln?",
+                    "Das Wechseln des Frage-Modus löscht alle bisherigen Antworten. Fortfahren?",
+                    () => {
+                        // Confirm
+                        appState.settings.questionMode = newMode;
+                        resetAnswers();
+                        renderQuiz();
+                        updateStats();
+                    },
+                    () => {
+                        // Cancel: Revert radio button
+                        updateRadioButtons('qmode', currentMode);
+                    }
+                );
+            } else {
+                appState.settings.questionMode = newMode;
+                saveState();
+                renderQuiz();
+            }
+        };
+
+        window.changeEvalMode = (val) => {
+            appState.settings.evalMode = val;
+            saveState();
+        };
+
+        function renderQuiz() {
+            const container = document.getElementById('quiz-list');
+            const qMode = appState.settings.questionMode;
+
+            // Performance Note: Rendering 2000+ items at once might be heavy. 
+            // If laggy, we'll need virtual scrolling. For now, strict HTML string building is fastest.
+
+            const html = quizData.map(item => {
+                // Determine display mode for this item
+                let currentMode = 'term'; // Default: Show term, ask definition
+                if (qMode === 'mixed') {
+                    currentMode = appState.mode[item.id] || 'term';
+                } else if (qMode === 'definition') {
+                    currentMode = 'definition'; // Show definition, ask term
+                } else {
+                    currentMode = 'term'; // Show term, ask definition
+                }
+
+                const questionText = currentMode === 'term' ? item.term : item.definition;
+                const existingAnswer = appState.answers[item.id] || '';
+                const isChecked = appState.checked[item.id] !== undefined;
+                const isCorrect = appState.checked[item.id] === true;
+
+                let statusClass = '';
+                let icon = '';
+                let feedback = '';
+
+                if (isChecked) {
+                    statusClass = isCorrect ? 'correct' : 'wrong';
+                    icon = isCorrect ? '✅' : '❌';
+                    if (!isCorrect) {
+                        const correctAnswer = currentMode === 'term' ? item.definition : item.term;
+                        feedback = `<div class="feedback-msg">Richtig wäre: <b>${correctAnswer}</b></div>`;
+                    }
+                }
+
+                // Determine Input Placeholder
+                const placeholder = currentMode === 'term' ? 'Definition...' : 'Begriff...';
+                const questionLabel = currentMode === 'term' ? 'Begriff' : 'Definition';
+                const answerLabel = currentMode === 'term' ? 'Definition eingeben' : 'Begriff eingeben';
+
+                return `
+                <div class="question-card ${statusClass}" id="card-${item.id}" data-id="${item.id}">
+                    <div class="question-section">
+                        <span class="question-label">${questionLabel}</span>
+                        <div class="question-text">${questionText}</div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <span class="question-label">${answerLabel}</span>
+                        <div class="input-wrapper">
+                            <textarea
+                                   class="answer-input" 
+                                   oninput="handleInput(${item.id}, this)"
+                                   onkeydown="handleKey(event, ${item.id})"
+                                   placeholder="${placeholder}"
+                                   rows="1"
+                                   autocomplete="off">${existingAnswer}</textarea>
+                            <button class="btn btn-sm btn-primary" onclick="checkAnswer(${item.id})">Prüfen</button>
+                        </div>
+                        ${feedback}
+                    </div>
+
+                    <div class="status-icon">
+                        ${icon}
+                    </div>
+                </div>
+                `;
+            }).join('');
+
+            container.innerHTML = html;
+
+            // Initial resize
+            requestAnimationFrame(() => {
+                document.querySelectorAll('textarea.answer-input').forEach(el => {
+                    autoResize(el);
+                });
+            });
+        }
+
+        function autoResize(el) {
+            el.style.height = 'auto';
+            el.style.height = el.scrollHeight + 'px';
+        }
+
+        // --- Interaction Handlers ---
+
+        window.handleInput = (id, el) => {
+            appState.answers[id] = el.value;
+            autoResize(el);
+            clearTimeout(window.saveTimeout);
+            window.saveTimeout = setTimeout(saveState, 500);
+        };
+
+        window.handleKey = (event, id) => {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Prevent submit
+
+                const evalMode = appState.settings.evalMode;
+
+                if (evalMode === 'immediate') {
+                    checkAnswer(id);
+                }
+
+                focusNext(id);
+            }
+        };
+
+        window.checkAnswer = (id) => {
+            const item = quizData.find(q => q.id === id);
+
+            const qMode = appState.settings.questionMode;
+            let currentMode = 'term';
+            if (qMode === 'mixed') {
+                currentMode = appState.mode[item.id] || 'term';
+            } else if (qMode === 'definition') {
+                currentMode = 'definition';
+            } else {
+                currentMode = 'term';
+            }
+
+            const userAnswer = (appState.answers[id] || '').trim().toLowerCase();
+            const correctAnswer = (currentMode === 'term' ? item.definition : item.term).toLowerCase();
+
+            const correctParts = correctAnswer.split(/[,/]/).map(s => s.trim());
+            const isCorrect = correctParts.some(part => part === userAnswer) ||
+                (userAnswer.length > 3 && correctAnswer.includes(userAnswer));
+
+            appState.checked[id] = isCorrect;
+            saveState();
+            updateCardUI(id);
+        };
+
+        window.checkAll = () => {
+            quizData.forEach(item => {
+                if (appState.answers[item.id]) {
+                    checkAnswer(item.id);
+                }
+            });
+            alert('Alle ausgefüllten Antworten wurden geprüft!');
+        };
+
+        function updateCardUI(id) {
+            const card = document.getElementById(`card-${id}`);
+            if (!card) return;
+
+            const item = quizData.find(q => q.id === id);
+            const qMode = appState.settings.questionMode;
+            let currentMode = 'term';
+            if (qMode === 'mixed') {
+                currentMode = appState.mode[item.id] || 'term';
+            } else if (qMode === 'definition') {
+                currentMode = 'definition';
+            } else {
+                currentMode = 'term';
+            }
+
+            const isCorrect = appState.checked[id];
+
+            card.classList.remove('correct', 'wrong');
+            card.classList.add(isCorrect ? 'correct' : 'wrong');
+
+            const iconDiv = card.querySelector('.status-icon');
+            iconDiv.innerHTML = isCorrect ? '✅' : '❌';
+
+            // Note: Card update doesn't strictly need to rerender input, but if we did, we'd need to re-apply textarea styles.
+            // But here we are just updating classes and feedback div.
+
+            const inputGroup = card.querySelector('.input-group');
+            const oldFeedback = inputGroup.querySelector('.feedback-msg');
+            if (oldFeedback) oldFeedback.remove();
+
+            if (!isCorrect) {
+                const correctTxt = currentMode === 'term' ? item.definition : item.term;
+                const msg = document.createElement('div');
+                msg.className = 'feedback-msg';
+                msg.innerHTML = `Richtig wäre: <b>${correctTxt}</b>`;
+                inputGroup.appendChild(msg);
+            }
+        }
+
+        function focusNext(currentId) {
+            const currentIndex = quizData.findIndex(q => q.id === currentId);
+            if (currentIndex < quizData.length - 1) {
+                const nextId = quizData[currentIndex + 1].id;
+                // Note: Modified selector for textarea or input
+                const nextInput = document.querySelector(`#card-${nextId} .answer-input`);
+                if (nextInput) {
+                    nextInput.focus();
+                    nextInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        }
+
+        function updateStats() {
+            const total = quizData.length;
+            const answered = Object.keys(appState.answers).filter(k => appState.answers[k]).length;
+
+            const correct = Object.values(appState.checked).filter(v => v === true).length;
+            const wrong = Object.values(appState.checked).filter(v => v === false).length;
+
+            document.getElementById('stat-progress').textContent = `${answered}/${total}`;
+            document.getElementById('stat-correct').textContent = correct;
+            document.getElementById('stat-wrong').textContent = wrong;
+        }
+
+        // --- Modal Logic ---
+        function showModal(title, text, onConfirm, onCancel) {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-text').textContent = text;
+            document.getElementById('confirm-modal').style.display = 'flex';
+
+            pendingModalAction = onConfirm;
+            cancelModalAction = onCancel;
+
+            // Re-bind confirm button
+            const btn = document.getElementById('modal-confirm-btn');
+            btn.onclick = () => {
+                if (pendingModalAction) pendingModalAction();
+                closeModal();
+            };
+        }
+
+        window.cancelModal = () => {
+            if (cancelModalAction) cancelModalAction();
+            closeModal();
+        };
+
+        window.closeModal = () => {
+            document.getElementById('confirm-modal').style.display = 'none';
+            pendingModalAction = null;
+            cancelModalAction = null;
+        };
+
+        // --- Reset Logic ---
+        window.confirmReset = () => {
+            showModal(
+                "Wirklich neu starten?",
+                "Alle deine Antworten werden gelöscht. Dies kann nicht rückgängig gemacht werden.",
+                () => {
+                    localStorage.removeItem(STORAGE_KEY);
+                    location.reload();
+                }
+            );
+        };
+
+        window.performReset = () => {
+            // Deprecated, logic moved to showModal callback
+        };
+
+        // --- Theme Toggle (Bonus) ---
+        window.toggleTheme = () => {
+            const current = document.documentElement.getAttribute('data-theme');
+            const target = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', target);
+            localStorage.setItem('theme', target);
+            document.getElementById('theme-btn').textContent = target === 'dark' ? '☀️' : '🌙';
+        };
+    </script>
+</body>
+
+</html>
