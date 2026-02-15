@@ -468,18 +468,18 @@
                 <div class="switch-container">
                     <div class="switch-option">
                         <input type="radio" id="mode-term" name="qmode" value="term"
-                            onchange="changeQuestionMode('term')">
+                            onchange="changeQuestionMode('term')" checked>
                         <label for="mode-term">Begriff</label>
                     </div>
-                    <div class="switch-option">
+                    <!-- <div class="switch-option">
                         <input type="radio" id="mode-mixed" name="qmode" value="mixed"
-                            onchange="changeQuestionMode('mixed')" checked>
+                            onchange="changeQuestionMode('mixed')">
                         <label for="mode-mixed">Zufall</label>
-                    </div>
+                    </div> -->
                     <div class="switch-option">
                         <input type="radio" id="mode-def" name="qmode" value="definition"
                             onchange="changeQuestionMode('definition')">
-                        <label for="mode-def">Definition</label>
+                        <label for="mode-def">Erklärung</label>
                     </div>
                 </div>
             </div>
@@ -489,12 +489,12 @@
                 <div class="switch-container">
                     <div class="switch-option">
                         <input type="radio" id="eval-immediate" name="emode" value="immediate"
-                            onchange="changeEvalMode('immediate')" checked>
+                            onchange="changeEvalMode('immediate')">
                         <label for="eval-immediate">Sofort</label>
                     </div>
                     <div class="switch-option">
                         <input type="radio" id="eval-manual" name="emode" value="manual"
-                            onchange="changeEvalMode('manual')">
+                            onchange="changeEvalMode('manual')" checked>
                         <label for="eval-manual">Manuell</label>
                     </div>
                 </div>
@@ -711,9 +711,9 @@
                 }
 
                 // Determine Input Placeholder
-                const placeholder = currentMode === 'term' ? 'Definition...' : 'Begriff...';
-                const questionLabel = currentMode === 'term' ? 'Begriff' : 'Definition';
-                const answerLabel = currentMode === 'term' ? 'Definition eingeben' : 'Begriff eingeben';
+                const placeholder = currentMode === 'term' ? 'Erklärung...' : 'Begriff...';
+                const questionLabel = currentMode === 'term' ? 'Begriff' : 'Erklärung';
+                const answerLabel = currentMode === 'term' ? 'Erklärung eingeben' : 'Begriff eingeben';
 
                 return `
                 <div class="question-card ${statusClass}" id="card-${item.id}" data-id="${item.id}">
