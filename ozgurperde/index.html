@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+
+<html lang="tr">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Özgür Mefruşat | Özgür Perde | Perdeci Sait | İzmir Bornova</title>
+    <meta name="description"
+        content="Özgür Mefruşat (Özgür Perde), 50 yıllık tecrübesi ve 'Perdeci Sait' mirasıyla İzmir Bornova'da kaliteli perde tasarım ve montaj hizmeti sunmaktadır." />
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#8B2222",
+                        "secondary": "#D4CEC4",
+                        "heading": "#2C3539",
+                        "background-light": "#F9F8F6",
+                        "background-dark": "#1a1a1a",
+                    },
+                    fontFamily: {
+                        "display": ["Montserrat", "sans-serif"],
+                        "body": ["Montserrat", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "full": "9999px" },
+                },
+            },
+        }</script>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #F9F8F6;
+            color: #2C3539;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, #D4CEC4, transparent);
+        }
+
+        .hero-text-shadow {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark text-heading dark:text-slate-100 selection:bg-primary selection:text-white">
+    <!-- Top Navigation Bar -->
+    <header
+        class="sticky top-0 z-50 w-full border-b border-primary/5 bg-white/90 backdrop-blur-md dark:bg-background-dark/90">
+        <div
+            class="container mx-auto px-4 md:px-10 lg:px-20 h-20 md:h-24 flex items-center justify-between transition-all duration-300">
+            <a class="flex items-center hover:scale-105 transition-transform duration-300" href="/">
+                <img alt="Özgür Mefruşat Logo" class="h-12 md:h-16 w-auto object-contain" src="images/logo.png" />
+            </a>
+            <div class="flex items-center gap-3">
+                <nav class="hidden md:flex items-center gap-10 mr-6">
+                    <a class="text-base font-semibold text-slate-700 hover:text-primary transition-colors tracking-wide uppercase"
+                        href="#surecimiz">Sürecimiz</a>
+                    <a class="text-base font-semibold text-slate-700 hover:text-primary transition-colors tracking-wide uppercase"
+                        href="#galeri">Galeri</a>
+                    <a class="text-base font-semibold text-slate-700 hover:text-primary transition-colors tracking-wide uppercase"
+                        href="#iletisim">İletişim</a>
+                </nav>
+                <button id="mobile-menu-button"
+                    class="md:hidden flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-white">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu"
+        class="fixed inset-0 z-[100] bg-white translate-x-full transition-transform duration-300 md:hidden">
+        <div class="p-6">
+            <div class="flex items-center justify-between mb-12">
+                <img alt="Özgür Mefruşat Logo" class="h-10 w-auto" src="images/logo.png" />
+                <button id="close-menu-button"
+                    class="h-10 w-10 flex items-center justify-center rounded-lg bg-slate-100 text-slate-900 border border-slate-200">
+                    <span class="material-symbols-outlined font-bold">close</span>
+                </button>
+            </div>
+            <nav class="flex flex-col gap-6">
+                <a class="mobile-nav-link text-xl font-bold text-slate-900 border-b border-slate-100 pb-4"
+                    href="#surecimiz">Sürecimiz</a>
+                <a class="mobile-nav-link text-xl font-bold text-slate-900 border-b border-slate-100 pb-4"
+                    href="#galeri">Galeri</a>
+                <a class="mobile-nav-link text-xl font-bold text-slate-900 border-b border-slate-100 pb-4"
+                    href="#iletisim">İletişim</a>
+            </nav>
+            <div class="mt-12 space-y-4">
+                <a href="tel:+905323510032" class="flex items-center gap-3 text-slate-600 font-medium">
+                    <span class="material-symbols-outlined text-primary">call</span>
+                    +90 (532) 351 00 32
+                </a>
+                <a href="https://wa.me/905323510032" target="_blank"
+                    class="flex items-center gap-3 text-slate-600 font-medium">
+                    <span class="material-symbols-outlined text-[#25D366]">chat</span>
+                    WhatsApp Destek
+                </a>
+            </div>
+        </div>
+    </div>
+    <main>
+        <!-- Hero Section -->
+        <section class="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
+            <div class="absolute inset-0 z-0">
+                <div class="absolute inset-0 z-10 bg-black/60"></div>
+                <img alt="Hero Curtains" class="w-full h-full object-cover"
+                    data-alt="Luxury elegant white curtains in a modern living room"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKk2FeGH0toukezPT9V7kA-W23fjdBlmJI_CQBgedRtGDSn_EXb68-H3vJpJjAEqQIHRAixA6yT5bGlEb53Cj3uQBwVG4NF08ginzbbAE77upx-xHAvA4-olzhEmVJkIlG0pt558sR8h0Ai25JqqzT1FarsUgIDhId2sWRxOkRoMYd-YQ3pphrYLet889JlvQFeMoqoob5nCOypuBijnrOGVnK00sI8h6r9lLABDv8QqmjpKctHLLhiEDpOEA4I1lwpFfgefFq5PF3" />
+            </div>
+            <div class="relative z-20 container mx-auto px-6 text-center text-white">
+                <h2 class="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-4 hero-text-shadow">
+                    Yuvanıza Özgür'ce dokunuşlar.
+                </h2>
+                <p
+                    class="text-white/40 text-xs md:text-sm font-medium mb-6 hero-text-shadow uppercase tracking-[0.2em] italic">
+                    Özgür Perde | Perdeci Sait
+                </p>
+                <p class="text-lg md:text-xl font-normal max-w-2xl mx-auto mb-10 text-slate-100 hero-text-shadow">
+                    Özgür Mefruşat olarak 50 yıldır kaliteli kumaşlar ve güler yüzlü hizmet ile perdelerinizi
+                    yeniliyoruz.
+                </p>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <a class="w-full sm:w-auto px-8 py-4 bg-primary rounded-lg font-bold text-lg hover:bg-primary/90 hover:-translate-y-1 transition-all shadow-xl shadow-primary/20 hover:shadow-2xl hover:shadow-primary/30"
+                        href="#surecimiz">
+                        Sürecimizi Keşfedin
+                    </a>
+                    <a class="w-full sm:w-auto px-8 py-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-lg font-bold text-lg hover:bg-white hover:text-primary transition-all"
+                        href="#iletisim">
+                        İletişime Geçin
+                    </a>
+                </div>
+            </div>
+        </section>
+        <!-- Process Section (Sürecimiz) -->
+        <section class="py-24 bg-secondary/30 dark:bg-background-dark" id="surecimiz">
+            <div class="container mx-auto px-6 md:px-10">
+                <div class="text-center mb-16">
+                    <h3 class="text-3xl md:text-4xl font-bold mb-4 text-slate-900 dark:text-slate-100 text-heading">
+                        Sürecimiz</h3>
+                    <div class="h-px w-24 bg-primary mx-auto"></div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                    <!-- Step 1 -->
+                    <div class="group flex flex-col items-center text-center">
+                        <div
+                            class="mb-6 h-20 w-20 flex items-center justify-center rounded-full border border-primary/20 bg-white text-primary group-hover:bg-primary group-hover:text-white transition-all duration-500 shadow-sm">
+                            <span class="material-symbols-outlined text-5xl">palette</span>
+                        </div>
+                        <h4 class="text-2xl font-bold mb-3 text-heading">Seçim ve Tasarım</h4>
+                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                            Geniş kumaş yelpazemizden tarzınıza en uygun dokuyu birlikte belirleyelim. Tahmini
+                            ölçüleriniz üzerinden projenizin detaylarını netleştirelim.
+                        </p>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="group flex flex-col items-center text-center">
+                        <div
+                            class="mb-6 h-20 w-20 flex items-center justify-center rounded-full border border-primary/20 bg-white text-primary group-hover:bg-primary group-hover:text-white transition-all duration-500 shadow-sm">
+                            <span class="material-symbols-outlined text-5xl">straighten</span>
+                        </div>
+                        <h4 class="text-2xl font-bold mb-3 text-heading">Yerinde Ölçü</h4>
+                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                            Uzman ekibimizle evinize konuk olalım. Her pencerenizin yapısına özel, milimetrik
+                            hassasiyetle kusursuz ölçü alalım.
+                        </p>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="group flex flex-col items-center text-center">
+                        <div
+                            class="mb-6 h-20 w-20 flex items-center justify-center rounded-full border border-primary/20 bg-white text-primary group-hover:bg-primary group-hover:text-white transition-all duration-500 shadow-sm">
+                            <span class="material-symbols-outlined text-5xl">handyman</span>
+                        </div>
+                        <h4 class="text-2xl font-bold mb-3 text-heading">Kurulum ve Montaj</h4>
+                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                            Profesyonel ekibimizle perdelerinizi yerlerine asalım. Hızlı, temiz ve titiz bir işçilikle
+                            yuvanıza son dokunuşu yapalım.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Gallery Section (Galeri) -->
+        <section class="py-24 bg-white dark:bg-background-dark/50" id="galeri">
+            <div class="container mx-auto px-6 md:px-10">
+                <div class="flex flex-col md:flex-row items-end justify-between mb-12 gap-6">
+                    <div class="text-left">
+                        <h3 class="text-3xl md:text-4xl font-bold mb-4 text-heading">Galeri</h3>
+                        <p class="text-slate-600 dark:text-slate-400 max-w-lg italic">Son uygulamalarımızdan ilham alın.
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="text-sm font-medium text-slate-500">Bizi takip edin:</span>
+                        <a class="text-primary hover:scale-110 transition-transform"
+                            href="https://www.instagram.com/ozgurperde35">
+                            <span class="material-symbols-outlined">photo_camera</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <div class="aspect-square overflow-hidden rounded-lg group relative">
+                        <img alt="Galeri 1"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                            src="images/gallery/277368087_476917264116949_5112377158917981147_n.jpg" />
+                        <div
+                            class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        </div>
+                    </div>
+                    <div class="aspect-square overflow-hidden rounded-lg group relative">
+                        <img alt="Galeri 2"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                            src="images/gallery/279837355_490947366155771_2980415124787685350_n.jpg" />
+                        <div
+                            class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        </div>
+                    </div>
+                    <div class="aspect-square overflow-hidden rounded-lg group relative">
+                        <img alt="Galeri 3"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                            src="images/gallery/465970538_18020728802545604_4837351360696642176_n.jpg" />
+                        <div
+                            class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        </div>
+                    </div>
+                    <div class="aspect-square overflow-hidden rounded-lg group relative">
+                        <img alt="Galeri 4"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                            src="images/gallery/468923008_18364355830186690_4167041218151513199_n.jpg" />
+                        <div
+                            class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        </div>
+                    </div>
+                    <div class="aspect-square overflow-hidden rounded-lg group relative">
+                        <img alt="Galeri 5"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                            src="images/gallery/503601808_18042656786545604_1667456413622002136_n.jpg" />
+                        <div
+                            class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        </div>
+                    </div>
+                    <div class="aspect-square overflow-hidden rounded-lg group relative">
+                        <img alt="Galeri 6"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                            src="images/gallery/504038162_18042656804545604_2047780960474942592_n.jpg" />
+                        <div
+                            class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Contact & Location (İletişim) -->
+        <!-- FAQ Section -->
+        <section class="py-24 bg-secondary/30 dark:bg-background-dark/80" id="faq">
+            <div class="container mx-auto px-6 md:px-10 lg:px-20">
+                <div class="text-center mb-16">
+                    <h3 class="text-3xl md:text-4xl font-bold mb-4 text-slate-900 dark:text-slate-100 text-heading">
+                        Sıkça Sorulan Sorular</h3>
+                    <div class="h-1 w-20 bg-primary mx-auto rounded-full"></div>
+                </div>
+                <div class="max-w-3xl mx-auto space-y-6">
+                    <!-- FAQ Item 1 -->
+                    <div class="bg-white dark:bg-background-dark p-8 rounded-none border-l-4 border-primary shadow-sm">
+                        <h4 class="text-lg font-bold text-primary mb-3 flex items-center gap-2 text-heading">
+                            <span class="material-symbols-outlined text-xl">help</span>
+                            Ölçü alma işlemi ücretli mi?
+                        </h4>
+                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                            Hayır, uzman ekibimiz tarafından gerçekleştirilen profesyonel ölçü alma hizmetimiz tamamen
+                            ücretsizdir.
+                        </p>
+                    </div>
+                    <!-- FAQ Item 2 -->
+                    <div class="bg-white dark:bg-background-dark p-8 rounded-none border-l-4 border-primary shadow-sm">
+                        <h4 class="text-lg font-bold text-primary mb-3 flex items-center gap-2 text-heading">
+                            <span class="material-symbols-outlined text-xl">schedule</span>
+                            Teslimat ve montaj süresi ne kadardır?
+                        </h4>
+                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                            Seçtiğiniz kumaş ve modele bağlı olarak, genellikle 7-10 iş günü içerisinde montaj dahil tüm
+                            süreci tamamlıyoruz.
+                        </p>
+                    </div>
+                    <!-- FAQ Item 3 -->
+                    <div class="bg-white dark:bg-background-dark p-8 rounded-none border-l-4 border-primary shadow-sm">
+                        <h4 class="text-lg font-bold text-primary mb-3 flex items-center gap-2 text-heading">
+                            <span class="material-symbols-outlined text-xl">distance</span>
+                            Hangi bölgelere hizmet veriyorsunuz?
+                        </h4>
+                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                            İzmir genelinde tüm bölgelere ücretsiz ölçü ve montaj hizmeti sağlıyoruz.
+                        </p>
+                    </div>
+                    <!-- FAQ Item 4 -->
+                    <div class="bg-white dark:bg-background-dark p-8 rounded-none border-l-4 border-primary shadow-sm">
+                        <h4 class="text-lg font-bold text-primary mb-3 flex items-center gap-2 text-heading">
+                            <span class="material-symbols-outlined text-xl">verified</span>
+                            Ürünleriniz garantili mi?
+                        </h4>
+                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                            Evet, kullandığımız kumaşlar ve mekanizmalar ile gerçekleştirdiğimiz montaj işçiliği Özgür
+                            Mefruşat garantisi altındadır.
+                        </p>
+                    </div>
+                    <!-- FAQ Item 5 -->
+                    <div class="bg-white dark:bg-background-dark p-8 rounded-none border-l-4 border-primary shadow-sm">
+                        <h4 class="text-lg font-bold text-primary mb-3 flex items-center gap-2 text-heading">
+                            <span class="material-symbols-outlined text-xl">psychology</span>
+                            Farklı isimlerle mi tanınıyorsunuz?
+                        </h4>
+                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                            Evet, 50 yıllık geçmişimizde müşterilerimiz bizi <strong>Özgür Perde</strong> veya
+                            lakabımız olan <strong>Perdeci Sait</strong> olarak da tanımaktadır. Hepsi aynı
+                            aile geleneğinin bir parçasıdır.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="py-24 bg-white dark:bg-background-dark" id="iletisim">
+            <div class="container mx-auto px-6 md:px-10 lg:px-20">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                    <div class="flex flex-col justify-center">
+                        <h3 class="text-4xl font-bold mb-8 text-heading">Bizimle İletişime Geçin</h3>
+                        <div class="space-y-8 mb-10">
+                            <div class="flex items-start gap-4">
+                                <div
+                                    class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                                    <span class="material-symbols-outlined">location_on</span>
+                                </div>
+                                <div>
+                                    <p class="text-lg font-bold">Adresimiz</p>
+                                    <p class="text-slate-600 dark:text-slate-400">Ergene Mahallesi, 456 Sokak No: 43/A,
+                                        Bornova, İzmir</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div
+                                    class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                                    <span class="material-symbols-outlined">call</span>
+                                </div>
+                                <div>
+                                    <p class="text-lg font-bold">Telefon</p>
+                                    <a href="tel:+905323510032"
+                                        class="text-slate-600 dark:text-slate-400 hover:text-primary transition-colors hover:underline">
+                                        +90 (532) 351 00 32
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <a class="flex items-center justify-center gap-3 w-full py-4 bg-[#25D366] text-white rounded-lg font-bold hover:brightness-110 transition-all"
+                                href="https://wa.me/905323510032" target="_blank">
+                                <span class="material-symbols-outlined">chat</span>
+                                Bizimle WhatsApp'tan İletişime Geçin
+                            </a>
+                            <a class="flex items-center justify-center gap-3 w-full py-4 bg-primary text-white rounded-lg font-bold hover:bg-primary/90 transition-all uppercase tracking-widest"
+                                href="https://www.google.com/maps/dir/?api=1&destination_place_id=ChIJhWViKeB8uRQRv87W7C7SKC0&destination=Özgür Mefruşat">
+                                <span class="material-symbols-outlined">directions</span>
+                                Yol Tarifi Al
+                            </a>
+                        </div>
+                    </div>
+                    <div
+                        class="rounded-2xl overflow-hidden shadow-2xl shadow-primary/5 min-h-[400px] border border-primary/10">
+                        <div id="map" class="w-full h-full">
+                            <div style="position:relative;overflow:hidden;"><a
+                                    href="https://yandex.com.tr/maps/org/ozgur_mefrusat/47280562135/?utm_medium=mapframe&utm_source=maps"
+                                    style="color:#eee;font-size:12px;position:absolute;top:0px;">Özgür Mefruşat</a><a
+                                    href="https://yandex.com.tr/maps/11505/izmir/category/drapery_shop/184108039/?utm_medium=mapframe&utm_source=maps"
+                                    style="color:#eee;font-size:12px;position:absolute;top:14px;">İzmir için
+                                    Mefruşat</a><iframe
+                                    src="https://yandex.com.tr/map-widget/v1/?ll=27.220175%2C38.469717&mode=search&oid=47280562135&ol=biz&z=17.56"
+                                    width="560" height="400" frameborder="1" allowfullscreen="true"
+                                    style="position:relative;"></iframe></div>
+                        </div>
+                    </div>
+                </div>
+        </section>
+    </main>
+    <!-- Footer -->
+    <footer class="bg-[#1a1a1a] text-white py-16">
+        <div class="container mx-auto px-6 text-center">
+            <div class="flex items-center justify-center mb-8">
+                <img alt="Özgür Mefruşat Logo" class="h-16 w-auto object-contain" src="images/logo.png" />
+            </div>
+            <div class="flex justify-center gap-6 mb-8">
+                <a class="text-white/60 hover:text-primary transition-colors" href="#"><span
+                        class="material-symbols-outlined">camera</span></a>
+                <a class="text-white/60 hover:text-primary transition-colors" href="#"><span
+                        class="material-symbols-outlined">social_leaderboard</span></a>
+                <a class="text-white/60 hover:text-primary transition-colors" href="#"><span
+                        class="material-symbols-outlined">mail</span></a>
+            </div>
+            <p class="text-white/40 text-sm tracking-wide">
+                © 2024 Özgür Mefruşat. (Özgür Perde | Perdeci Sait). Tüm Hakları Saklıdır.
+                <span class="mx-2">|</span>
+                50 Yıllık Tecrübe ve Güvence.
+            </p>
+        </div>
+    </footer>
+    <!-- Floating WhatsApp Button (Mobile) -->
+    <a class="fixed bottom-6 right-6 z-[60] flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-xl hover:scale-110 active:scale-95 transition-all md:hidden"
+        href="https://wa.me/905323510032" target="_blank">
+        <span class="material-symbols-outlined text-3xl">chat</span>
+    </a>
+
+    <script>
+        // Mobile Menu Logic
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const closeMenuButton = document.getElementById('close-menu-button');
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+        function toggleMenu() {
+            mobileMenu.classList.toggle('translate-x-full');
+            document.body.classList.toggle('overflow-hidden');
+        }
+
+        mobileMenuButton.addEventListener('click', toggleMenu);
+        closeMenuButton.addEventListener('click', toggleMenu);
+
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', toggleMenu);
+        });
+    </script>
+</body>
+
+</html>
