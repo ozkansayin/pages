@@ -5,7 +5,7 @@
     },
     {
         "term": "Abduktion",
-        "definition": "Abspreizen einer Extremität nach außen"
+        "definition": "Abspreizen einer Extremität nach außen, wegführen"
     },
     {
         "term": "Abort",
@@ -21,7 +21,7 @@
     },
     {
         "term": "Achalasie",
-        "definition": "Funktionsstörung der glatten Muskulatur von Hohlorganen"
+        "definition": "Funktionsstörung der glatten Muskulatur von Hohlorganen, Erschlaffung"
     },
     {
         "term": "Adenom",
@@ -29,7 +29,7 @@
     },
     {
         "term": "Adipositas",
-        "definition": "Fettleibigkeit"
+        "definition": "Fettleibigkeit, Fettsucht"
     },
     {
         "term": "Adjuvant",
@@ -37,7 +37,7 @@
     },
     {
         "term": "Adnexitis",
-        "definition": "Entzündung von Eileiter, Eierstock und umgebendem Gewebe"
+        "definition": "kombinierte Entzündung von Eileiter, Eierstock und umgebendem Gewebe"
     },
     {
         "term": "Akutes Abdomen",
@@ -49,15 +49,15 @@
     },
     {
         "term": "Alopezie",
-        "definition": "Haarausfall"
+        "definition": "Haarausfall, Haarlosigkeit"
     },
     {
         "term": "Amnesie",
-        "definition": "Gedächtnisverlust"
+        "definition": "Gedächtnisverlust, Gedächtnisstörung"
     },
     {
         "term": "Anakusis",
-        "definition": "Gehörlosigkeit"
+        "definition": "Gehörlosigkeit, Taubheit"
     },
     {
         "term": "Analgetikum",
@@ -109,7 +109,7 @@
     },
     {
         "term": "Antikoagulans",
-        "definition": "gerinnungshemmendes Medikament (Blutverdünner)"
+        "definition": "gerinnungshemmendes Medikament, Blutverdünner, Antithrombotikum"
     },
     {
         "term": "Antiphlogistikum",
@@ -124,7 +124,7 @@
         "definition": "Gegengift"
     },
     {
-        "term": "Anus praeter",
+        "term": "Anus praeter, Ileostoma, Enterostoma",
         "definition": "künstlicher Darmausgang"
     },
     {
@@ -133,11 +133,11 @@
     },
     {
         "term": "Aortenaneurysma",
-        "definition": "Aussackung der Hauptschlagader"
+        "definition": "Aussackung der Hauptschlagader, Ausbuchtung"
     },
     {
         "term": "Aphasie",
-        "definition": "Sprachverlust"
+        "definition": "Sprachverlust, Sprachversagen"
     },
     {
         "term": "Apnoe",
@@ -149,7 +149,7 @@
     },
     {
         "term": "Appendizitis",
-        "definition": "Blinddarmentzündung"
+        "definition": "Blinddarmentzündung, Wurmfortsatzentzündung"
     },
     {
         "term": "Arrhythmie",
@@ -221,7 +221,7 @@
     },
     {
         "term": "Bradykardie",
-        "definition": "verlangsamter Herzschlag (< 60/min)"
+        "definition": "langsamer (verlangsammter) Herzschlag (weniger als 60 Schläge pro Minute)"
     },
     {
         "term": "Bronchialkarzinom",
@@ -229,7 +229,7 @@
     },
     {
         "term": "Bronchokonstriktion",
-        "definition": "Verengung der Bronchien"
+        "definition": "die Verengung der Bronchien"
     },
     {
         "term": "Bronchoskopie",
@@ -321,11 +321,11 @@
     },
     {
         "term": "Delirant / delirös",
-        "definition": "verwirrt, wahnsinnig, Bewusstseinsstörung"
+        "definition": "verwirrt, wahnsinnig, Bewusstseinsstörung, Bewusstseinstrübung"
     },
     {
         "term": "Demenz",
-        "definition": "Vergesslichkeit, Schwachsinn"
+        "definition": "Vergesslichkeit, Schwachsinn, Wahnsinn"
     },
     {
         "term": "Derma",
@@ -345,7 +345,7 @@
     },
     {
         "term": "Digital-rektale Untersuchung",
-        "definition": "Untersuchung des Mastdarms mit dem Finger"
+        "definition": "mit dem Finger vorgenommene Untersuchung des Mastdarms"
     },
     {
         "term": "Diskusprolaps",
@@ -433,7 +433,7 @@
     },
     {
         "term": "Endometriose",
-        "definition": "Gebärmutterschleimhaut außerhalb der Gebärmutterhöhle"
+        "definition": "Gebärmutterschleimhaut außerhalb der Gebärmutterhöhle vorkommt"
     },
     {
         "term": "Endometritis",
@@ -441,7 +441,7 @@
     },
     {
         "term": "Endometriumkarzinom",
-        "definition": "Krebserkrankung der Gebärmutterschleimhaut"
+        "definition": "Krebserkrankung der Gebärmutterschleimhaut, das Korpuskarzinom"
     },
     {
         "term": "Enteral",
@@ -469,7 +469,7 @@
     },
     {
         "term": "Epilepsie",
-        "definition": "Fallsucht, Krampfleiden"
+        "definition": "Fallsucht, Krampfleiden, Anfallsleiden"
     },
     {
         "term": "Erythrozyt",
@@ -477,11 +477,11 @@
     },
     {
         "term": "Eupnoe",
-        "definition": "physiologische, ruhige Atmung"
+        "definition": "physiologische, ruhige und regelmessige Atmung"
     },
     {
         "term": "Exacerbatio / Exazerbation",
-        "definition": "Verschlimmerung einer chronischen Erkrankung"
+        "definition": "Verschlimmerung der Symptome einer chronischen Erkrankung"
     },
     {
         "term": "Exanthem",
@@ -509,7 +509,7 @@
     },
     {
         "term": "exzidieren",
-        "definition": "entfernen, herausschneiden"
+        "definition": "entfernen, herausschneiden, herausziehen"
     },
     {
         "term": "Faeces",
@@ -541,11 +541,11 @@
     },
     {
         "term": "fokal",
-        "definition": "herdförmig"
+        "definition": "herdförmig, einen Krankheitsherd betreffend"
     },
     {
         "term": "Fraktur",
-        "definition": "Knochenbruch"
+        "definition": "Knochenbruch, Bruch"
     },
     {
         "term": "frontal",
@@ -557,7 +557,7 @@
     },
     {
         "term": "Gastrektomie",
-        "definition": "vollständige Magenentfernung"
+        "definition": "vollständige Magenentfernung, totale Magenresektion, Magenekstirpation"
     },
     {
         "term": "Gastritis",
@@ -569,7 +569,7 @@
     },
     {
         "term": "Genu valgum",
-        "definition": "X-Bein"
+        "definition": "X-Bein, X-förmige Beinachsenentwicklung"
     },
     {
         "term": "Gingivitis",
@@ -581,7 +581,7 @@
     },
     {
         "term": "Glandula parathyreoidea",
-        "definition": "Nebenschilddrüse"
+        "definition": "Nebenschilddrüse, Epithelkörperchen"
     },
     {
         "term": "glutäal",
@@ -609,7 +609,7 @@
     },
     {
         "term": "Hämorrhoiden",
-        "definition": "krampfaderähnliche Schwellung am After („Goldader“)"
+        "definition": "krampfaderähnliche Schwellung am After (\"Goldader\"), die Krampfader ähnliche oder auch knotenförmige Schwellung, die zwischen dem Enddarm und dem Schließmuskel des Afters liegt"
     },
     {
         "term": "Hemikolektomie",
@@ -681,7 +681,7 @@
     },
     {
         "term": "Hyperkapnie",
-        "definition": "erhöhter CO₂-Gehalt im Blut"
+        "definition": "erhöhter Kohlendioksitgehalt im Blut"
     },
     {
         "term": "Hyperthyreose",
@@ -725,7 +725,7 @@
     },
     {
         "term": "Ikterus",
-        "definition": "Gelbsucht"
+        "definition": "Gelbsucht, Gallsucht"
     },
     {
         "term": "Ileum",
@@ -745,7 +745,7 @@
     },
     {
         "term": "inguinal",
-        "definition": "die Leistenregion betreffend"
+        "definition": "die Leistenregion betreffend, Den Leistenbereich betreffend"
     },
     {
         "term": "Inhalation",
@@ -781,7 +781,7 @@
     },
     {
         "term": "intrakranial",
-        "definition": "im Schädel gelegen"
+        "definition": "im Schädel gelegen, innerhalb des Schädels"
     },
     {
         "term": "intraokular",
@@ -804,8 +804,12 @@
         "definition": "jugendlich"
     },
     {
-        "term": "Kachexie / kachektisch",
-        "definition": "krankhafter Gewichtsverlust / ausgezehrt"
+        "term": "Kachexie",
+        "definition": "krankhafter patalogischer Gewichtsverlust, Auszehrung, Abmagerung"
+    },
+    {
+        "term": "kachektisch",
+        "definition": "ausgezehrt, abgemagert"
     },
     {
         "term": "kardial",
@@ -813,7 +817,7 @@
     },
     {
         "term": "Karzinogen(griech.) oder Kanzerogen (lat.)",
-        "definition": "krebserregend"
+        "definition": "krebserregend, krebserzeugende Stoffe"
     },
     {
         "term": "Karzinom",
@@ -821,7 +825,7 @@
     },
     {
         "term": "Kaudal",
-        "definition": "zum Steißbein hin, schwanzwärts"
+        "definition": "zum Steißbein (os coccygis) hin, schwanzwärts"
     },
     {
         "term": "Klimakterium",
@@ -857,7 +861,7 @@
     },
     {
         "term": "kontralateral",
-        "definition": "gegenseitig, gegenüberliegend"
+        "definition": "gegenseitig, gegenüberliegend, entgegengesetzt"
     },
     {
         "term": "Kontrazeptivum",
@@ -873,7 +877,7 @@
     },
     {
         "term": "koronar",
-        "definition": "zu den Herzkranzgefäßen gehörig"
+        "definition": "zu den Herzkranzgefäßen gehörend"
     },
     {
         "term": "Koronarangiografie",
@@ -893,7 +897,7 @@
     },
     {
         "term": "Laparoskopie",
-        "definition": "Bauchspiegelung"
+        "definition": "Bauchspiegelung, endoskopische Betrachtung der Bauchhöhle"
     },
     {
         "term": "Laparotomie",
@@ -913,7 +917,7 @@
     },
     {
         "term": "Läsion",
-        "definition": "Schädigung, Verletzung"
+        "definition": "Schädigung, Verletzung, Störung"
     },
     {
         "term": "lateral",
@@ -929,11 +933,11 @@
     },
     {
         "term": "Leukämie",
-        "definition": "Blutkrebs"
+        "definition": "weißer Blutkrebs"
     },
     {
         "term": "Leukopenie",
-        "definition": "verminderte Anzahl weißer Blutkörperchen"
+        "definition": "verminderte Anzahl weißer Blutkörperchen im Blut"
     },
     {
         "term": "Leukozyt",
@@ -945,15 +949,15 @@
     },
     {
         "term": "Liquor",
-        "definition": "Gehirn-Rückenmark-Flüssigkeit"
+        "definition": "Gehirn-Rückenmark-Flüssigkeit, Gehirnwasser"
     },
     {
         "term": "Lobektomie",
-        "definition": "operative Entfernung eines Lappens"
+        "definition": "operative Entfernung eines Organlappens"
     },
     {
         "term": "Lumbalpunktion",
-        "definition": "Punktion im Bereich der Lendenwirbelsäule zur Liquorgewinnung"
+        "definition": "Punktion im Bereich der Lendenwirbelsäule zur Liquorgewinnung, Rückenmarkpunktion, eine Punktion des Duralsacks, die im Bereich der Lendenwirbelsäule"
     },
     {
         "term": "Lungenembolie",
@@ -965,7 +969,7 @@
     },
     {
         "term": "Lymphödem",
-        "definition": "Lymphstau"
+        "definition": "Lymphstau, Stauung der Lymphflüssigkeit"
     },
     {
         "term": "maligne",
@@ -989,7 +993,7 @@
     },
     {
         "term": "Mastektomie",
-        "definition": "operative Brustentfernung"
+        "definition": "chirurgische Entfernung von Brustgewebe (Brustdrüse)"
     },
     {
         "term": "Maxilla",
@@ -997,7 +1001,7 @@
     },
     {
         "term": "medial",
-        "definition": "zur Körpermitte hin"
+        "definition": "zur Körpermitte hin, in der Mitte liegend"
     },
     {
         "term": "Meiose",
@@ -1013,7 +1017,7 @@
     },
     {
         "term": "Menstruation",
-        "definition": "Monatsblutung"
+        "definition": "Monatsblutung, Regelblutung"
     },
     {
         "term": "metabolisch",
@@ -1045,7 +1049,7 @@
     },
     {
         "term": "Mydriasis",
-        "definition": "Pupillenerweiterung"
+        "definition": "Pupillenerweiterung, Weitstellung der Pupille"
     },
     {
         "term": "Myelitis",
@@ -1085,7 +1089,7 @@
     },
     {
         "term": "Neoplasma",
-        "definition": "Neubildung, Geschwulst"
+        "definition": "Neubildung, Geschwulst, Raumforderung"
     },
     {
         "term": "Nephrolithiasis",
@@ -1097,7 +1101,7 @@
     },
     {
         "term": "Nullipara",
-        "definition": "Frau, die noch kein Kind geboren hat"
+        "definition": "eine Frau, die noch kein Kind geboren hat"
     },
     {
         "term": "Nykturie",
@@ -1117,7 +1121,7 @@
     },
     {
         "term": "okzipital",
-        "definition": "das Hinterhaupt betreffend"
+        "definition": "das Hinterhaupt betreffend, in Richtung Hinterhaupt, am Hinterhaupt gelegen"
     },
     {
         "term": "Ophthalmologe",
@@ -1189,7 +1193,7 @@
     },
     {
         "term": "palliativ",
-        "definition": "lindernd, nicht heilend"
+        "definition": "die Beschwerden einer Krankheit lindernd, nicht heilend"
     },
     {
         "term": "Palma manus",
@@ -1217,19 +1221,19 @@
     },
     {
         "term": "Panzytopenie",
-        "definition": "Mangel aller Blutzellreihen"
+        "definition": "Mangel aller Blutzellreihen, verminderte Zellzahl aller Typen"
     },
     {
         "term": "Parästhesie",
-        "definition": "Missempfindung, z. B. Kribbeln"
+        "definition": "Missempfindung, z. B. Kribbeln, Ameisenlaufen"
     },
     {
         "term": "parenteral",
-        "definition": "Umgehung des Verdauungstrakts (z. B. i.v.)"
+        "definition": "Umgehung des Verdauungstrakts (z. B. i.v.), an Darm vorbei, Gabe von Nährstoffen oder Substanzen durch direkte Infusion in den Blutkreislauf"
     },
     {
         "term": "parietal",
-        "definition": "die Organwand betreffend"
+        "definition": "die Organwand betreffend, zur Wand eines Organs gehörig"
     },
     {
         "term": "paroxysmal",
@@ -1249,7 +1253,7 @@
     },
     {
         "term": "peripher",
-        "definition": "entfernt vom Körperzentrum"
+        "definition": "entfernt vom Körperzentrum, abseits des Zentrums"
     },
     {
         "term": "Peritoneum",
@@ -1273,7 +1277,7 @@
     },
     {
         "term": "Pharmakokinetik",
-        "definition": "Arzneistoffverlauf im Körper"
+        "definition": "Arzneistoffverlauf im Körper, die Gesamtheit aller Prozesse, denen ein Arzneistoff im Körper unterliegt (Absorption, Verteilung, Metabolismus, Ausscheidung)"
     },
     {
         "term": "Phimose",
@@ -1321,7 +1325,7 @@
     },
     {
         "term": "Pneumothorax",
-        "definition": "Luftansammlung im Pleuraspalt"
+        "definition": "Luftansammlung im Pleuraspalt, Eintritt von Luft in den Pleuraspalt"
     },
     {
         "term": "Poliomyelitis",
@@ -1337,7 +1341,7 @@
     },
     {
         "term": "Portio",
-        "definition": "Muttermund"
+        "definition": "Muttermund, Übergang von Gebärmutterhals in die Vagina"
     },
     {
         "term": "posterior",
@@ -1353,11 +1357,11 @@
     },
     {
         "term": "Prädilektionsstelle",
-        "definition": "bevorzugte Stelle für Krankheitsmanifestation"
+        "definition": "bevorzugte Stelle für Krankheitsmanifestation, bevorzugte Stelle für das Auftreten einer Krankheit"
     },
     {
         "term": "prätibial",
-        "definition": "vor dem Schienbein"
+        "definition": "vor dem Schienbein gelegen"
     },
     {
         "term": "Prävention",
@@ -1369,7 +1373,7 @@
     },
     {
         "term": "progredient",
-        "definition": "fortschreitend"
+        "definition": "fortschreitend, zunehmend"
     },
     {
         "term": "Proktoskopie",
@@ -1385,7 +1389,7 @@
     },
     {
         "term": "Prostatahyperplasie",
-        "definition": "gutartige Prostatavergrößerung"
+        "definition": "gutartige Prostatavergrößerung, gutartige Vergrößerung der Vorsteherdrüse"
     },
     {
         "term": "Protein",
@@ -1437,11 +1441,11 @@
     },
     {
         "term": "Regression",
-        "definition": "Rückentwicklung"
+        "definition": "Rückentwicklung, Rückbildung"
     },
     {
         "term": "Remission",
-        "definition": "Rückgang der Symptome"
+        "definition": "Rückgang der Symptome, vorübergehende oder dauernde Abschwächung (Nachlassen) der Symptome bei chronischen Erkrankungen"
     },
     {
         "term": "renal",
@@ -1469,7 +1473,7 @@
     },
     {
         "term": "Rigor",
-        "definition": "Muskelsteifigkeit"
+        "definition": "Muskelsteifigkeit, Muskelsteifheit"
     },
     {
         "term": "Rubor",
@@ -1520,10 +1524,6 @@
         "definition": "Krätze"
     },
     {
-        "term": "Skapula",
-        "definition": "Schulterblatt"
-    },
-    {
         "term": "Skotom",
         "definition": "Gesichtsfeldausfall"
     },
@@ -1545,7 +1545,7 @@
     },
     {
         "term": "Sphinkter",
-        "definition": "Schließmuskel"
+        "definition": "Schließmuskel, der Ringmuskel"
     },
     {
         "term": "Spinalanästhesie",
@@ -1581,11 +1581,11 @@
     },
     {
         "term": "Struma",
-        "definition": "Kropf"
+        "definition": "Kropf, Satthals"
     },
     {
         "term": "Subarachnoidalblutung",
-        "definition": "Blutung im Subarachnoidalraum"
+        "definition": "Hirnblutung im Subarachnoidalraum"
     },
     {
         "term": "subdural",
@@ -1613,7 +1613,7 @@
     },
     {
         "term": "superficialis / superfiziell",
-        "definition": "oberflächlich gelegen"
+        "definition": "oberflächlich gelegene Strukturen"
     },
     {
         "term": "Suppositorium",
@@ -1625,11 +1625,11 @@
     },
     {
         "term": "Synkope",
-        "definition": "Bewusstseinsverlust, Kreislaufzusammenbruch"
+        "definition": "Bewusstseinsverlust, Kreislaufzusammenbruch, Kreislaufkollaps"
     },
     {
         "term": "temporal",
-        "definition": "die Schläfenregion betreffend"
+        "definition": "die Schläfenregion betreffend, im Bereich der Schläfe"
     },
     {
         "term": "Tendovaginitis",
@@ -1637,7 +1637,7 @@
     },
     {
         "term": "Tenesmus",
-        "definition": "schmerzhafter Stuhldrang"
+        "definition": "Stuhldrang, Das ständige, unangenehme Gefühl, etwas nicht richtig entleeren zu können"
     },
     {
         "term": "Testis",
@@ -1649,7 +1649,7 @@
     },
     {
         "term": "Thrombophlebitis",
-        "definition": "oberflächliche Venenentzündung mit Thrombose"
+        "definition": "oberflächliche Venenentzündung mit Thrombose, Enzündung oberflächlich gelegener Venen mit sekundärer Ausbildung von Thrombosen"
     },
     {
         "term": "Thrombose",
@@ -1661,7 +1661,7 @@
     },
     {
         "term": "Thrombozytopenie",
-        "definition": "Mangel an Blutplättchen"
+        "definition": "Mangel an Blutplättchen, eine verminderte Anzahl ( < 150000/µl) von Blutplättchen"
     },
     {
         "term": "Thrombus",
@@ -1685,7 +1685,7 @@
     },
     {
         "term": "Tracheostoma",
-        "definition": "künstliche Öffnung der Luftröhre zur Außenluft"
+        "definition": "künstliche Öffnung der Luftröhre zur Außenluft, eine operativ geschaffene Verbindung zwischen äußerem Luftraum und Luftröhre"
     },
     {
         "term": "Tracheotomie",
@@ -1693,7 +1693,7 @@
     },
     {
         "term": "transitorisch",
-        "definition": "vorübergehend"
+        "definition": "nur vorübergehend auftretend, vorbeigehend"
     },
     {
         "term": "Tremor",
@@ -1725,7 +1725,7 @@
     },
     {
         "term": "Untersuchung",
-        "definition": "diagnostische Maßnahme"
+        "definition": "die Durchführung einer diagnostische Maßnahme"
     },
     {
         "term": "Urämie",
@@ -1809,7 +1809,7 @@
     },
     {
         "term": "Zyanose",
-        "definition": "Blauverfärbung durch Sauerstoffmangel"
+        "definition": "Blauverfärbung durch Sauerstoffmangel, Blausucht"
     },
     {
         "term": "Zystitis",
@@ -1825,7 +1825,7 @@
     },
     {
         "term": "CVI",
-        "definition": "Chronisch venöse Insuffizienz"
+        "definition": "Chronische venöse Insuffizienz"
     },
     {
         "term": "ERCP",
@@ -1841,7 +1841,7 @@
     },
     {
         "term": "HbA1c",
-        "definition": "glykosylierten (\"verzuckerten\") roten Blutfabstoff (Hämoglobin), glykiertes Hämoglobin"
+        "definition": "verzuckerten roten Blubfarbstoff, glykosyliertes - glikiertes Hämoglobin"
     },
     {
         "term": "HMV",
@@ -1876,8 +1876,8 @@
         "definition": "Ein zentraler Venenkatheter"
     },
     {
-        "term": "Tschämie",
-        "definition": "Durchblutungsstörüng - Minderdurchblutung"
+        "term": "Ischämie",
+        "definition": "Durchblutungsstörung - Minderdurchblutung"
     },
     {
         "term": "Autopsie",
@@ -1928,16 +1928,12 @@
         "definition": "Wachheit, Aufmerksamkeit"
     },
     {
-        "term": "Sphinkter",
-        "definition": "Schließmuskel, Ringmuskel"
-    },
-    {
         "term": "Bradypnoe",
         "definition": "verlangsamte Atemfrequenz, langsame Atmung"
     },
     {
         "term": "Tachypnoe",
-        "definition": "beschleunigte Atemfrequenz, schnelle atmen"
+        "definition": "beschleunigte Atemfrequenz, schnelle Atmung"
     },
     {
         "term": "Mitralstenose",
@@ -1948,7 +1944,7 @@
         "definition": "an der Spitze gelegen, an der Spitze befindlich"
     },
     {
-        "term": "vesodilatator",
+        "term": "vasodilatator",
         "definition": "gefäßweiterende Medikamente"
     },
     {
@@ -1994,5 +1990,13 @@
     {
         "term": "Ablatio retinae",
         "definition": "Netzhautablösung"
+    },
+    {
+        "term": "Koronarsklerose",
+        "definition": "Herzkranzgefäßhärtung"
+    },
+    {
+        "term": "Koronarstenose",
+        "definition": "Herzkranzgefäßverengung"
     }
 ]
