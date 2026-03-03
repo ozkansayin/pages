@@ -811,9 +811,8 @@ hTsWM7nmWwke6k/3WRgEQ9g0asepPsAVn5nBC6PKmaZoHILMAdJ/PlfBRBaPvs3XDACdToq42VEFReUm
             const userAnswer = (appState.answers[id] || '').trim();//.toLowerCase();
             const correctAnswer = (currentMode === 'term' ? item.definition : item.term);//.toLowerCase();
 
-            const correctParts = correctAnswer.split(/[,/]/).map(s => s.trim());
-            const isCorrect = correctParts.some(part => part === userAnswer) ||
-                (userAnswer.length > 3 && correctAnswer.includes(userAnswer));
+            const correctParts = correctAnswer.split(/[,]/).map(s => s.trim());
+            const isCorrect = correctParts.some(part => part === userAnswer);
 
             appState.checked[id] = isCorrect;
             saveState();
