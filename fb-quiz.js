@@ -84,10 +84,10 @@ function loadState() {
 
         // Ensure we have random modes if missing
         if (Object.keys(appState.mode).length === 0) {
-            generateRandomModes();
+            // generateRandomModes();
         }
     } else {
-        generateRandomModes();
+        // generateRandomModes();
         saveState();
     }
 }
@@ -274,8 +274,15 @@ window.checkAnswer = (id) => {
     const userAnswer = (appState.answers[id] || '').trim();//.toLowerCase();
     const correctAnswer = (currentMode === 'term' ? item.definition : item.term);//.toLowerCase();
 
+    const userAnsweredParts = userAnswer.split(/[,]/).map(s => s.trim());
     const correctParts = correctAnswer.split(/[,]/).map(s => s.trim());
-    const isCorrect = correctParts.every(part => part === userAnswer);
+
+    if (userAnsweredParts.length > 1) {
+        console.log("User answered: ", userAnsweredParts);
+        console.log("Correct parts: ", correctParts);
+    }
+
+    const isCorrect = correctParts.every(part => userAnsweredParts.includes(part));
 
     appState.checked[id] = isCorrect;
     saveState();
