@@ -113,7 +113,7 @@
     },
     {
         "term": "Antiphlogistikum",
-        "definition": "Entzündungshemmer"
+        "definition": "entzündungshemmende Medikamente"
     },
     {
         "term": "Antipyretika",
@@ -357,7 +357,7 @@
     },
     {
         "term": "disseminiert",
-        "definition": "verteilt, verstreut"
+        "definition": "über den Körper oder bestimmte Körperregion verteilt"
     },
     {
         "term": "distal",
@@ -381,7 +381,7 @@
     },
     {
         "term": "Drainage",
-        "definition": "Ableitung von Flüssigkeit aus Körperhöhlen"
+        "definition": "Ableitung von Flüssigkeit aus einer Körperhöhlen"
     },
     {
         "term": "Ductus choledochus",
@@ -405,7 +405,7 @@
     },
     {
         "term": "Effloreszenz",
-        "definition": "Grundelement krankhafter Hautveränderungen"
+        "definition": "krankhafter Hautveränderungen, Hautblüte"
     },
     {
         "term": "Embolie",
@@ -441,7 +441,7 @@
     },
     {
         "term": "Endometriumkarzinom",
-        "definition": "Krebserkrankung der Gebärmutterschleimhaut, das Korpuskarzinom"
+        "definition": "Gebärmutterschleimhautkrebs"
     },
     {
         "term": "Enteral",
@@ -457,7 +457,7 @@
     },
     {
         "term": "epidurales Hämatom",
-        "definition": "Blutung zwischen Knochen und harter Hirnhaut"
+        "definition": "eine Hirnblutung zwischen dem Shädelknochen und der harten Hirnhaut"
     },
     {
         "term": "epigastrisch",
@@ -477,7 +477,7 @@
     },
     {
         "term": "Eupnoe",
-        "definition": "physiologische, ruhige und regelmessige Atmung"
+        "definition": "physiologische, ruhige und regelmäßige Atmung"
     },
     {
         "term": "Exacerbatio / Exazerbation",
@@ -609,7 +609,7 @@
     },
     {
         "term": "Hämorrhoiden",
-        "definition": "krampfaderähnliche Schwellung am After (\"Goldader\"), die Krampfader ähnliche oder auch knotenförmige Schwellung, die zwischen dem Enddarm und dem Schließmuskel des Afters liegt"
+        "definition": "Goldader, eine krampfaderähnliche oder knotenförmige Schwellung, die zwischen dem Enddarm und dem Schließmuskel des Afters liegt"
     },
     {
         "term": "Hemikolektomie",
@@ -653,7 +653,7 @@
     },
     {
         "term": "Histologiebefund",
-        "definition": "Gewebeuntersuchung"
+        "definition": "Ergebnis der Gewebeuntersuchung"
     },
     {
         "term": "Hodentorsion",
@@ -745,7 +745,7 @@
     },
     {
         "term": "inguinal",
-        "definition": "die Leistenregion betreffend, Den Leistenbereich betreffend"
+        "definition": "den Leistenbereich betreffend"
     },
     {
         "term": "Inhalation",
@@ -805,7 +805,7 @@
     },
     {
         "term": "Kachexie",
-        "definition": "krankhafter patalogischer Gewichtsverlust, Auszehrung, Abmagerung"
+        "definition": "krankhafter pathologischer Gewichtsverlust, Auszehrung, Abmagerung"
     },
     {
         "term": "kachektisch",
@@ -821,7 +821,7 @@
     },
     {
         "term": "Karzinom",
-        "definition": "bösartiger Tumor (Krebs)"
+        "definition": "bösartiger Tumor, Krebs"
     },
     {
         "term": "Kaudal",
@@ -957,7 +957,7 @@
     },
     {
         "term": "Lumbalpunktion",
-        "definition": "Punktion im Bereich der Lendenwirbelsäule zur Liquorgewinnung, Rückenmarkpunktion, eine Punktion des Duralsacks, die im Bereich der Lendenwirbelsäule"
+        "definition": "Punktion im Bereich der Lendenwirbelsäule zur Gewinnung von Nervenwasser, Rückenmarkpunktion"
     },
     {
         "term": "Lungenembolie",
@@ -1169,7 +1169,7 @@
     },
     {
         "term": "Osteomyelitis",
-        "definition": "Knochenmarkentzündung"
+        "definition": "Entzündung des Knochens und des Knochenmarks"
     },
     {
         "term": "Otitis media",
@@ -1221,15 +1221,15 @@
     },
     {
         "term": "Panzytopenie",
-        "definition": "Mangel aller Blutzellreihen, verminderte Zellzahl aller Typen"
+        "definition": "Verminderung aller drei Blutzelreihen"
     },
     {
         "term": "Parästhesie",
-        "definition": "Missempfindung, z. B. Kribbeln, Ameisenlaufen"
+        "definition": "Missempfindung, z. B. Kribbeln, Ameisenlaufen"
     },
     {
         "term": "parenteral",
-        "definition": "Umgehung des Verdauungstrakts (z. B. i.v.), an Darm vorbei, Gabe von Nährstoffen oder Substanzen durch direkte Infusion in den Blutkreislauf"
+        "definition": "Umgehung des Verdauungstrakts (z. B. i.v.), an Darm vorbei, Gabe von Nährstoffen oder Substanzen durch direkte Infusion in den Blutkreislauf"
     },
     {
         "term": "parietal",
@@ -1277,7 +1277,7 @@
     },
     {
         "term": "Pharmakokinetik",
-        "definition": "Arzneistoffverlauf im Körper, die Gesamtheit aller Prozesse, denen ein Arzneistoff im Körper unterliegt (Absorption, Verteilung, Metabolismus, Ausscheidung)"
+        "definition": "der Verlauf eines Arzneistoffs im Körper (Aufnahme, Verteilung, Abbau, Ausscheidung)"
     },
     {
         "term": "Phimose",
@@ -1293,7 +1293,7 @@
     },
     {
         "term": "Phototherapie",
-        "definition": "Lichttherapie"
+        "definition": "Lichttherapie, Behandlung mit Licht"
     },
     {
         "term": "Phytopharmakon / Phytotherapie",
@@ -1357,7 +1357,7 @@
     },
     {
         "term": "Prädilektionsstelle",
-        "definition": "bevorzugte Stelle für Krankheitsmanifestation, bevorzugte Stelle für das Auftreten einer Krankheit"
+        "definition": "bevorzugte Stelle für das Auftreten einer Krankheit"
     },
     {
         "term": "prätibial",
@@ -1389,7 +1389,7 @@
     },
     {
         "term": "Prostatahyperplasie",
-        "definition": "gutartige Prostatavergrößerung, gutartige Vergrößerung der Vorsteherdrüse"
+        "definition": "gutartige Vergrößerung der Vorsteherdrüse"
     },
     {
         "term": "Protein",
@@ -1445,7 +1445,7 @@
     },
     {
         "term": "Remission",
-        "definition": "Rückgang der Symptome, vorübergehende oder dauernde Abschwächung (Nachlassen) der Symptome bei chronischen Erkrankungen"
+        "definition": "Rückgang der Symptome, vorübergehende oder dauerhafte Abschwächung"
     },
     {
         "term": "renal",
@@ -1513,7 +1513,7 @@
     },
     {
         "term": "Sinus maxillaris",
-        "definition": "Kieferhöhle"
+        "definition": "Oberkieferhöhle"
     },
     {
         "term": "Sinusitis",
@@ -1585,15 +1585,15 @@
     },
     {
         "term": "Subarachnoidalblutung",
-        "definition": "Hirnblutung im Subarachnoidalraum"
+        "definition": "Hirnblutung im Subarachnoidalraum, zwischen der Spinnenhaut und der weichen Hirnhaut"
     },
     {
         "term": "subdural",
-        "definition": "im Subduralraum gelegen"
+        "definition": "zum Subduralraum gehörig, zwischen der harten Hirnhaut und der Spinnenhaut"
     },
     {
         "term": "Subduralhämatom",
-        "definition": "Blutung zwischen harter Hirnhaut und Gehirn"
+        "definition": "Hirnblutung zwischen der harten Hirnhaut und der Spinnenhaut"
     },
     {
         "term": "subkutan",
@@ -1625,7 +1625,7 @@
     },
     {
         "term": "Synkope",
-        "definition": "Bewusstseinsverlust, Kreislaufzusammenbruch, Kreislaufkollaps"
+        "definition": "Bewusstseinsverlust, Ohnmacht, Unbewusstsein"
     },
     {
         "term": "temporal",
@@ -1661,7 +1661,7 @@
     },
     {
         "term": "Thrombozytopenie",
-        "definition": "Mangel an Blutplättchen, eine verminderte Anzahl ( < 150000/µl) von Blutplättchen"
+        "definition": "verminderte Anzahl von Blutplättchen"
     },
     {
         "term": "Thrombus",
@@ -1685,7 +1685,7 @@
     },
     {
         "term": "Tracheostoma",
-        "definition": "künstliche Öffnung der Luftröhre zur Außenluft, eine operativ geschaffene Verbindung zwischen äußerem Luftraum und Luftröhre"
+        "definition": "künstliche Öffnung der Luftröhre zur Außenluft, eine operativ geschaffene Verbindung zwischen dem äußeren Luftraum und der Luftröhre"
     },
     {
         "term": "Tracheotomie",
@@ -1725,7 +1725,7 @@
     },
     {
         "term": "Untersuchung",
-        "definition": "die Durchführung einer diagnostische Maßnahme"
+        "definition": "die Durchführung einer diagnostischen Maßnahme"
     },
     {
         "term": "Urämie",
@@ -1841,7 +1841,7 @@
     },
     {
         "term": "HbA1c",
-        "definition": "verzuckerten roten Blubfarbstoff, glykosyliertes - glikiertes Hämoglobin"
+        "definition": "verzuckerter Blubfarbstoff, glykosyliertes Hämoglobin"
     },
     {
         "term": "HMV",
@@ -1861,7 +1861,7 @@
     },
     {
         "term": "PTA",
-        "definition": "perkutane transluminale Angiolastie (z.B Carotis-PTA)"
+        "definition": "perkutane transluminale Angioplastie (z.B Carotis-PTA)"
     },
     {
         "term": "PTCA",
@@ -1941,7 +1941,7 @@
     },
     {
         "term": "Apikal",
-        "definition": "an der Spitze gelegen, an der Spitze befindlich"
+        "definition": "an der Spitze gelegen"
     },
     {
         "term": "vasodilatator",
@@ -1998,5 +1998,9 @@
     {
         "term": "Koronarstenose",
         "definition": "Herzkranzgefäßverengung"
+    },
+    {
+        "term": "Arbeitsunfall",
+        "definition": "Ein Unfall eines Arbeitnehmers, den dieser während der Arbeitszeit oder auf dem Arbeitsweg erleidet"
     }
 ]
