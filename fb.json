@@ -221,7 +221,7 @@
     },
     {
         "term": "Bradykardie",
-        "definition": "langsamer (verlangsammter) Herzschlag (weniger als 60 Schläge pro Minute)"
+        "definition": "verlangsamter Herzschlag, weniger als 60 Schläge pro Minute"
     },
     {
         "term": "Bronchialkarzinom",
@@ -237,7 +237,7 @@
     },
     {
         "term": "Bukkal",
-        "definition": "zur Backe gehörend"
+        "definition": "zur Backe gehörig"
     },
     {
         "term": "Caecum / Zäkum",
@@ -321,11 +321,11 @@
     },
     {
         "term": "Delirant / delirös",
-        "definition": "verwirrt, wahnsinnig, Bewusstseinsstörung, Bewusstseinstrübung"
+        "definition": "verwirrt, Bewusstseinsstörung, Bewusstseinstrübung"
     },
     {
         "term": "Demenz",
-        "definition": "Vergesslichkeit, Schwachsinn, Wahnsinn"
+        "definition": "Vergesslichkeit, Gedächtnisstörung, Gedächtnisswchäche"
     },
     {
         "term": "Derma",
@@ -381,7 +381,7 @@
     },
     {
         "term": "Drainage",
-        "definition": "Ableitung von Flüssigkeit aus einer Körperhöhlen"
+        "definition": "Ableitung von Flüssigkeit aus einer Körperhöhle"
     },
     {
         "term": "Ductus choledochus",
@@ -397,7 +397,7 @@
     },
     {
         "term": "Dysplasie",
-        "definition": "Fehlbildung"
+        "definition": "Fehlbildung, Missbildung"
     },
     {
         "term": "Echokardiographie",
@@ -405,7 +405,7 @@
     },
     {
         "term": "Effloreszenz",
-        "definition": "krankhafter Hautveränderungen, Hautblüte"
+        "definition": "Grundelement der krankhaften Hautveränderungen, Hautblüte"
     },
     {
         "term": "Embolie",
@@ -453,11 +453,11 @@
     },
     {
         "term": "Epidural",
-        "definition": "zum Epiduralraum gehörig (zwischen Knochenhaut und harter Hirnhaut)"
+        "definition": "zum Epiduralraum gehörig, zwischen dem Schädelknochen und der harten Hirnhaut"
     },
     {
         "term": "epidurales Hämatom",
-        "definition": "eine Hirnblutung zwischen dem Shädelknochen und der harten Hirnhaut"
+        "definition": "Hirnblutung im Epiduralraum, zwischen dem Schädelknochen und der harten Hirnhaut"
     },
     {
         "term": "epigastrisch",
@@ -545,7 +545,7 @@
     },
     {
         "term": "Fraktur",
-        "definition": "Knochenbruch, Bruch"
+        "definition": "Knochenbruch"
     },
     {
         "term": "frontal",
@@ -557,7 +557,7 @@
     },
     {
         "term": "Gastrektomie",
-        "definition": "vollständige Magenentfernung, totale Magenresektion, Magenekstirpation"
+        "definition": "vollständige Magenentfernung, totale Magenresektion, Magenextirpation"
     },
     {
         "term": "Gastritis",
@@ -673,7 +673,7 @@
     },
     {
         "term": "Hypercholesterinämie",
-        "definition": "hoher Cholesterinspiegel im Blut"
+        "definition": "erhöhter Cholesterinspiegel im Blut"
     },
     {
         "term": "Hyperglykämie",
@@ -737,7 +737,7 @@
     },
     {
         "term": "indolent / Indolenz",
-        "definition": "schmerzlos / Schmerzlosigkeit"
+        "definition": "schmerzlos, Schmerzlosigkeit"
     },
     {
         "term": "Infusion",
@@ -781,11 +781,11 @@
     },
     {
         "term": "intrakranial",
-        "definition": "im Schädel gelegen, innerhalb des Schädels"
+        "definition": "innerhalb des Schädels"
     },
     {
         "term": "intraokular",
-        "definition": "im Auge gelegen"
+        "definition": "innerhalb des Auges"
     },
     {
         "term": "Intubation",
@@ -833,7 +833,7 @@
     },
     {
         "term": "Koagel / Koagulum",
-        "definition": "Blutpfropf, Blutkuchen"
+        "definition": "Blutgerinnsel außerhalb der Blutgefäße"
     },
     {
         "term": "Koagulation",
@@ -949,7 +949,7 @@
     },
     {
         "term": "Liquor",
-        "definition": "Gehirn-Rückenmark-Flüssigkeit, Gehirnwasser"
+        "definition": "Gehirn-Rückenmark-Flüssigkeit"
     },
     {
         "term": "Lobektomie",
@@ -957,11 +957,11 @@
     },
     {
         "term": "Lumbalpunktion",
-        "definition": "Punktion im Bereich der Lendenwirbelsäule zur Gewinnung von Nervenwasser, Rückenmarkpunktion"
+        "definition": "Punktion im Bereich der Lendenwirbelsäule zur Gewinnung von Nervenwasser"
     },
     {
         "term": "Lungenembolie",
-        "definition": "Verschluss einer Lungenarterie durch ein Blutgerinnsel"
+        "definition": "Verschluss eines Lungengefäßes durch ein Blutgerinnsel"
     },
     {
         "term": "Luxation",
@@ -1029,7 +1029,7 @@
     },
     {
         "term": "Mitralstenose",
-        "definition": "Einengung der Mitralklappe"
+        "definition": "Verengung der Mitralklappe"
     },
     {
         "term": "Monotherapie",
@@ -1113,7 +1113,7 @@
     },
     {
         "term": "Ödem",
-        "definition": "Flüssigkeitsansammlung im Gewebe"
+        "definition": "Flüssigkeitsansammlung im Gewebe, Wassereinlagerung"
     },
     {
         "term": "okkult",
@@ -1121,7 +1121,7 @@
     },
     {
         "term": "okzipital",
-        "definition": "das Hinterhaupt betreffend, in Richtung Hinterhaupt, am Hinterhaupt gelegen"
+        "definition": "in Richtung Hinterhaupt, am Hinterkopf gelegen"
     },
     {
         "term": "Ophthalmologe",
@@ -1169,7 +1169,7 @@
     },
     {
         "term": "Osteomyelitis",
-        "definition": "Entzündung des Knochens und des Knochenmarks"
+        "definition": "Entzündung von Knochenmark und Knochengewebe"
     },
     {
         "term": "Otitis media",
@@ -1221,7 +1221,7 @@
     },
     {
         "term": "Panzytopenie",
-        "definition": "Verminderung aller drei Blutzelreihen"
+        "definition": "Verminderung aller drei Blutzellreihen"
     },
     {
         "term": "Parästhesie",
@@ -1229,7 +1229,7 @@
     },
     {
         "term": "parenteral",
-        "definition": "Umgehung des Verdauungstrakts (z. B. i.v.), an Darm vorbei, Gabe von Nährstoffen oder Substanzen durch direkte Infusion in den Blutkreislauf"
+        "definition": "Umgehung des Verdauungstrakts, Gabe von Nährstoffen oder Substanzen durch direkte Infusion in den Blutkreislauf"
     },
     {
         "term": "parietal",
@@ -1237,7 +1237,7 @@
     },
     {
         "term": "paroxysmal",
-        "definition": "anfallsartig"
+        "definition": "anfallsartig, schubweise"
     },
     {
         "term": "Patella",
@@ -1429,7 +1429,7 @@
     },
     {
         "term": "Radius",
-        "definition": "Speiche (Unterarmknochen)"
+        "definition": "Speiche, Unterarmknochen"
     },
     {
         "term": "Reanimation",
@@ -1437,7 +1437,7 @@
     },
     {
         "term": "Reflux",
-        "definition": "Rückfluss (z. B. Magensäure)"
+        "definition": "Rückfluss z.B. Magensäure"
     },
     {
         "term": "Regression",
@@ -1553,7 +1553,7 @@
     },
     {
         "term": "Spinalkanal",
-        "definition": "Wirbelkanal / Rückenmarkskanal"
+        "definition": "Wirbelkanal, Rückenmarkskanal"
     },
     {
         "term": "Splenektomie",
@@ -1593,7 +1593,7 @@
     },
     {
         "term": "Subduralhämatom",
-        "definition": "Hirnblutung zwischen der harten Hirnhaut und der Spinnenhaut"
+        "definition": "Hirnblutung im Subduralraum, zwischen der harten Hirnhaut und der Spinnenhaut"
     },
     {
         "term": "subkutan",
@@ -1625,7 +1625,7 @@
     },
     {
         "term": "Synkope",
-        "definition": "Bewusstseinsverlust, Ohnmacht, Unbewusstsein"
+        "definition": "Bewusstseinsverlust, Ohnmacht, Bewusstlosigkeit"
     },
     {
         "term": "temporal",
@@ -1649,7 +1649,7 @@
     },
     {
         "term": "Thrombophlebitis",
-        "definition": "oberflächliche Venenentzündung mit Thrombose, Enzündung oberflächlich gelegener Venen mit sekundärer Ausbildung von Thrombosen"
+        "definition": "Entzündung einer oberflächlichen Vene, die durch ein Blutgerinnsel verstopft wird"
     },
     {
         "term": "Thrombose",
@@ -1705,7 +1705,7 @@
     },
     {
         "term": "Tumor",
-        "definition": "Schwellung, Geschwulst"
+        "definition": "Schwellung, Geschwulst, Neubildung"
     },
     {
         "term": "Ulcus ventriculi",
@@ -1861,7 +1861,7 @@
     },
     {
         "term": "PTA",
-        "definition": "perkutane transluminale Angioplastie (z.B Carotis-PTA)"
+        "definition": "perkutane transluminale Angioplastie z.B. Carotis-PTA"
     },
     {
         "term": "PTCA",
@@ -1877,11 +1877,11 @@
     },
     {
         "term": "Ischämie",
-        "definition": "Durchblutungsstörung - Minderdurchblutung"
+        "definition": "Durchblutungsstörung, Minderdurchblutung"
     },
     {
         "term": "Autopsie",
-        "definition": "Leichenschau - Obduktion"
+        "definition": "Leichenschau, Obduktion"
     },
     {
         "term": "Dysphagie",
@@ -1937,7 +1937,7 @@
     },
     {
         "term": "Mitralstenose",
-        "definition": "Verengerung der Mitralklappe"
+        "definition": "Verengung der Mitralklappe"
     },
     {
         "term": "Apikal",
@@ -1945,11 +1945,11 @@
     },
     {
         "term": "vasodilatator",
-        "definition": "gefäßweiterende Medikamente"
+        "definition": "gefäßweiternde Medikamente"
     },
     {
         "term": "Glaukom",
-        "definition": "grüner Start"
+        "definition": "grüner Star"
     },
     {
         "term": "Malabsorption",
@@ -1997,10 +1997,18 @@
     },
     {
         "term": "Koronarstenose",
-        "definition": "Herzkranzgefäßverengung"
+        "definition": "Verengung der Herzkranzgefäße"
     },
     {
         "term": "Arbeitsunfall",
         "definition": "Ein Unfall eines Arbeitnehmers, den dieser während der Arbeitszeit oder auf dem Arbeitsweg erleidet"
+    },
+    {
+        "term": "Articulatio manus, Articulatio car",
+        "definition": "Handgelenk"
+    }
+    {
+        "term": "aszendierend",
+        "definition": "aufsteigend"
     }
 ]
