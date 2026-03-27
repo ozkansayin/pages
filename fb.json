@@ -325,7 +325,7 @@
     },
     {
         "term": "Demenz",
-        "definition": "Vergesslichkeit, Gedächtnisstörung, Gedächtnisswchäche"
+        "definition": "Vergesslichkeit, Gedächtnisstörung, Gedächtnisschwäche"
     },
     {
         "term": "Derma",
@@ -433,7 +433,7 @@
     },
     {
         "term": "Endometriose",
-        "definition": "Gebärmutterschleimhaut außerhalb der Gebärmutterhöhle vorkommt"
+        "definition": "Gebärmutterschleimhaut, die außerhalb der Gebärmutterhöhle vorkommt"
     },
     {
         "term": "Endometritis",
@@ -477,7 +477,7 @@
     },
     {
         "term": "Eupnoe",
-        "definition": "physiologische, ruhige und regelmäßige Atmung"
+        "definition": "normale, ruhige und regelmäßige Atmung"
     },
     {
         "term": "Exacerbatio / Exazerbation",
@@ -681,7 +681,7 @@
     },
     {
         "term": "Hyperkapnie",
-        "definition": "erhöhter Kohlendioksitgehalt im Blut"
+        "definition": "erhöhter Kohlendioxitgehalt im Blut"
     },
     {
         "term": "Hyperthyreose",
@@ -769,7 +769,7 @@
     },
     {
         "term": "Insult / Apoplex",
-        "definition": "Schlaganfall"
+        "definition": "Schlaganfall, Hirninfarkt"
     },
     {
         "term": "interkostal",
@@ -1841,7 +1841,7 @@
     },
     {
         "term": "HbA1c",
-        "definition": "verzuckerter Blubfarbstoff, glykosyliertes Hämoglobin"
+        "definition": "verzuckerter Blutfarbstoff, glykosyliertes Hämoglobin"
     },
     {
         "term": "HMV",
@@ -1936,15 +1936,11 @@
         "definition": "beschleunigte Atemfrequenz, schnelle Atmung"
     },
     {
-        "term": "Mitralstenose",
-        "definition": "Verengung der Mitralklappe"
-    },
-    {
         "term": "Apikal",
         "definition": "an der Spitze gelegen"
     },
     {
-        "term": "vasodilatator",
+        "term": "Vasodilatator",
         "definition": "gefäßweiternde Medikamente"
     },
     {
@@ -2004,7 +2000,7 @@
         "definition": "Ein Unfall eines Arbeitnehmers, den dieser während der Arbeitszeit oder auf dem Arbeitsweg erleidet"
     },
     {
-        "term": "Articulatio manus, Articulatio car",
+        "term": "Articulatio manus, Articulatio carpi",
         "definition": "Handgelenk"
     },
     {
