@@ -405,7 +405,7 @@
     },
     {
         "term": "Effloreszenz",
-        "definition": "Grundelement der krankhaften Hautveränderungen, Hautblüte"
+        "definition": "Grundelement der krankhaften Hautveränderungen, Hautblüte, Hauterscheinung"
     },
     {
         "term": "Embolie",
@@ -805,7 +805,7 @@
     },
     {
         "term": "Kachexie",
-        "definition": "krankhafter pathologischer Gewichtsverlust, Auszehrung, Abmagerung"
+        "definition": "krankhafter Gewichtsverlust, Auszehrung, Abmagerung"
     },
     {
         "term": "kachektisch",
@@ -885,11 +885,11 @@
     },
     {
         "term": "Koronaratherosklerose",
-        "definition": "Verkalkung der Herzkranzgefäße"
+        "definition": "Verhärtung und Verengung der Herzkranzgefäße"
     },
     {
         "term": "kranial",
-        "definition": "zum Kopf hin"
+        "definition": "zum Kopf hin, zum Kopf gehörend"
     },
     {
         "term": "kurativ",
@@ -1837,7 +1837,7 @@
     },
     {
         "term": "GERD",
-        "definition": "Gastroösophageale Refluxkrankheit, Entzündung der Speiseröhre aufgrund von Rückfluss der Magensäure"
+        "definition": "Gastroösophageale Refluxkrankheit, Entzündung der Speiseröhre durch Rückfluss der Magensäure"
     },
     {
         "term": "HbA1c",
@@ -1989,7 +1989,7 @@
     },
     {
         "term": "Koronarsklerose",
-        "definition": "Herzkranzgefäßhärtung"
+        "definition": "Verhärtung und Verengung der Herzkranzgefäße"
     },
     {
         "term": "Koronarstenose",
